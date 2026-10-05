@@ -1,0 +1,12 @@
+__pycache__/
+*.pyc
+*.pyo
+.vscode/
+.idea/
+*.zip
+
+
+prueba.py
+
+
+tests/
