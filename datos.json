@@ -1,0 +1,153 @@
+{
+  "libros": [
+    {
+      "isbn": "9780131103627",
+      "titulo": "Eloquent JavaScript",
+      "autor": "Marijn Haverbeke",
+      "categoria": "Computacion/Lenguajes",
+      "seccion": "B",
+      "estante": 2,
+      "ejemplares": 2,
+      "disponibles": 1
+    },
+    {
+      "isbn": "9786123181017",
+      "titulo": "El capital",
+      "autor": "Karl Marx",
+      "categoria": "Economia/General",
+      "seccion": "C",
+      "estante": 1,
+      "ejemplares": 2,
+      "disponibles": 2
+    },
+    {
+      "isbn": "9786071511546",
+      "titulo": "Fisica para ciencias e ingenieria",
+      "autor": "Raymond A. Serway y John W. Jewett",
+      "categoria": "Fisica/Ingenieria",
+      "seccion": "C",
+      "estante": 5,
+      "ejemplares": 3,
+      "disponibles": 2
+    },
+    {
+      "isbn": "9786123164102",
+      "titulo": "Tradiciones peruanas",
+      "autor": "Ricardo Palma",
+      "categoria": "Literatura/Historia Peruana",
+      "seccion": "B",
+      "estante": 1,
+      "ejemplares": 5,
+      "disponibles": 4
+    },
+    {
+      "isbn": "9789876122672",
+      "titulo": "Maze Runner",
+      "autor": "James Dashner",
+      "categoria": "Literatura/Ciencia Ficción/Distopía Juvenil",
+      "seccion": "A",
+      "estante": 4,
+      "ejemplares": 2,
+      "disponibles": 2
+    },
+    {
+      "isbn": "9788437604947",
+      "titulo": "Cien años de soledad",
+      "autor": "Gabriel Garcia Marquez",
+      "categoria": "Literatura/Narrativa",
+      "seccion": "A",
+      "estante": 1,
+      "ejemplares": 3,
+      "disponibles": 2
+    },
+    {
+      "isbn": "9788445073728",
+      "titulo": "El Señor de los Anillos: La Comunidad del Anillo",
+      "autor": "J. R. R. Tolkien",
+      "categoria": "Literatura/Fantasía Épica",
+      "seccion": "A",
+      "estante": 4,
+      "ejemplares": 2,
+      "disponibles": 2
+    }
+  ],
+
+  "miembros": [
+    {
+      "dni": "70112233",
+      "nombre": "Ana Quispe",
+      "tipo": "Estudiante",
+      "vencimiento": "2027-04-29",
+      "activo": true
+    },
+    {
+      "dni": "70445566",
+      "nombre": "Luis Ramos",
+      "tipo": "Docente",
+      "vencimiento": "2027-05-21",
+      "activo": true
+    },
+    {
+      "dni": "70778899",
+      "nombre": "Rosa Palomino",
+      "tipo": "Estudiante",
+      "vencimiento": "2026-09-18",
+      "activo": true
+    },
+    {
+      "dni": "70778899",
+      "nombre": "Marco Perez",
+      "tipo": "Estudiante",
+      "vencimiento": "2026-11-23",
+      "activo": true
+    }
+  ],
+
+  "prestamos": [
+    {
+      "isbn": "9788437604947",
+      "dni": "70112233",
+      "tipo_miembro": "Estudiante",
+      "fecha": "2026-09-28",
+      "vence": "2026-10-12",
+      "devuelto": false,
+      "multa": 0.0
+    },
+    {
+      "isbn": "9780131103627",
+      "dni": "70445566",
+      "tipo_miembro": "Docente",
+      "fecha": "2026-09-10",
+      "vence": "2026-09-24",
+      "devuelto": false,
+      "multa": 0.0
+    },
+    {
+      "isbn": "9788420634654",
+      "dni": "70112233",
+      "tipo_miembro": "Estudiante",
+      "fecha": "2026-08-24",
+      "vence": "2026-09-07",
+      "devuelto": false,
+      "multa": 0.0
+    },
+    {
+      "isbn": "9788433905819",
+      "dni": "70445566",
+      "tipo_miembro": "Docente",
+      "fecha": "2026-08-04",
+      "vence": "2026-08-18",
+      "devuelto": true,
+      "multa": 5.0,
+      "fecha_devolucion": "2026-08-28"
+    }
+  ],
+
+  "reservas": [
+    {
+      "isbn": "9788420634654",
+      "dni": "70445566",
+      "fecha": "2026-09-30"
+    }
+  ]
+}
