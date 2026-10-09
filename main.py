@@ -1,18 +1,13 @@
 import sys
 
-import utilidades
-from config import nombre_biblioteca
-
-
-def divisor(texto_hotdog):
-    print("-" * 30, "\n", end=" ")
-    print(f"{texto_hotdog.upper()}")
-    print("-" * 30)
+from modulos import utilidades
+from modulos.config import nombre_biblioteca
 
 
 def menu_principal():
+
     while True:
-        divisor(f"Bienvenido a {nombre_biblioteca} \n ¿Estas registrado?")
+        utilidades.divisor(f"Bienvenido a {nombre_biblioteca} \n ¿Estas registrado?")
         print("1. Iniciar sesion")
         print("2. Registrarse")
         print("3. Acceder sin iniciar sesion (Invitado)")
