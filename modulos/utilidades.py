@@ -1,5 +1,5 @@
-import errores
-
+def errores():
+    pass
 
 def pausa():
     input("\nPresione Enter para continuar...")
