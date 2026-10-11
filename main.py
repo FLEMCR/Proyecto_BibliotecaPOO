@@ -33,7 +33,7 @@ def menu_principal():
             utilidades.pausa()
             pass
         elif opcion == 0:
-            utilidades.verificar_accion("Salir", sys.exit)
+            utilidades.verificar_accion("Salir", lambda: sys.exit("Gracias por usar la aplicacion."))
         else:
             print("Ingrese una opcion valida")
 
