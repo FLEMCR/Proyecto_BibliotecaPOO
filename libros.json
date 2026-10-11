@@ -1,0 +1,80 @@
+[
+  {
+    "id": "L-002",
+    "isbn": "9780131103627",
+    "titulo": "El Lenguaje de Programacion C",
+    "autor": "Brian Kernighan",
+    "seccion": "C",
+    "estante": 2,
+    "genero": "Programacion",
+    "anio": 1988,
+    "ejemplares": 3,
+    "disponibles": 2,
+    "activo": true
+  },
+  {
+    "id": "L-001",
+    "isbn": "9786123181017",
+    "titulo": "Algoritmos y Estructuras de Datos",
+    "autor": "Thomas Cormen",
+    "seccion": "C",
+    "estante": 4,
+    "genero": "Algoritmos",
+    "anio": 2009,
+    "ejemplares": 4,
+    "disponibles": 3,
+    "activo": true
+  },
+  {
+    "id": "L-005",
+    "isbn": "9788420634654",
+    "titulo": "Historia de la Filosofia",
+    "autor": "Frederick Copleston",
+    "seccion": "F",
+    "estante": 1,
+    "genero": "Filosofia",
+    "anio": 1990,
+    "ejemplares": 1,
+    "disponibles": 0,
+    "activo": true
+  },
+  {
+    "id": "L-003",
+    "isbn": "9788433905819",
+    "titulo": "El Nombre de la Rosa",
+    "autor": "Umberto Eco",
+    "seccion": "A",
+    "estante": 1,
+    "genero": "Historica",
+    "anio": 1980,
+    "ejemplares": 3,
+    "disponibles": 2,
+    "activo": true
+  },
+  {
+    "id": "L-004",
+    "isbn": "9788437604947",
+    "titulo": "Cien Anos de Soledad",
+    "autor": "Gabriel Garcia Marquez",
+    "seccion": "A",
+    "estante": 2,
+    "genero": "Novela",
+    "anio": 1967,
+    "ejemplares": 5,
+    "disponibles": 5,
+    "activo": true
+  },
+  {
+    "id": "L-006",
+    "isbn": "9788481746396",
+    "titulo": "Fundamentos de Enfermeria",
+    "autor": "Patricia Potter",
+    "seccion": "B",
+    "estante": 2,
+    "genero": "Medicina",
+    "anio": 2010,
+    "ejemplares": 2,
+    "disponibles": 1,
+    "activo": true
+  }
+]

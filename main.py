@@ -23,15 +23,12 @@ def menu_principal():
         if opcion == 1:
             print("Se procedera a iniciar sesion...")
             utilidades.pausa()
-            pass
         elif opcion == 2:
             print("Se procedera a registrarse...")
             utilidades.pausa()
-            pass
         elif opcion == 3:
             print("Se procedera a acceder sin iniciar sesion...")
             utilidades.pausa()
-            pass
         elif opcion == 0:
             utilidades.verificar_accion("Salir", sys.exit)
         else:

@@ -17,5 +17,17 @@ class Usuario:
         self._activo = True
         self._multa = 0.0
 
+    def obtener_nombre(self):
+        return self._nombre
+
+    def obtener_dni(self):
+        return self._dni
+
+    def obtener_membresia(self):
+        return self._membresia
+
+    def obtener_multa(self):
+        return round(self._multa, 2)
+
 
 usuarios = [Usuario("Admin", "Admin")]
