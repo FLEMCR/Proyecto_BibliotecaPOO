@@ -1,80 +1,72 @@
 [
   {
-    "id": "L-002",
     "isbn": "9780131103627",
-    "titulo": "El Lenguaje de Programacion C",
-    "autor": "Brian Kernighan",
-    "seccion": "C",
-    "estante": 2,
-    "genero": "Programacion",
-    "anio": 1988,
-    "ejemplares": 3,
-    "disponibles": 2,
-    "activo": true
-  },
-  {
-    "id": "L-001",
-    "isbn": "9786123181017",
-    "titulo": "Algoritmos y Estructuras de Datos",
-    "autor": "Thomas Cormen",
-    "seccion": "C",
-    "estante": 4,
-    "genero": "Algoritmos",
-    "anio": 2009,
-    "ejemplares": 4,
-    "disponibles": 3,
-    "activo": true
-  },
-  {
-    "id": "L-005",
-    "isbn": "9788420634654",
-    "titulo": "Historia de la Filosofia",
-    "autor": "Frederick Copleston",
-    "seccion": "F",
-    "estante": 1,
-    "genero": "Filosofia",
-    "anio": 1990,
-    "ejemplares": 1,
-    "disponibles": 0,
-    "activo": true
-  },
-  {
-    "id": "L-003",
-    "isbn": "9788433905819",
-    "titulo": "El Nombre de la Rosa",
-    "autor": "Umberto Eco",
-    "seccion": "A",
-    "estante": 1,
-    "genero": "Historica",
-    "anio": 1980,
-    "ejemplares": 3,
-    "disponibles": 2,
-    "activo": true
-  },
-  {
-    "id": "L-004",
-    "isbn": "9788437604947",
-    "titulo": "Cien Anos de Soledad",
-    "autor": "Gabriel Garcia Marquez",
-    "seccion": "A",
-    "estante": 2,
-    "genero": "Novela",
-    "anio": 1967,
-    "ejemplares": 5,
-    "disponibles": 5,
-    "activo": true
-  },
-  {
-    "id": "L-006",
-    "isbn": "9788481746396",
-    "titulo": "Fundamentos de Enfermeria",
-    "autor": "Patricia Potter",
+    "titulo": "Eloquent JavaScript",
+    "autor": "Marijn Haverbeke",
+    "categoria": "Computacion/Lenguajes",
     "seccion": "B",
     "estante": 2,
-    "genero": "Medicina",
-    "anio": 2010,
     "ejemplares": 2,
-    "disponibles": 1,
-    "activo": true
+    "disponibles_prestamo": 1
+  },
+  {
+    "isbn": "9786123181017",
+    "titulo": "El capital",
+    "autor": "Karl Marx",
+    "categoria": "Economia/General",
+    "seccion": "C",
+    "estante": 1,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9786071511546",
+    "titulo": "Fisica para ciencias e ingenieria",
+    "autor": "Raymond A. Serway y John W. Jewett",
+    "categoria": "Fisica/Ingenieria",
+    "seccion": "C",
+    "estante": 5,
+    "ejemplares": 3,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9786123164102",
+    "titulo": "Tradiciones peruanas",
+    "autor": "Ricardo Palma",
+    "categoria": "Literatura/Historia Peruana",
+    "seccion": "B",
+    "estante": 1,
+    "ejemplares": 5,
+    "disponibles_prestamo": 4
+  },
+  {
+    "isbn": "9789876122672",
+    "titulo": "Maze Runner",
+    "autor": "James Dashner",
+    "categoria": "Literatura/Ciencia Ficción/Distopía Juvenil",
+    "seccion": "A",
+    "estante": 4,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9788437604947",
+    "titulo": "Cien años de soledad",
+    "autor": "Gabriel Garcia Marquez",
+    "categoria": "Literatura/Narrativa",
+    "seccion": "A",
+    "estante": 1,
+    "ejemplares": 3,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9788445073728",
+    "titulo": "El Señor de los Anillos: La Comunidad del Anillo",
+    "autor": "J. R. R. Tolkien",
+    "categoria": "Literatura/Fantasía Épica",
+    "seccion": "A",
+    "estante": 4,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
   }
 ]
