@@ -1,5 +1,9 @@
+import time
+
+
 def errores():
     pass
+
 
 def pausa():
     input("\nPresione Enter para continuar...")
@@ -14,7 +18,11 @@ def verificar_accion(estado, accion):
     while True:
         verificar = input(f"¿Estas seguro de {estado}? (s/n): ").strip().lower()
         if verificar in ("s", "si", "sí"):
-            return accion()
+            return (
+                print("Gracias por usar la aplicacion."),
+                time.sleep(0.300),
+                accion(),
+            )
         elif verificar in ("n", "no"):
             break
         print("Ingresa una opcion valida")
