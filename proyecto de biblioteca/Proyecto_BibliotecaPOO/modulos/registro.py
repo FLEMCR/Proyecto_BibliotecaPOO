@@ -1,0 +1,4 @@
+registro
+membresias
+usuarios
+actualizaciondedatosusuario
