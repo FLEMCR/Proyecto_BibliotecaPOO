@@ -1,24 +1,52 @@
 import json
 import os
 
-# Aqui avanzaré la conexion con el json para que se lea en el python
+CARPETA_DATOS = os.path.join(os.path.dirname(__file__), "datos")
 
-ruta_json = os.path.join((__file__), "datos.json")
-# print(ruta_json)
+ARCHIVOS = {
+    "libros": "libros.json",
+    "miembros": "miembros.json",
+    "prestamos": "h_prestamos.json",
+}
+
+nombre_biblioteca = "Biblioteca POO HAY QUE CAMBIAR NOMBREEEEEE"
+lema = "FRASE A USAR WAAAAAA"
+
+limite_libros = {"estudiante": 3, "docente": 5, "administrador": 5, "invitado": 0}
+dias_prestamo = {"estudiante": 14, "docente": 21, "administrador": 21, "invitado": 0}
+multa_por_dia = {
+    "estudiante": 0.50,
+    "docente": 0.50,
+    "administrador": 0.00,
+    "invitado": 0.00,
+}
 
 
-def leer_json():
-    with open(ruta_json, "r", encoding="utf-8") as leer_datos:
-        datos_json = json.load(leer_datos)
-    return datos_json
+def ruta_json(nombre):
+    if ARCHIVOS.get(nombre) is None:
+        raise KeyError("archivo desconocido: ", str(nombre))
+    return os.path.join(CARPETA_DATOS, ARCHIVOS[nombre])
 
 
-# Ajustes para referenciarlos en los demas modulos
+def leer_json(nombre):
+    ruta = ruta_json(nombre)
+    if not os.path.exists(ruta):
+        return []
+    with open(ruta, "r", encoding="utf-8") as archivo:
+        contenido = archivo.read().strip()
+    if not contenido:
+        return []
+    return json.loads(contenido)
 
-limite_prestamo = {"estudiante": 3, "docente": 5}
-tipo_miembro = [
-    "Estudiante",
-    "Docente",
-    "Invitado",
-]  # Si se les ocurre mas modifiquen noma, aunque la idea era que cuando no se registren entren como invitado y que puedan registrarse como docente o estudiante.
-nombre_biblioteca = "Biblioteca POO"  # Cambien el nombre por el momento lo dejo así
+
+def guardar_json(nombre, datos):
+    ruta = ruta_json(nombre)
+    os.makedirs(os.path.dirname(ruta), exist_ok=True)
+    with open(ruta, "w", encoding="utf-8") as archivo:
+        json.dump(datos, archivo, ensure_ascii=False, indent=2)
+        archivo.write("\n")
+    return True
+
+
+def cargar_todos():
+    return {nombre: leer_json(nombre) for nombre in ARCHIVOS}

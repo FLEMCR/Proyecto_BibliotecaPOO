@@ -1,88 +1,103 @@
-import membresias
-import utilidades
+from modulos import config
+from modulos import errores
+from modulos import utilidades
+
+
+class Membresia:
+    TIPO = "base"
+    LIMITE_LIBROS = 0
+    DIAS_PRESTAMO = 0
+    MULTA_POR_DIA = 0.0
+    PUEDE_ADMINISTRAR = False
+
+    def __init__(self):
+        pass
+
+    def tipo(self):
+        return self.TIPO
+
+    def limite_libros(self):
+        return self.LIMITE_LIBROS
+
+    def dias_prestamo(self):
+        return self.DIAS_PRESTAMO
+
+    def multa_por_dia(self):
+        return self.MULTA_POR_DIA
+
+    def puede_administrar(self):
+        return self.PUEDE_ADMINISTRAR
+
+
+class Estudiante(Membresia):
+    TIPO = "estudiante"
+    LIMITE_LIBROS = config.limite_libros["estudiante"]
+    DIAS_PRESTAMO = config.dias_prestamo["estudiante"]
+    MULTA_POR_DIA = config.multa_por_dia["estudiante"]
+
+
+class Docente(Membresia):
+    TIPO = "docente"
+    LIMITE_LIBROS = config.limite_libros["docente"]
+    DIAS_PRESTAMO = config.dias_prestamo["docente"]
+    MULTA_POR_DIA = config.multa_por_dia["docente"]
+
+
+class Administrador(Docente):
+    TIPO = "administrador"
+    PUEDE_ADMINISTRAR = True
+    MULTA_POR_DIA = config.multa_por_dia["administrador"]
+
+
+class Invitado(Membresia):
+    TIPO = "invitado"
+    LIMITE_LIBROS = config.limite_libros["invitado"]
+    DIAS_PRESTAMO = config.dias_prestamo["invitado"]
+    MULTA_POR_DIA = config.multa_por_dia["invitado"]
+
+
+def crear_membresia(tipo):
+    clave = str(tipo or "estudiante").strip().lower()
+    if clave == "estudiante":
+        return Estudiante()
+    if clave == "docente":
+        return Docente()
+    if clave == "administrador":
+        return Administrador()
+    if clave == "invitado":
+        return Invitado()
+    raise errores.DatosInvalidosError("Ese tipo de membresia no existe")
 
 
 class Usuario:
-    contadores = {tipo: 0 for tipo in membresias.CLASES}
+    def __init__(self, nombre, dni, tipo="estudiante"):
+        self._nombre = str(nombre or "").strip()
+        self._dni = dni
+        if tipo != "invitado" and dni:
+            self._dni = utilidades.validar_dni(dni)
+        self._membresia = crear_membresia(tipo)
 
-    def __init__(self, nombre, dni, tipo="estudiante", correo=""):
-        dni_valido = utilidades.validar_dni(dni)
-        membresia = membresias.crear_membresia(tipo)
-
-        Usuario.contadores[tipo] += 1
-        numero_contador = Usuario.contadores[tipo]
-
-        self._id_usuario = f"{membresia.prefijo}{numero_contador:04d}"
-        self._nombre = nombre
-        self._dni = dni_valido
-        self._correo = correo.strip()
-        self._membresia = membresia
-        self._habilitado = True
-
-    @property
-    def id_usuario(self):
-        return self._id_usuario
-
-    @property
     def nombre(self):
         return self._nombre
 
-    @property
     def dni(self):
         return self._dni
 
-    @property
-    def correo(self):
-        return self._correo
+    def tipo(self):
+        return self._membresia.tipo()
 
-    @property
     def membresia(self):
         return self._membresia
 
-    @property
-    def tipo(self):
-        return self._membresia.tipo
-
-    @property
-    def habilitado(self):
-        return self._habilitado
-
-    @property
-    def activo(self):
-        return self._habilitado and self._membresia.vigente()
-
-    def es_admin(self):
+    def puede_administrar(self):
         return self._membresia.puede_administrar()
 
-    def membresia_vigente(self):
-        return self._membresia.vigente()
-
-    def dias_para_vencer(self):
-        return self._membresia.dias_para_vencer()
-
-    def multa(self):
-        return self._membresia.multa()
-
-    def puede_renovar(self):
-        return self._habilitado
-
-    def puede_pedir_libros(self):
-        return self.activo
-
-    def puede_devolver_libros(self):
-        return True
-
-    def habilitar(self):
-        self._habilitado = True
-
-    def deshabilitar(self):
-        self._habilitado = False
-
     def __str__(self):
-        estado = "activo" if self.activo else "inactivo"
-        return f"El usuario con id: {self._id_usuario}, con nombre: {self._nombre}, tiene el estado: {estado}"
+        return f"{self._nombre} ({self._dni}) - {self.tipo()}"
 
 
-class Admin(Usuario):
-    def __init__(self, nombre, dni, correo=""):
-        super().__init__(nombre, dni, tipo="admin", correo=correo)
+def crear_usuario(datos):
+    if not isinstance(datos, dict):
+        raise errores.DatosInvalidosError("Cada miembro debe ser un diccionario")
+    tipo = str(datos.get("tipo", "Estudiante")).strip().lower()
+    return Usuario(datos.get("nombre"), datos.get("dni"), tipo)

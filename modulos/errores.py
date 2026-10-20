@@ -1,3 +1,6 @@
-# Parece que necesitamos colocar los errores como clases para usar "raise".
-class MembresiaNoExiste(Exception):
+class BibliotecaError(Exception):
+    pass
+
+
+class DatosInvalidosError(BibliotecaError, ValueError):
     pass
