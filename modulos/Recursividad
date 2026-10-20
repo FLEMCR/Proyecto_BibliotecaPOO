@@ -1,0 +1,30 @@
+
+# ==========================================
+# MI PARTE: RECURSIVIDAD
+# Proyecto: Biblioteca universitaria
+# ==========================================
+
+# Creamos una lista de libros para el ejemplo
+libros = [
+    "El principito",
+    "Python basico",
+    "Matematica"
+]
+
+
+# Creamos una funcion para contar los libros
+def contar_libros(libros, posicion=0):
+
+    # Si llegamos al final de la lista, terminamos
+    if posicion == len(libros):
+        return 0
+
+    # Contamos un libro y seguimos con el siguiente
+    return 1 + contar_libros(libros, posicion + 1)
+
+
+# Llamamos a la funcion para contar los libros
+cantidad = contar_libros(libros)
+
+# Mostramos el resultado en pantalla
+print("Cantidad de libros:", cantidad)
