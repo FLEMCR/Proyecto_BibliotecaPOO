@@ -1,14 +1,16 @@
+from datetime import date, timedelta
+
 from modulos import errores
 
 
 def titulo(texto, caracter="="):
     linea = caracter * 60
-    return f"\n{linea}\n{texto.upper().center(60)}\n{linea}"
+    return f"{linea}\n{texto.upper().center(60)}\n{linea}"
 
 
 def pausa():
-    texto = "Presiona ENTER para continuar..."
-    return input(texto)
+    print()
+    input("Presiona ENTER para continuar...")
 
 
 def validar_dni(texto):
@@ -19,21 +21,34 @@ def validar_dni(texto):
 
 
 def validar_isbn(codigo):
-    if len(codigo) != 13:
+    limpio = str(codigo).strip()
+    if len(limpio) != 13 or not limpio.isdigit():
         raise errores.DatosInvalidosError("El ISBN debe tener 13 digitos")
-    return codigo
+    return limpio
 
 
-def responder_si_no(texto="¿Deseas continuar? (s/n): "):
+def responder_si_no(texto):
     respuesta = input(texto).strip().lower()
     if respuesta == "s" or respuesta == "si":
         return True
     return False
 
 
-def contar_regresiva(n):
+def convertir_fecha(texto):
+    # date() pide el orden inverso al que usamos al escribir: anio, mes, dia
+    (anio, mes, dia) = str(texto).split("-")
+    return date(int(anio), int(mes), int(dia))
+
+
+def sumar_dias(fecha, dias):
+    return fecha + timedelta(days=dias)
+
+
+"""  AQUI DEJO UN EJEMPLO DE RECURSION, HAY QUE USAR ESE TEMA
+def cuenta_regresiva(n):
     if n <= 0:
-        print("¡Listo!")
+        print("Listo!")
         return 0
     print(n)
-    return contar_regresiva(n - 1)
+    return cuenta_regresiva(n - 1)
+"""

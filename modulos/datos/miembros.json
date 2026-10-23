@@ -37,7 +37,7 @@
   {
     "dni": "72345678",
     "nombre": "Jorge Huaman",
-    "tipo": "Docente",
+    "tipo": "Administrador",
     "vencimiento_membresia": "2027-01-10",
     "activo": true
   },

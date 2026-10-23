@@ -1,30 +1,40 @@
 import json
 import os
 
-CARPETA_DATOS = os.path.join(os.path.dirname(__file__), "datos")
+CARPETA_BASE = os.path.dirname(__file__)
+CARPETA_DATOS = os.path.join(CARPETA_BASE, "datos")
 
 ARCHIVOS = {
     "libros": "libros.json",
     "miembros": "miembros.json",
-    "prestamos": "h_prestamos.json",
 }
 
 nombre_biblioteca = "Biblioteca POO HAY QUE CAMBIAR NOMBREEEEEE"
 lema = "FRASE A USAR WAAAAAA"
 
 limite_libros = {"estudiante": 3, "docente": 5, "administrador": 5, "invitado": 0}
-dias_prestamo = {"estudiante": 14, "docente": 21, "administrador": 21, "invitado": 0}
+dias_prestamo = {"estudiante": 14, "docente": 20, "administrador": 20, "invitado": 0}
 multa_por_dia = {
     "estudiante": 0.50,
     "docente": 0.50,
-    "administrador": 0.00,
+    "administrador": 0.50,
     "invitado": 0.00,
 }
 
+secciones = {
+    "A": "Literatura",
+    "B": "Historia y lenguas",
+    "C": "Ciencias exactas",
+    "D": "Ciencias de la vida",
+    "E": "Ciencias sociales",
+    "F": "Arte",
+    "G": "Tecnologia",
+    "H": "Referencia",
+}
+estantes = 6
+
 
 def ruta_json(nombre):
-    if ARCHIVOS.get(nombre) is None:
-        raise KeyError("archivo desconocido: ", str(nombre))
     return os.path.join(CARPETA_DATOS, ARCHIVOS[nombre])
 
 

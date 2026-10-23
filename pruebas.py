@@ -1,7 +1,5 @@
-def pausa():
-    texto = "Presiona ENTER para continuar..."
+texto = "2023-12-31"
 
-    return input(texto)
+(dia, mes, año) = str(texto).split("-")
 
-
-pausa()
+print(f"{dia}/{mes}/{año}")

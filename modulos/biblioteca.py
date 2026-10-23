@@ -1,42 +1,50 @@
-from modulos import config, errores, libros, prestamos, usuarios, utilidades
+from modulos import config, errores, libros, usuarios
 
 
 class Biblioteca:
     def __init__(self):
         self._catalogo = {}
         self._miembros = {}
-        self._gestor = prestamos.GestorPrestamos(self._catalogo, self._miembros)
-        self._cargado = False
+        self._sesion = None
+        self.cargar_datos()
 
     def cargar_datos(self):
-        datos = config.cargar_todos()
-        for registro in datos.get("libros", []):
-            try:
-                libro = libros.Libro(
-                    isbn=registro.get("isbn"),
-                    titulo=registro.get("titulo"),
-                    autor=registro.get("autor"),
-                    categoria=registro.get("categoria", "General"),
-                    seccion=registro.get("seccion", "A"),
-                    estante=registro.get("estante", 1),
-                    ejemplares=registro.get("ejemplares", 1),
-                    disponibles_prestamo=registro.get("disponibles_prestamo"),
-                    activo=registro.get("activo", True),
-                )
-                self._catalogo[libro.isbn()] = libro
-            except errores.DatosInvalidosError as error:
-                print(str(error))
-        for registro in datos.get("miembros", []):
-            try:
-                miembro = usuarios.crear_usuario(registro)
-                if self._miembros.get(miembro.dni()) is not None:
-                    continue
-                self._miembros[miembro.dni()] = miembro
-            except errores.DatosInvalidosError as error:
-                print(str(error))
-        self._gestor = prestamos.GestorPrestamos(self._catalogo, self._miembros)
-        self._cargado = True
-        return {"libros": len(self._catalogo), "miembros": len(self._miembros)}
+        try:
+            datos = config.cargar_todos()
+        except ValueError as error:
+            raise errores.ArchivoDatosError(
+                f"No se pudieron leer los JSON de la carpeta datos/: {error}"
+            )
+
+        self._catalogo = {}
+        for registro in datos["libros"]:
+            libro = libros.Libro(
+                registro.get("isbn"),
+                registro.get("titulo"),
+                registro.get("autor"),
+                registro.get("categoria", "General"),
+                registro.get("seccion", "A"),
+                registro.get("estante", 1),
+                registro.get("ejemplares", 1),
+                registro.get("disponibles_prestamo"),
+            )
+            self._catalogo[libro.isbn()] = libro
+
+        self._miembros = {}
+        for registro in datos["miembros"]:
+            miembro = usuarios.crear_usuario(registro)
+            self._miembros[miembro.dni()] = miembro
+
+        return self.resumen()
+
+    def guardar_datos(self):
+        config.guardar_json(
+            "libros", [l.a_diccionario() for l in self._catalogo.values()]
+        )
+        config.guardar_json(
+            "miembros", [m.a_diccionario() for m in self._miembros.values()]
+        )
+        return True
 
     def catalogo(self):
         return self._catalogo
@@ -44,28 +52,31 @@ class Biblioteca:
     def miembros(self):
         return self._miembros
 
-    def gestor(self):
-        return self._gestor
-
     def libro(self, isbn):
         return self._catalogo.get(isbn)
 
     def miembro(self, dni):
         return self._miembros.get(dni)
 
-    def prestar(self, isbn, dni):
-        return self._gestor.prestar(isbn, dni)
+    def iniciar_sesion(self, dni=None, invitado=False):
+        if invitado:
+            self._sesion = usuarios.Usuario("Invitado", "", "invitado")
+        else:
+            self._sesion = self.miembro(dni)
+        return self._sesion
 
-    def devolver(self, codigo):
-        return self._gestor.devolver(codigo)
+    def sesion(self):
+        return self._sesion
 
-    def prestamos_de(self, dni):
-        return self._gestor.historial_de(dni)
+    def cerrar_sesion(self):
+        self._sesion = None
 
-    def prestamos_activos(self, dni=None):
-        if dni:
-            return self._gestor.activos_de(dni)
-        return [p for p in self._gestor.prestamos() if not p.devuelto()]
+    def matrices(self):
+        return {
+            "disponibilidad": libros.matriz_disponibilidad(self._catalogo),
+            "ubicacion": libros.matriz_ubicacion(self._catalogo),
+            "categorias": libros.matriz_categorias(self._catalogo),
+        }
 
     def resumen(self):
         disponibles = sum(l.disponibles_prestamo() for l in self._catalogo.values())
@@ -78,9 +89,8 @@ class Biblioteca:
             "disponibles": disponibles,
             "prestados": prestados,
             "miembros": len(self._miembros),
-            "prestamos": len(self._gestor.prestamos()),
         }
 
     def __str__(self):
         r = self.resumen()
-        return f"{config.nombre_biblioteca}: {r['titulos']} titulos, {r['miembros']} miembros, {r['prestamos']} prestamos"
+        return f"{config.nombre_biblioteca}: {r['titulos']} titulos y {r['miembros']} miembros"

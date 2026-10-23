@@ -4,3 +4,7 @@ class BibliotecaError(Exception):
 
 class DatosInvalidosError(BibliotecaError, ValueError):
     pass
+
+
+class ArchivoDatosError(BibliotecaError):
+    pass

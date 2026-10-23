@@ -1,11 +1,12 @@
-from modulos import biblioteca, menu
+from modulos import menu
+from modulos.biblioteca import Biblioteca
+from modulos.menu import menu_principal
 
 
 def main():
-    sistema = biblioteca.Biblioteca()
-    resumen = sistema.cargar_datos()
-    print(f"Cargados: {resumen['libros']} libros, {resumen['miembros']} miembros")
-    menu.ejecutar(sistema)
+    menu.portada()
+    biblioteca = Biblioteca()
+    menu_principal(biblioteca)
 
 
 main()
