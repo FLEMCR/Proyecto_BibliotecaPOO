@@ -8,16 +8,16 @@ mano y el programa los vuelve a leer al arrancar.
 
 ## Los modulos
 
-| Archivo         | Lineas | Que hace                                                         |
-| --------------- | ------ | ---------------------------------------------------------------- |
-| `config.py`     | 62     | rutas de los JSON, reglas por tipo de miembro, leer y guardar    |
-| `errores.py`    | 10     | las 3 excepciones del sistema                                    |
-| `utilidades.py` | 54     | titulo, pausa, validar DNI e ISBN, responder si/no, fechas       |
-| `usuarios.py`   | 184    | Membresia y sus 4 subclases, Usuario, y las dos fabricas         |
-| `libros.py`     | 187    | Libro, las 3 matrices y las 3 funciones recursivas de categorias |
-| `biblioteca.py` | 96     | une todo: carga los JSON, resume, guarda                         |
-| `menu.py`       | 253    | las tablas de opciones y todas las acciones                      |
-| `main.py`       | 12     | arranca: portada, biblioteca y menu                              |
+| Archivo         | Que hace                                                      |
+| --------------- | ------------------------------------------------------------- |
+| `config.py`     | rutas de los JSON, reglas por tipo de miembro, leer y guardar |
+| `errores.py`    | las excepciones del sistema                                   |
+| `utilidades.py` | titulo, pausa, validar DNI e ISBN, responder si/no, fechas    |
+| `usuarios.py`   | Membresia y sus 4 subclases, Usuario, etc                     |
+| `libros.py`     | Libro, las matrices y las funciones recursivas de categorias  |
+| `biblioteca.py` | une todo: carga los JSON, resume, guarda                      |
+| `menu.py`       | las tablas de opciones y todas las acciones                   |
+| `main.py`       | arranca: portada, biblioteca y menu                           |
 
 ## Los datos
 
