@@ -3,7 +3,7 @@ from datetime import date, timedelta
 from modulos import errores
 
 
-def titulo(texto, caracter="="):
+def titulo(texto, caracter="-"):
     linea = caracter * 60
     return f"{linea}\n{texto.upper().center(60)}\n{linea}"
 

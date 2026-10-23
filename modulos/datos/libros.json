@@ -49,7 +49,6 @@
     "ejemplares": 2,
     "disponibles_prestamo": 2
   },
-
   {
     "isbn": "9786123351373",
     "titulo": "El sistema jurídico: Introducción al derecho",
@@ -90,7 +89,6 @@
     "ejemplares": 2,
     "disponibles_prestamo": 2
   },
-
   {
     "isbn": "9786123179380",
     "titulo": "Matemáticas 1",
@@ -141,7 +139,6 @@
     "ejemplares": 2,
     "disponibles_prestamo": 2
   },
-
   {
     "isbn": "9780131103627",
     "titulo": "Eloquent JavaScript",
@@ -163,7 +160,7 @@
     "disponibles_prestamo": 2
   },
   {
-    "isbn": "",
+    "isbn": "9788420677300",
     "titulo": "Aplicaciones de Inteligencia Artificial en la Educación Superior Universitaria",
     "autor": "Gloria Teresita Huamaní Huamaní, Paul Miller Tocto Inga",
     "categoria": "Inteligencia",
@@ -173,7 +170,7 @@
     "disponibles_prestamo": 1
   },
   {
-    "isbn": "",
+    "isbn": "9789843760494",
     "titulo": "Gestión de cadena de suministro e industria 4.0",
     "autor": "No especificado",
     "categoria": "Industria",
@@ -182,9 +179,8 @@
     "ejemplares": 1,
     "disponibles_prestamo": 1
   },
-
   {
-    "isbn": "9972424626",
+    "isbn": "9789972424626",
     "titulo": "Franquicias imaginarias: las opciones estéticas en las artes plásticas en el Perú de fin de siglo",
     "autor": "Max Hernández Calvo, Jorge Villacorta Chávez",
     "categoria": "Arte",
@@ -204,7 +200,7 @@
     "disponibles_prestamo": 2
   },
   {
-    "isbn": "",
+    "isbn": "9789972433353",
     "titulo": "Deus absconditus: retrospectiva de Manuel Moncloa 1980-2011",
     "autor": "Gustavo Buntinx",
     "categoria": "Arte",
@@ -214,7 +210,7 @@
     "disponibles_prestamo": 1
   },
   {
-    "isbn": "",
+    "isbn": "9786124567890",
     "titulo": "Patrimonio, Kukuli Velarde",
     "autor": "Varios autores",
     "categoria": "Arte",

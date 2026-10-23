@@ -12,9 +12,9 @@ ARCHIVOS = {
 nombre_biblioteca = "Biblioteca POO HAY QUE CAMBIAR NOMBREEEEEE"
 lema = "FRASE A USAR WAAAAAA"
 
-limite_libros = {"estudiante": 3, "docente": 5, "administrador": 5, "invitado": 0}
+limite_libros = {"estudiante": 1, "docente": 5, "administrador": 5, "invitado": 0}
 dias_prestamo = {"estudiante": 14, "docente": 20, "administrador": 20, "invitado": 0}
-multa_por_dia = 0.50
+
 
 secciones = {
     "A": "Literatura",
@@ -23,7 +23,7 @@ secciones = {
     "D": "Tecnologia",
     "E": "Arte",
 }
-estantes = 5
+estantes = 3
 
 
 def ruta_json(nombre):

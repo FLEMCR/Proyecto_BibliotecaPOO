@@ -13,7 +13,7 @@ class Biblioteca:
             datos = config.cargar_todos()
         except ValueError as error:
             raise errores.ArchivoDatosError(
-                f"No se pudieron leer los JSON de la carpeta datos/: {error}"
+                f"No se pudo leer el JSON de la carpeta datos: {error}"
             )
 
         self._catalogo = {}
@@ -22,10 +22,10 @@ class Biblioteca:
                 registro.get("isbn"),
                 registro.get("titulo"),
                 registro.get("autor"),
-                registro.get("categoria", "General"),
-                registro.get("seccion", "A"),
-                registro.get("estante", 1),
-                registro.get("ejemplares", 1),
+                registro.get("categoria"),
+                registro.get("seccion"),
+                registro.get("estante"),
+                registro.get("ejemplares"),
                 registro.get("disponibles_prestamo"),
             )
             self._catalogo[libro.isbn()] = libro
@@ -90,7 +90,3 @@ class Biblioteca:
             "prestados": prestados,
             "miembros": len(self._miembros),
         }
-
-    def __str__(self):
-        r = self.resumen()
-        return f"{config.nombre_biblioteca}: {r['titulos']} titulos y {r['miembros']} miembros"

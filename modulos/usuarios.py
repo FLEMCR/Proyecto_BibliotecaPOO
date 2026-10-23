@@ -70,27 +70,27 @@ class Estudiante(Membresia):
     TIPO = "estudiante"
     LIMITE_LIBROS = config.limite_libros["estudiante"]
     DIAS_PRESTAMO = config.dias_prestamo["estudiante"]
-    MULTA_POR_DIA = config.multa_por_dia["estudiante"]
+    MULTA_POR_DIA = config.multa_por_dia
 
 
 class Docente(Membresia):
     TIPO = "docente"
     LIMITE_LIBROS = config.limite_libros["docente"]
     DIAS_PRESTAMO = config.dias_prestamo["docente"]
-    MULTA_POR_DIA = config.multa_por_dia["docente"]
+    MULTA_POR_DIA = config.multa_por_dia
 
 
 class Administrador(Docente):
     TIPO = "administrador"
     PUEDE_ADMINISTRAR = True
-    MULTA_POR_DIA = config.multa_por_dia["administrador"]
+    MULTA_POR_DIA = config.multa_por_dia
 
 
 class Invitado(Membresia):
     TIPO = "invitado"
     LIMITE_LIBROS = config.limite_libros["invitado"]
     DIAS_PRESTAMO = config.dias_prestamo["invitado"]
-    MULTA_POR_DIA = config.multa_por_dia["invitado"]
+    MULTA_POR_DIA = config.multa_por_dia
 
     def describir(self):
         return "Invitado: solo puede consultar el catalogo"
