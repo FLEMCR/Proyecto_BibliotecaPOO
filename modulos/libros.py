@@ -1,30 +1,19 @@
-from modulos import config, errores, utilidades
+from modulos import configuracion, errores, utilidades
 
 
 class Libro:
     def __init__(
-        self,
-        isbn,
-        titulo,
-        autor,
-        categoria="General",
-        seccion="A",
-        estante=1,
-        ejemplares=1,
-        disponibles_prestamo=None,
+        self, isbn, titulo, autor, categoria, seccion, estante, ejemplares, en_estante
     ):
         self._isbn = utilidades.validar_isbn(isbn)
-        self._titulo = str(titulo or "").strip() or "Sin titulo"
-        self._autor = str(autor or "").strip() or "Desconocido"
-        self._categoria = str(categoria or "General").strip()
-        self._seccion = str(seccion or "A").strip().upper()
-        self._estante = int(estante) if estante else 1
-        self._ejemplares = int(ejemplares) if ejemplares else 1
-        self._disponibles = (
-            int(disponibles_prestamo)
-            if disponibles_prestamo is not None
-            else self._ejemplares
-        )
+        self._titulo = str(titulo).strip()
+        self._autor = str(autor).strip()
+        self._categoria = str(categoria).strip()
+        self._seccion = str(seccion).strip().upper()
+        self._estante = int(estante)
+        self._ejemplares = int(ejemplares)
+        self._en_estante = int(en_estante)
+        self.revisar_datos()
 
     def isbn(self):
         return self._isbn
@@ -47,23 +36,44 @@ class Libro:
     def ejemplares(self):
         return self._ejemplares
 
-    def disponibles_prestamo(self):
-        return self._disponibles
+    def en_estante(self):
+        return self._en_estante
 
     def prestados(self):
-        return self._ejemplares - self._disponibles
+        return self._ejemplares - self._en_estante
 
-    def prestar_uno(self):
-        if self._disponibles <= 0:
-            raise errores.DatosInvalidosError(
-                f"No hay ejemplares disponibles de '{self._titulo}'"
+    def se_puede_prestar(self):
+        return self._en_estante > 1
+
+    def revisar_datos(self):
+        if self._titulo == "":
+            raise errores.ErrorDeDatos("El titulo no puede quedar vacio")
+        if self._autor == "":
+            raise errores.ErrorDeDatos("El autor no puede quedar vacio")
+        if self._categoria == "":
+            raise errores.ErrorDeDatos("La categoria no puede quedar vacia")
+        if self._seccion not in configuracion.SECCIONES:
+            raise errores.ErrorDeDatos(
+                "La seccion "
+                + self._seccion
+                + " no existe. Las secciones son "
+                + ", ".join(configuracion.SECCIONES)
             )
-        self._disponibles -= 1
-        return True
-
-    def devolver_uno(self):
-        if self._disponibles < self._ejemplares:
-            self._disponibles += 1
+        if self._estante < 1 or self._estante > configuracion.CANTIDAD_DE_ESTANTES:
+            raise errores.ErrorDeDatos(
+                "El estante debe estar entre 1 y "
+                + str(configuracion.CANTIDAD_DE_ESTANTES)
+            )
+        if self._ejemplares < 1:
+            raise errores.ErrorDeDatos("Un libro debe tener por lo menos 1 ejemplar")
+        if self._en_estante < 0:
+            raise errores.ErrorDeDatos(
+                "La cantidad en el estante no puede ser negativa"
+            )
+        if self._en_estante > self._ejemplares:
+            raise errores.ErrorDeDatos(
+                "No puede haber mas libros en el estante que ejemplares"
+            )
         return True
 
     def a_diccionario(self):
@@ -75,113 +85,55 @@ class Libro:
             "seccion": self._seccion,
             "estante": self._estante,
             "ejemplares": self._ejemplares,
-            "disponibles_prestamo": self._disponibles,
+            "en_estante": self._en_estante,
         }
 
-    def __str__(self):
-        return (
-            f"{self._isbn} | {self._titulo} | {self._autor} | disp: {self._disponibles}"
-        )
+    def datos_para_pantalla(self):
+        datos = self.a_diccionario()
+        datos["seccion_nombre"] = configuracion.SECCIONES[self._seccion]
+        datos["prestados"] = self.prestados()
+        datos["se_puede_prestar"] = utilidades.si_o_no(self.se_puede_prestar())
+        return datos
 
 
-def matriz_disponibilidad(catalogo):
-    encabezado = ["Seccion"]
-    for numero in range(1, config.estantes + 1):
-        encabezado.append(f"E{numero}")
-    encabezado.append("Total")
-
-    filas = []
-    for seccion in config.secciones:
-        fila = [seccion]
-        total_seccion = 0
-        for numero in range(1, config.estantes + 1):
-            libres = 0
-            for libro in catalogo.values():
-                if libro.seccion() == seccion and libro.estante() == numero:
-                    libres += libro.disponibles_prestamo()
-            fila.append(libres)
-            total_seccion += libres
-        fila.append(total_seccion)
-        filas.append(fila)
-
-    totales = ["Total"]
-    general = 0
-    for numero in range(1, config.estantes + 1):
-        suma = 0
-        for fila in filas:
-            suma += fila[numero]
-        totales.append(suma)
-        general += suma
-    totales.append(general)
-    filas.append(totales)
-    return [encabezado] + filas
+def crear_libro(datos):
+    if not isinstance(datos, dict):
+        raise errores.ErrorDeDatos("Cada libro del JSON debe ser un diccionario")
+    return Libro(
+        datos.get("isbn", ""),
+        datos.get("titulo", ""),
+        datos.get("autor", ""),
+        datos.get("categoria", "General"),
+        datos.get("seccion", "A"),
+        datos.get("estante", 1),
+        datos.get("ejemplares", 1),
+        datos.get("en_estante", 1),
+    )
 
 
-def matriz_ubicacion(catalogo):
-    encabezado = ["Seccion"]
-    for numero in range(1, config.estantes + 1):
-        encabezado.append(f"E{numero}")
-    encabezado.append("Titulos")
-
-    filas = []
-    for seccion in config.secciones:
-        fila = [seccion]
-        titulos = 0
-        for numero in range(1, config.estantes + 1):
-            cuenta = 0
-            for libro in catalogo.values():
-                if libro.seccion() == seccion and libro.estante() == numero:
-                    cuenta += 1
-            fila.append(cuenta)
-            titulos += cuenta
-        fila.append(titulos)
-        filas.append(fila)
-    return [encabezado] + filas
-
-
-def matriz_categorias(catalogo):
-    encabezado = ["Categoria", "Titulos", "Ejemplares", "Disponibles"]
-    filas = []
-    for categoria in categorias_unicas(catalogo):
-        titulos = ejemplares = disponibles = 0
-        for libro in catalogo.values():
-            if libro.categoria().split("/")[0] == categoria:
-                titulos += 1
-                ejemplares += libro.ejemplares()
-                disponibles += libro.disponibles_prestamo()
-        filas.append([categoria, titulos, ejemplares, disponibles])
-    return [encabezado] + filas
-
-
-def categorias_unicas(catalogo):
-    unicas = []
-    for libro in catalogo.values():
-        primera = libro.categoria().split("/")[0]
-        if primera not in unicas:
-            unicas.append(primera)
-    return unicas
-
-
-def niveles_categoria(categoria):
-    partes = categoria.split("/")
-    if len(partes) == 1:
-        return [partes[0]]
-    return [partes[0]] + niveles_categoria("/".join(partes[1:]))
-
-
-def buscar_por_categoria(catalogo, nombre):
-    if len(catalogo) == 0:
-        return []
-    if pertenece_a_categoria(catalogo[0], nombre):
-        return [catalogo[0]] + buscar_por_categoria(catalogo[1:], nombre)
-    return buscar_por_categoria(catalogo[1:], nombre)
-
-
-def pertenece_a_categoria(libro, nombre, niveles=None):
-    if niveles is None:
-        niveles = niveles_categoria(libro.categoria())
-    if len(niveles) == 0:
+def coincide_con_la_busqueda(libro, texto):
+    buscado = str(texto).strip().lower()
+    if buscado == "":
         return False
-    if niveles[0].lower() == str(nombre).strip().lower():
-        return True
-    return pertenece_a_categoria(libro, nombre, niveles[1:])
+    esta_en_el_titulo = buscado in libro.titulo().lower()
+    esta_en_el_autor = buscado in libro.autor().lower()
+    esta_en_la_categoria = buscado in libro.categoria().lower()
+    return esta_en_el_titulo or esta_en_el_autor or esta_en_la_categoria
+
+
+def buscar_por_texto(libros, texto):
+    if len(libros) == 0:
+        return []
+    primer_libro = libros[0]
+    libros_que_faltan = libros[1:]
+    if coincide_con_la_busqueda(primer_libro, texto):
+        return [primer_libro] + buscar_por_texto(libros_que_faltan, texto)
+    return buscar_por_texto(libros_que_faltan, texto)
+
+
+def datos_del_catalogo(libros):
+    if len(libros) == 0:
+        return []
+    primer_libro = libros[0]
+    libros_que_faltan = libros[1:]
+    return [primer_libro.datos_para_pantalla()] + datos_del_catalogo(libros_que_faltan)

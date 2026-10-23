@@ -7,7 +7,7 @@
     "seccion": "A",
     "estante": 1,
     "ejemplares": 3,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9788445073728",
@@ -17,7 +17,7 @@
     "seccion": "A",
     "estante": 1,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9789876122672",
@@ -27,7 +27,7 @@
     "seccion": "A",
     "estante": 2,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9788420412146",
@@ -35,9 +35,9 @@
     "autor": "Miguel de Cervantes",
     "categoria": "Literatura",
     "seccion": "A",
-    "estante": 1,
+    "estante": 3,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9788491050292",
@@ -47,7 +47,7 @@
     "seccion": "A",
     "estante": 2,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9786123351373",
@@ -57,7 +57,7 @@
     "seccion": "B",
     "estante": 1,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9786123164102",
@@ -67,7 +67,7 @@
     "seccion": "B",
     "estante": 2,
     "ejemplares": 5,
-    "disponibles_prestamo": 4
+    "en_estante": 4
   },
   {
     "isbn": "9786071641557",
@@ -77,7 +77,7 @@
     "seccion": "B",
     "estante": 1,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9788420633139",
@@ -87,7 +87,7 @@
     "seccion": "B",
     "estante": 3,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9786123179380",
@@ -97,7 +97,7 @@
     "seccion": "C",
     "estante": 1,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9786123350628",
@@ -107,7 +107,7 @@
     "seccion": "C",
     "estante": 1,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9786071511546",
@@ -117,7 +117,7 @@
     "seccion": "C",
     "estante": 2,
     "ejemplares": 3,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9786124396083",
@@ -127,7 +127,7 @@
     "seccion": "C",
     "estante": 3,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9788420686732",
@@ -137,7 +137,7 @@
     "seccion": "C",
     "estante": 2,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9780131103627",
@@ -147,7 +147,7 @@
     "seccion": "D",
     "estante": 1,
     "ejemplares": 2,
-    "disponibles_prestamo": 1
+    "en_estante": 1
   },
   {
     "isbn": "9786123351496",
@@ -157,7 +157,7 @@
     "seccion": "D",
     "estante": 2,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9788420677300",
@@ -167,7 +167,7 @@
     "seccion": "D",
     "estante": 3,
     "ejemplares": 1,
-    "disponibles_prestamo": 1
+    "en_estante": 1
   },
   {
     "isbn": "9789843760494",
@@ -177,7 +177,7 @@
     "seccion": "D",
     "estante": 3,
     "ejemplares": 1,
-    "disponibles_prestamo": 1
+    "en_estante": 1
   },
   {
     "isbn": "9789972424626",
@@ -187,7 +187,7 @@
     "seccion": "E",
     "estante": 1,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9789972429835",
@@ -197,7 +197,7 @@
     "seccion": "E",
     "estante": 2,
     "ejemplares": 2,
-    "disponibles_prestamo": 2
+    "en_estante": 2
   },
   {
     "isbn": "9789972433353",
@@ -207,7 +207,7 @@
     "seccion": "E",
     "estante": 3,
     "ejemplares": 1,
-    "disponibles_prestamo": 1
+    "en_estante": 1
   },
   {
     "isbn": "9786124567890",
@@ -217,6 +217,6 @@
     "seccion": "E",
     "estante": 3,
     "ejemplares": 1,
-    "disponibles_prestamo": 1
+    "en_estante": 1
   }
 ]

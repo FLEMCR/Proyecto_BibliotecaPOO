@@ -1,92 +1,77 @@
-from modulos import config, errores, libros, usuarios
+from datetime import date
+
+from modulos import configuracion, errores, libros, usuarios, utilidades
 
 
 class Biblioteca:
     def __init__(self):
         self._catalogo = {}
-        self._miembros = {}
-        self._sesion = None
+        self._usuarios = {}
         self.cargar_datos()
 
     def cargar_datos(self):
-        try:
-            datos = config.cargar_todos()
-        except ValueError as error:
-            raise errores.ArchivoDatosError(
-                f"No se pudo leer el JSON de la carpeta datos: {error}"
-            )
-
         self._catalogo = {}
-        for registro in datos["libros"]:
-            libro = libros.Libro(
-                registro.get("isbn"),
-                registro.get("titulo"),
-                registro.get("autor"),
-                registro.get("categoria"),
-                registro.get("seccion"),
-                registro.get("estante"),
-                registro.get("ejemplares"),
-                registro.get("disponibles_prestamo"),
-            )
+        for registro in configuracion.leer_archivo(configuracion.ARCHIVO_LIBROS):
+            libro = libros.crear_libro(registro)
             self._catalogo[libro.isbn()] = libro
 
-        self._miembros = {}
-        for registro in datos["miembros"]:
-            miembro = usuarios.crear_usuario(registro)
-            self._miembros[miembro.dni()] = miembro
+        self._usuarios = {}
+        for registro in configuracion.leer_archivo(configuracion.ARCHIVO_USUARIOS):
+            usuario = usuarios.crear_usuario(registro)
+            self._usuarios[usuario.dni()] = usuario
 
         return self.resumen()
 
-    def guardar_datos(self):
-        config.guardar_json(
-            "libros", [l.a_diccionario() for l in self._catalogo.values()]
-        )
-        config.guardar_json(
-            "miembros", [m.a_diccionario() for m in self._miembros.values()]
-        )
-        return True
+    def todos_los_libros(self):
+        return list(self._catalogo.values())
 
-    def catalogo(self):
-        return self._catalogo
-
-    def miembros(self):
-        return self._miembros
+    def todos_los_usuarios(self):
+        return list(self._usuarios.values())
 
     def libro(self, isbn):
-        return self._catalogo.get(isbn)
+        isbn_buscado = utilidades.validar_isbn(isbn)
+        if isbn_buscado not in self._catalogo:
+            raise errores.ErrorDeDatos(
+                "No hay ningun libro con el ISBN " + isbn_buscado
+            )
+        return self._catalogo[isbn_buscado]
 
-    def miembro(self, dni):
-        return self._miembros.get(dni)
+    def usuario(self, dni):
+        dni_buscado = utilidades.validar_dni(dni)
+        if dni_buscado not in self._usuarios:
+            raise errores.ErrorDeDatos(
+                "No hay ningun usuario con el DNI " + dni_buscado
+            )
+        return self._usuarios[dni_buscado]
 
-    def iniciar_sesion(self, dni=None, invitado=False):
-        if invitado:
-            self._sesion = usuarios.Usuario("Invitado", "", "invitado")
-        else:
-            self._sesion = self.miembro(dni)
-        return self._sesion
+    def datos_del_catalogo(self):
+        return libros.datos_del_catalogo(self.todos_los_libros())
 
-    def sesion(self):
-        return self._sesion
+    def datos_de_un_libro(self, isbn):
+        return self.libro(isbn).datos_para_pantalla()
 
-    def cerrar_sesion(self):
-        self._sesion = None
+    def buscar(self, texto_buscado):
+        encontrados = libros.buscar_por_texto(self.todos_los_libros(), texto_buscado)
+        return libros.datos_del_catalogo(encontrados)
 
-    def matrices(self):
-        return {
-            "disponibilidad": libros.matriz_disponibilidad(self._catalogo),
-            "ubicacion": libros.matriz_ubicacion(self._catalogo),
-            "categorias": libros.matriz_categorias(self._catalogo),
-        }
+    def datos_de_los_usuarios(self):
+        return [usuario.datos_de_membresia() for usuario in self.todos_los_usuarios()]
+
+    def datos_de_membresia(self, dni):
+        return self.usuario(dni).datos_de_membresia()
 
     def resumen(self):
-        disponibles = sum(l.disponibles_prestamo() for l in self._catalogo.values())
-        prestados = sum(
-            l.ejemplares() - l.disponibles_prestamo() for l in self._catalogo.values()
-        )
+        total_ejemplares = 0
+        total_en_estante = 0
+        for libro in self.todos_los_libros():
+            total_ejemplares = total_ejemplares + libro.ejemplares()
+            total_en_estante = total_en_estante + libro.en_estante()
         return {
+            "biblioteca": configuracion.NOMBRE_BIBLIOTECA,
+            "fecha_de_hoy": str(date.today()),
             "titulos": len(self._catalogo),
-            "ejemplares": sum(l.ejemplares() for l in self._catalogo.values()),
-            "disponibles": disponibles,
-            "prestados": prestados,
-            "miembros": len(self._miembros),
+            "ejemplares": total_ejemplares,
+            "en_estante": total_en_estante,
+            "prestados": total_ejemplares - total_en_estante,
+            "usuarios": len(self._usuarios),
         }

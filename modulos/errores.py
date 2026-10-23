@@ -1,10 +1,10 @@
-class BibliotecaError(Exception):
+class ErrorBiblioteca(Exception):
     pass
 
 
-class DatosInvalidosError(BibliotecaError, ValueError):
+class ErrorDeDatos(ErrorBiblioteca, ValueError):
     pass
 
 
-class ArchivoDatosError(BibliotecaError):
+class ErrorDeArchivo(ErrorBiblioteca):
     pass

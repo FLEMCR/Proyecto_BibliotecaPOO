@@ -1,54 +1,34 @@
-from datetime import date, timedelta
+from datetime import date
 
 from modulos import errores
 
 
-def titulo(texto, caracter="-"):
-    linea = caracter * 60
-    return f"{linea}\n{texto.upper().center(60)}\n{linea}"
-
-
-def pausa():
-    print()
-    input("Presiona ENTER para continuar...")
-
-
 def validar_dni(texto):
-    limpio = str(texto).strip()
-    if len(limpio) != 8 or not limpio.isdigit():
-        raise errores.DatosInvalidosError("El DNI debe tener 8 digitos")
-    return limpio
+    dni = str(texto).strip()
+    if len(dni) != 8 or not dni.isdigit():
+        raise errores.ErrorDeDatos("El DNI debe tener 8 digitos")
+    return dni
 
 
 def validar_isbn(codigo):
-    limpio = str(codigo).strip()
-    if len(limpio) != 13 or not limpio.isdigit():
-        raise errores.DatosInvalidosError("El ISBN debe tener 13 digitos")
-    return limpio
-
-
-def responder_si_no(texto):
-    respuesta = input(texto).strip().lower()
-    if respuesta == "s" or respuesta == "si":
-        return True
-    return False
+    isbn = str(codigo).strip()
+    if len(isbn) != 13 or not isbn.isdigit():
+        raise errores.ErrorDeDatos("El ISBN debe tener 13 digitos")
+    return isbn
 
 
 def convertir_fecha(texto):
-    # date() pide el orden inverso al que usamos al escribir: anio, mes, dia
-    (anio, mes, dia) = str(texto).split("-")
-    return date(int(anio), int(mes), int(dia))
+    partes = str(texto).strip().split("-")
+    if len(partes) != 3:
+        raise errores.ErrorDeDatos("La fecha debe tener el formato AAAA-MM-DD")
+    try:
+        anio, mes, dia = partes
+        return date(int(anio), int(mes), int(dia))
+    except ValueError:
+        raise errores.ErrorDeDatos("La fecha " + str(texto) + " no es una fecha real")
 
 
-def sumar_dias(fecha, dias):
-    return fecha + timedelta(days=dias)
-
-
-"""  AQUI DEJO UN EJEMPLO DE RECURSION, HAY QUE USAR ESE TEMA
-def cuenta_regresiva(n):
-    if n <= 0:
-        print("Listo!")
-        return 0
-    print(n)
-    return cuenta_regresiva(n - 1)
-"""
+def si_o_no(valor):
+    if valor:
+        return "Si"
+    return "No"
