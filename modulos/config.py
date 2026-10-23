@@ -14,24 +14,16 @@ lema = "FRASE A USAR WAAAAAA"
 
 limite_libros = {"estudiante": 3, "docente": 5, "administrador": 5, "invitado": 0}
 dias_prestamo = {"estudiante": 14, "docente": 20, "administrador": 20, "invitado": 0}
-multa_por_dia = {
-    "estudiante": 0.50,
-    "docente": 0.50,
-    "administrador": 0.50,
-    "invitado": 0.00,
-}
+multa_por_dia = 0.50
 
 secciones = {
     "A": "Literatura",
-    "B": "Historia y lenguas",
-    "C": "Ciencias exactas",
-    "D": "Ciencias de la vida",
-    "E": "Ciencias sociales",
-    "F": "Arte",
-    "G": "Tecnologia",
-    "H": "Referencia",
+    "B": "Historia",
+    "C": "Ciencias",
+    "D": "Tecnologia",
+    "E": "Arte",
 }
-estantes = 6
+estantes = 5
 
 
 def ruta_json(nombre):

@@ -1,59 +1,9 @@
 [
   {
-    "isbn": "9780131103627",
-    "titulo": "Eloquent JavaScript",
-    "autor": "Marijn Haverbeke",
-    "categoria": "Computacion/Lenguajes",
-    "seccion": "B",
-    "estante": 2,
-    "ejemplares": 2,
-    "disponibles_prestamo": 1
-  },
-  {
-    "isbn": "9786123181017",
-    "titulo": "El capital",
-    "autor": "Karl Marx",
-    "categoria": "Economia/General",
-    "seccion": "C",
-    "estante": 1,
-    "ejemplares": 2,
-    "disponibles_prestamo": 2
-  },
-  {
-    "isbn": "9786071511546",
-    "titulo": "Fisica para ciencias e ingenieria",
-    "autor": "Raymond A. Serway y John W. Jewett",
-    "categoria": "Fisica/Ingenieria",
-    "seccion": "C",
-    "estante": 5,
-    "ejemplares": 3,
-    "disponibles_prestamo": 2
-  },
-  {
-    "isbn": "9786123164102",
-    "titulo": "Tradiciones peruanas",
-    "autor": "Ricardo Palma",
-    "categoria": "Literatura/Historia Peruana",
-    "seccion": "B",
-    "estante": 1,
-    "ejemplares": 5,
-    "disponibles_prestamo": 4
-  },
-  {
-    "isbn": "9789876122672",
-    "titulo": "Maze Runner",
-    "autor": "James Dashner",
-    "categoria": "Literatura/Ciencia Ficción/Distopía Juvenil",
-    "seccion": "A",
-    "estante": 4,
-    "ejemplares": 2,
-    "disponibles_prestamo": 2
-  },
-  {
     "isbn": "9788437604947",
     "titulo": "Cien años de soledad",
     "autor": "Gabriel Garcia Marquez",
-    "categoria": "Literatura/Narrativa",
+    "categoria": "Literatura",
     "seccion": "A",
     "estante": 1,
     "ejemplares": 3,
@@ -63,10 +13,214 @@
     "isbn": "9788445073728",
     "titulo": "El Señor de los Anillos: La Comunidad del Anillo",
     "autor": "J. R. R. Tolkien",
-    "categoria": "Literatura/Fantasía Épica",
+    "categoria": "Literatura",
     "seccion": "A",
-    "estante": 4,
+    "estante": 1,
     "ejemplares": 2,
     "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9789876122672",
+    "titulo": "Maze Runner: Correr o morir",
+    "autor": "James Dashner",
+    "categoria": "Literatura",
+    "seccion": "A",
+    "estante": 2,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9788420412146",
+    "titulo": "Don Quijote de la Mancha",
+    "autor": "Miguel de Cervantes",
+    "categoria": "Literatura",
+    "seccion": "A",
+    "estante": 1,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9788491050292",
+    "titulo": "La ciudad y los perros",
+    "autor": "Mario Vargas Llosa",
+    "categoria": "Literatura",
+    "seccion": "A",
+    "estante": 2,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+
+  {
+    "isbn": "9786123351373",
+    "titulo": "El sistema jurídico: Introducción al derecho",
+    "autor": "Marcial Antonio Rubio Correa",
+    "categoria": "Derecho",
+    "seccion": "B",
+    "estante": 1,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9786123164102",
+    "titulo": "Tradiciones peruanas",
+    "autor": "Ricardo Palma",
+    "categoria": "Historia",
+    "seccion": "B",
+    "estante": 2,
+    "ejemplares": 5,
+    "disponibles_prestamo": 4
+  },
+  {
+    "isbn": "9786071641557",
+    "titulo": "El capital: Crítica de la economía política (Tomo I)",
+    "autor": "Karl Marx",
+    "categoria": "Economia",
+    "seccion": "B",
+    "estante": 1,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9788420633139",
+    "titulo": "Historia de la conquista del Perú",
+    "autor": "William H. Prescott",
+    "categoria": "Historia",
+    "seccion": "B",
+    "estante": 3,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+
+  {
+    "isbn": "9786123179380",
+    "titulo": "Matemáticas 1",
+    "autor": "Miguel Angel Gonzaga Ramirez, Josué Aguirre Enciso, Richard Santiago Quispe Rivas",
+    "categoria": "Matematica",
+    "seccion": "C",
+    "estante": 1,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9786123350628",
+    "titulo": "Cálculo Diferencial",
+    "autor": "Nancy Edith Saravia Molina, Cecilia Gaita Iparraguirre, Diana Bances Vento, Jack Arce Flores, Wilson Edwar Díaz Cajo",
+    "categoria": "Matematica",
+    "seccion": "C",
+    "estante": 1,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9786071511546",
+    "titulo": "Física para ciencias e ingeniería (Vol. 1)",
+    "autor": "Raymond A. Serway y John W. Jewett",
+    "categoria": "Fisica",
+    "seccion": "C",
+    "estante": 2,
+    "ejemplares": 3,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9786124396083",
+    "titulo": "Mecánica de fluidos para ingenieros de procesos",
+    "autor": "Julia Salinas de Santillana, Jaime Santillana Soto",
+    "categoria": "Ingenieria",
+    "seccion": "C",
+    "estante": 3,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9788420686732",
+    "titulo": "El gen egoísta",
+    "autor": "Richard Dawkins",
+    "categoria": "Biologia",
+    "seccion": "C",
+    "estante": 2,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+
+  {
+    "isbn": "9780131103627",
+    "titulo": "Eloquent JavaScript",
+    "autor": "Marijn Haverbeke",
+    "categoria": "Programacion",
+    "seccion": "D",
+    "estante": 1,
+    "ejemplares": 2,
+    "disponibles_prestamo": 1
+  },
+  {
+    "isbn": "9786123351496",
+    "titulo": "Inteligencia artificial y derecho",
+    "autor": "Verónica Violeta Rojas Montes",
+    "categoria": "Inteligencia",
+    "seccion": "D",
+    "estante": 2,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "",
+    "titulo": "Aplicaciones de Inteligencia Artificial en la Educación Superior Universitaria",
+    "autor": "Gloria Teresita Huamaní Huamaní, Paul Miller Tocto Inga",
+    "categoria": "Inteligencia",
+    "seccion": "D",
+    "estante": 3,
+    "ejemplares": 1,
+    "disponibles_prestamo": 1
+  },
+  {
+    "isbn": "",
+    "titulo": "Gestión de cadena de suministro e industria 4.0",
+    "autor": "No especificado",
+    "categoria": "Industria",
+    "seccion": "D",
+    "estante": 3,
+    "ejemplares": 1,
+    "disponibles_prestamo": 1
+  },
+
+  {
+    "isbn": "9972424626",
+    "titulo": "Franquicias imaginarias: las opciones estéticas en las artes plásticas en el Perú de fin de siglo",
+    "autor": "Max Hernández Calvo, Jorge Villacorta Chávez",
+    "categoria": "Arte",
+    "seccion": "E",
+    "estante": 1,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "9789972429835",
+    "titulo": "Imaginación visual y cultura en el Perú",
+    "autor": "Gisela Cánepa (Editora)",
+    "categoria": "Arte",
+    "seccion": "E",
+    "estante": 2,
+    "ejemplares": 2,
+    "disponibles_prestamo": 2
+  },
+  {
+    "isbn": "",
+    "titulo": "Deus absconditus: retrospectiva de Manuel Moncloa 1980-2011",
+    "autor": "Gustavo Buntinx",
+    "categoria": "Arte",
+    "seccion": "E",
+    "estante": 3,
+    "ejemplares": 1,
+    "disponibles_prestamo": 1
+  },
+  {
+    "isbn": "",
+    "titulo": "Patrimonio, Kukuli Velarde",
+    "autor": "Varios autores",
+    "categoria": "Arte",
+    "seccion": "E",
+    "estante": 3,
+    "ejemplares": 1,
+    "disponibles_prestamo": 1
   }
 ]

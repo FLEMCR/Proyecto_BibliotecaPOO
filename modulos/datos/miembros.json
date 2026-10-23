@@ -1,16 +1,45 @@
 [
   {
     "dni": "11111111",
-    "nombre": "Ana Quispe",
+    "nombre": "P_ESTUDIANTE",
     "tipo": "Estudiante",
-    "vencimiento_membresia": "2027-04-29",
+    "vencimiento_membresia": "2027-12-31",
     "activo": true
   },
+  {
+    "dni": "22222222",
+    "nombre": "P_DOCENTE",
+    "tipo": "Docente",
+    "vencimiento_membresia": "2027-12-31",
+    "activo": true
+  },
+  {
+    "dni": "33333333",
+    "nombre": "P_ADMINISTRADOR",
+    "tipo": "Administrador",
+    "vencimiento_membresia": "2027-12-31",
+    "activo": true
+  },
+
   {
     "dni": "70445566",
     "nombre": "Luis Ramos",
     "tipo": "Docente",
     "vencimiento_membresia": "2027-05-21",
+    "activo": true
+  },
+  {
+    "dni": "71234567",
+    "nombre": "Carla Mendoza",
+    "tipo": "Docente",
+    "vencimiento_membresia": "2025-12-15",
+    "activo": false
+  },
+  {
+    "dni": "76789012",
+    "nombre": "Diego Vargas",
+    "tipo": "Docente",
+    "vencimiento_membresia": "2026-10-20",
     "activo": true
   },
   {
@@ -28,16 +57,9 @@
     "activo": true
   },
   {
-    "dni": "71234567",
-    "nombre": "Carla Mendoza",
-    "tipo": "Docente",
-    "vencimiento_membresia": "2025-12-15",
-    "activo": false
-  },
-  {
     "dni": "72345678",
     "nombre": "Jorge Huaman",
-    "tipo": "Administrador",
+    "tipo": "Estudiante",
     "vencimiento_membresia": "2027-01-10",
     "activo": true
   },
@@ -63,10 +85,10 @@
     "activo": true
   },
   {
-    "dni": "76789012",
-    "nombre": "Diego Vargas",
-    "tipo": "Docente",
-    "vencimiento_membresia": "2026-10-20",
+    "dni": "78901234",
+    "nombre": "Valeria Sanchez",
+    "tipo": "Administrador",
+    "vencimiento_membresia": "2026-03-15",
     "activo": true
   }
 ]
