@@ -41,7 +41,7 @@ def mostrar_catalogo(biblioteca):
             + ", ejemplares "
             + str(libro["ejemplares"])
             + ", en el estante "
-            + str(libro["en_estante"])
+            + str(libro["disponibles"])
             + ", prestados "
             + str(libro["prestados"])
             + ", se puede prestar: "
@@ -79,7 +79,7 @@ def mostrar_libro(biblioteca):
     print("Seccion: " + libro["seccion"] + " - " + libro["seccion_nombre"])
     print("Estante: " + str(libro["estante"]))
     print("Ejemplares: " + str(libro["ejemplares"]))
-    print("En el estante: " + str(libro["en_estante"]))
+    print("En el estante: " + str(libro["disponibles"]))
     print("Prestados: " + str(libro["prestados"]))
     print("Se puede prestar: " + libro["se_puede_prestar"])
 

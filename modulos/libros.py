@@ -3,7 +3,7 @@ from modulos import configuracion, errores, utilidades
 
 class Libro:
     def __init__(
-        self, isbn, titulo, autor, categoria, seccion, estante, ejemplares, en_estante
+        self, isbn, titulo, autor, categoria, seccion, estante, ejemplares, disponibles
     ):
         self._isbn = utilidades.validar_isbn(isbn)
         self._titulo = str(titulo).strip()
@@ -12,7 +12,7 @@ class Libro:
         self._seccion = str(seccion).strip().upper()
         self._estante = int(estante)
         self._ejemplares = int(ejemplares)
-        self._en_estante = int(en_estante)
+        self._disponibles = int(disponibles)
         self.revisar_datos()
 
     def isbn(self):
@@ -36,14 +36,14 @@ class Libro:
     def ejemplares(self):
         return self._ejemplares
 
-    def en_estante(self):
-        return self._en_estante
+    def disponibles(self):
+        return self._disponibles
 
     def prestados(self):
-        return self._ejemplares - self._en_estante
+        return self._ejemplares - self._disponibles
 
     def se_puede_prestar(self):
-        return self._en_estante > 1
+        return self._disponibles > 1
 
     def revisar_datos(self):
         if self._titulo == "":
@@ -66,11 +66,11 @@ class Libro:
             )
         if self._ejemplares < 1:
             raise errores.ErrorDeDatos("Un libro debe tener por lo menos 1 ejemplar")
-        if self._en_estante < 0:
+        if self._disponibles < 0:
             raise errores.ErrorDeDatos(
                 "La cantidad en el estante no puede ser negativa"
             )
-        if self._en_estante > self._ejemplares:
+        if self._disponibles > self._ejemplares:
             raise errores.ErrorDeDatos(
                 "No puede haber mas libros en el estante que ejemplares"
             )
@@ -85,7 +85,7 @@ class Libro:
             "seccion": self._seccion,
             "estante": self._estante,
             "ejemplares": self._ejemplares,
-            "en_estante": self._en_estante,
+            "disponibles": self._disponibles,
         }
 
     def datos_para_pantalla(self):
@@ -107,7 +107,7 @@ def crear_libro(datos):
         datos.get("seccion", "A"),
         datos.get("estante", 1),
         datos.get("ejemplares", 1),
-        datos.get("en_estante", 1),
+        datos.get("disponibles", 1),
     )
 
 

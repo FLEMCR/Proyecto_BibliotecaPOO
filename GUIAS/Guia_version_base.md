@@ -84,7 +84,7 @@ En `datos/` hay dos archivos.
   "seccion": "A",
   "estante": 1,
   "ejemplares": 3,
-  "en_estante": 2
+  "disponibles": 2
 }
 ```
 
@@ -95,9 +95,9 @@ En `datos/` hay dos archivos.
 | `seccion`                      | una letra de la A a la E               |
 | `estante`                      | un numero del 1 al 3                   |
 | `ejemplares`                   | cuantas copias compro la biblioteca    |
-| `en_estante`                   | cuantas copias hay ahora en el estante |
+| `disponibles`                   | cuantas copias hay ahora en el estante |
 
-De `ejemplares` y `en_estante` sale el resto: `prestados = ejemplares - en_estante`.
+De `ejemplares` y `disponibles` sale el resto: `prestados = ejemplares - disponibles`.
 
 `usuarios.json` tiene 13 usuarios:
 
@@ -185,7 +185,7 @@ biblioteca = Biblioteca IDAT
 fecha_de_hoy = 2026-10-23
 titulos = 22
 ejemplares = 45
-en_estante = 41
+disponibles = 41
 prestados = 4
 usuarios = 13
 
@@ -236,7 +236,7 @@ print("categoria:", un_libro.categoria())
 print("seccion:", un_libro.seccion())
 print("estante:", un_libro.estante())
 print("ejemplares:", un_libro.ejemplares())
-print("en el estante:", un_libro.en_estante())
+print("en el estante:", un_libro.disponibles())
 print("prestados:", un_libro.prestados())
 print("se puede prestar:", un_libro.se_puede_prestar())
 
@@ -262,10 +262,10 @@ se puede prestar: True
 
 ```python
 def prestados(self):
-    return self._ejemplares - self._en_estante
+    return self._ejemplares - self._disponibles
 
 def se_puede_prestar(self):
-    return self._en_estante > 1
+    return self._disponibles > 1
 ```
 
 `se_puede_prestar()` dice que si solo cuando en el estante hay mas de un ejemplar. La regla es que siempre queda uno en la biblioteca: si hay 2 ejemplares se presta 1 y el otro se queda; si queda 1 solo, no se presta.
@@ -274,7 +274,7 @@ def se_puede_prestar(self):
 
 libro_de_uno = mi_biblioteca.libro("9789972433353")
 print(libro_de_uno.titulo())
-print("ejemplares:", libro_de_uno.ejemplares(), "| en el estante:", libro_de_uno.en_estante())
+print("ejemplares:", libro_de_uno.ejemplares(), "| en el estante:", libro_de_uno.disponibles())
 print("se puede prestar:", libro_de_uno.se_puede_prestar())
 
 ```
@@ -308,9 +308,9 @@ Salida:
 
 ```
 
-a_diccionario: {'isbn': '9788437604947', 'titulo': 'Cien años de soledad', 'autor': 'Gabriel Garcia Marquez', 'categoria': 'Literatura', 'seccion': 'A', 'estante': 1, 'ejemplares': 3, 'en_estante': 2}
+a_diccionario: {'isbn': '9788437604947', 'titulo': 'Cien años de soledad', 'autor': 'Gabriel Garcia Marquez', 'categoria': 'Literatura', 'seccion': 'A', 'estante': 1, 'ejemplares': 3, 'disponibles': 2}
 
-datos_para_pantalla: {'isbn': '9788437604947', 'titulo': 'Cien años de soledad', 'autor': 'Gabriel Garcia Marquez', 'categoria': 'Literatura', 'seccion': 'A', 'estante': 1, 'ejemplares': 3, 'en_estante': 2, 'seccion_nombre': 'Literatura', 'prestados': 1, 'se_puede_prestar': 'Si'}
+datos_para_pantalla: {'isbn': '9788437604947', 'titulo': 'Cien años de soledad', 'autor': 'Gabriel Garcia Marquez', 'categoria': 'Literatura', 'seccion': 'A', 'estante': 1, 'ejemplares': 3, 'disponibles': 2, 'seccion_nombre': 'Literatura', 'prestados': 1, 'se_puede_prestar': 'Si'}
 
 ```
 

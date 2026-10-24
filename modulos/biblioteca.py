@@ -62,16 +62,16 @@ class Biblioteca:
 
     def resumen(self):
         total_ejemplares = 0
-        total_en_estante = 0
+        total_disponibles = 0
         for libro in self.todos_los_libros():
             total_ejemplares = total_ejemplares + libro.ejemplares()
-            total_en_estante = total_en_estante + libro.en_estante()
+            total_disponibles = total_disponibles + libro.disponibles()
         return {
             "biblioteca": configuracion.NOMBRE_BIBLIOTECA,
             "fecha_de_hoy": str(date.today()),
             "titulos": len(self._catalogo),
             "ejemplares": total_ejemplares,
-            "en_estante": total_en_estante,
-            "prestados": total_ejemplares - total_en_estante,
+            "disponibles": total_disponibles,
+            "prestados": total_ejemplares - total_disponibles,
             "usuarios": len(self._usuarios),
         }
