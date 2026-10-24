@@ -1,14 +1,15 @@
-from modulos import biblioteca, errores, menu
+from modulos import errores, menu
+from modulos.biblioteca import Biblioteca
 
 
 def main():
     try:
-        mi_biblioteca = biblioteca.Biblioteca()
+        biblioteca = Biblioteca()
     except errores.ErrorDeArchivo as error:
         print("No se pudieron leer los datos: " + str(error))
         return
-    menu.portada(mi_biblioteca)
-    menu.menu_de_acceso(mi_biblioteca)
+    menu.portada(biblioteca)
+    menu.menu_de_acceso(biblioteca)
 
 
 main()
