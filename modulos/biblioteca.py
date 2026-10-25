@@ -32,7 +32,7 @@ class Biblioteca:
         isbn_buscado = utilidades.validar_isbn(isbn)
         if isbn_buscado not in self._catalogo:
             raise errores.ErrorDeDatos(
-                "No hay ningun libro con el ISBN " + isbn_buscado
+                f"No hay ningun libro con el ISBN {isbn_buscado}"
             )
         return self._catalogo[isbn_buscado]
 
@@ -40,7 +40,7 @@ class Biblioteca:
         dni_buscado = utilidades.validar_dni(dni)
         if dni_buscado not in self._usuarios:
             raise errores.ErrorDeDatos(
-                "No hay ningun usuario con el DNI " + dni_buscado
+                f"No hay ningun usuario con el DNI {dni_buscado}"
             )
         return self._usuarios[dni_buscado]
 

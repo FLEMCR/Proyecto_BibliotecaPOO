@@ -3,6 +3,11 @@ from datetime import date
 from modulos import errores
 
 
+def pausa():
+    print()
+    input("Pulsa ENTER para volver al menu")
+
+
 def validar_dni(texto):
     dni = str(texto).strip()
     if len(dni) != 8 or not dni.isdigit():
@@ -22,8 +27,8 @@ def convertir_fecha(texto):
     if len(partes) != 3:
         raise errores.ErrorDeDatos("La fecha debe tener el formato AAAA-MM-DD")
     try:
-        anio, mes, dia = partes
-        return date(int(anio), int(mes), int(dia))
+        año, mes, dia = partes
+        return date(int(año), int(mes), int(dia))
     except ValueError:
         raise errores.ErrorDeDatos("La fecha " + str(texto) + " no es una fecha real")
 

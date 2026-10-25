@@ -14,14 +14,11 @@ class Usuario:
             raise errores.ErrorDeDatos("El nombre no puede quedar vacio")
         if self._tipo not in configuracion.TIPOS_DE_USUARIO:
             raise errores.ErrorDeDatos(
-                "El tipo de usuario debe ser "
-                + " o ".join(configuracion.TIPOS_DE_USUARIO)
+                f"El tipo de usuario debe ser {' o '.join(configuracion.TIPOS_DE_USUARIO)}"
             )
         if vencimiento_membresia is None:
             raise errores.ErrorDeDatos(
-                "El usuario "
-                + self._nombre
-                + " no tiene fecha de vencimiento de membresia"
+                f"El usuario {self._nombre} no tiene fecha de vencimiento de membresia"
             )
         self._vencimiento_membresia = utilidades.convertir_fecha(vencimiento_membresia)
         self._activo = bool(activo)
@@ -52,7 +49,7 @@ class Usuario:
             return "De baja"
         if not self.tiene_membresia_vigente():
             return "Membresia vencida"
-        return "Al dia"
+        return "Activo y con membresia vigente"
 
     def datos_de_membresia(self):
         return {

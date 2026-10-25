@@ -40,7 +40,7 @@ class Libro:
         return self._disponibles
 
     def prestados(self):
-        return self._ejemplares - self._disponibles
+        return "Aun por hacer".upper()
 
     def se_puede_prestar(self):
         return self._disponibles > 1
@@ -48,32 +48,24 @@ class Libro:
     def revisar_datos(self):
         if self._titulo == "":
             raise errores.ErrorDeDatos("El titulo no puede quedar vacio")
-        if self._autor == "":
+        elif self._autor == "":
             raise errores.ErrorDeDatos("El autor no puede quedar vacio")
-        if self._categoria == "":
+        elif self._categoria == "":
             raise errores.ErrorDeDatos("La categoria no puede quedar vacia")
-        if self._seccion not in configuracion.SECCIONES:
+        elif self._seccion not in configuracion.SECCIONES:
+            raise errores.ErrorDeDatos(f"La seccion {self._seccion} no existe.")
+        elif self._estante < 1 or self._estante > configuracion.CANTIDAD_DE_ESTANTES:
             raise errores.ErrorDeDatos(
-                "La seccion "
-                + self._seccion
-                + " no existe. Las secciones son "
-                + ", ".join(configuracion.SECCIONES)
+                f"El estante debe estar entre 1 y {configuracion.CANTIDAD_DE_ESTANTES}"
             )
-        if self._estante < 1 or self._estante > configuracion.CANTIDAD_DE_ESTANTES:
-            raise errores.ErrorDeDatos(
-                "El estante debe estar entre 1 y "
-                + str(configuracion.CANTIDAD_DE_ESTANTES)
-            )
-        if self._ejemplares < 1:
+        elif self._ejemplares < 1:
             raise errores.ErrorDeDatos("Un libro debe tener por lo menos 1 ejemplar")
-        if self._disponibles < 0:
+        elif self._disponibles < 0:
             raise errores.ErrorDeDatos(
-                "La cantidad en el estante no puede ser negativa"
+                "La cantidad para realizar prestamos no puede ser menor a 0"
             )
-        if self._disponibles > self._ejemplares:
-            raise errores.ErrorDeDatos(
-                "No puede haber mas libros en el estante que ejemplares"
-            )
+        elif self._disponibles > self._ejemplares:
+            raise errores.ErrorDeDatos("No se puede prestar más de lo que se tiene")
         return True
 
     def a_diccionario(self):
@@ -103,11 +95,11 @@ def crear_libro(datos):
         datos.get("isbn", ""),
         datos.get("titulo", ""),
         datos.get("autor", ""),
-        datos.get("categoria", "General"),
-        datos.get("seccion", "A"),
-        datos.get("estante", 1),
-        datos.get("ejemplares", 1),
-        datos.get("disponibles", 1),
+        datos.get("categoria"),
+        datos.get("seccion"),
+        datos.get("estante"),
+        datos.get("ejemplares"),
+        datos.get("disponibles"),
     )
 
 

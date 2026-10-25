@@ -4,7 +4,3 @@ class ErrorBiblioteca(Exception):
 
 class ErrorDeDatos(ErrorBiblioteca, ValueError):
     pass
-
-
-class ErrorDeArchivo(ErrorBiblioteca):
-    pass

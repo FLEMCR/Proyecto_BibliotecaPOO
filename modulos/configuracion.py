@@ -1,17 +1,15 @@
 import json
 import os
 
-from modulos import errores
-
-CARPETA_DEL_PROYECTO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+CARPETA_DEL_PROYECTO = os.path.dirname(os.path.dirname(__file__))
 CARPETA_DATOS = os.path.join(CARPETA_DEL_PROYECTO, "datos")
 CARPETA_INTERFACES = os.path.join(CARPETA_DEL_PROYECTO, "interfaces")
 
 ARCHIVO_LIBROS = "libros.json"
 ARCHIVO_USUARIOS = "usuarios.json"
 
-NOMBRE_BIBLIOTECA = "Biblioteca IDAT"
-LEMA = ""
+NOMBRE_BIBLIOTECA = "Biblioteca PO WAAAAAAAAAA"
+LEMA = "LEMA QUE USAREMOS WAAAAAA"
 
 SECCIONES = {
     "A": "Literatura",
@@ -38,9 +36,4 @@ def leer_archivo(nombre_del_archivo):
         contenido = archivo.read().strip()
     if contenido == "":
         return []
-    try:
-        return json.loads(contenido)
-    except ValueError as error:
-        raise errores.ErrorDeArchivo(
-            "El archivo " + nombre_del_archivo + " esta mal escrito: " + str(error)
-        )
+    return json.loads(contenido)
