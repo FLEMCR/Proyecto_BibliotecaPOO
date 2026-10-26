@@ -44,17 +44,17 @@ def entrar(biblioteca):
         return
     if not usuario.esta_activo():
         print()
-        print(usuario.nombre() + " no puede entrar, su usuario esta de baja")
+        print(f"{usuario.nombre()} no puede entrar, su usuario esta de baja")
         return
     print()
-    print("Hola " + usuario.nombre() + ", tu tipo de membresia es " + usuario.tipo())
+    print(f"Hola {usuario.nombre()}, tu tipo de membresia es {usuario.tipo()}")
     menu_de_sesion(biblioteca, usuario)
 
 
 def menu_de_sesion(biblioteca, usuario):
     while True:
         print()
-        print("MENU DE " + usuario.tipo().upper())
+        print(f"MENU DE {usuario.tipo().upper()}")
         print()
         print("1) Ver el catalogo")
         print("2) Buscar un libro")
