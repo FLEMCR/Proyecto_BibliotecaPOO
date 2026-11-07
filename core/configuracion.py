@@ -8,8 +8,8 @@ CARPETA_INTERFACES = os.path.join(CARPETA_DEL_PROYECTO, "interfaces")
 ARCHIVO_LIBROS = "libros.json"
 ARCHIVO_USUARIOS = "usuarios.json"
 
-NOMBRE_BIBLIOTECA = "Biblioteca PO WAAAAAAAAAA"
-LEMA = "LEMA QUE USAREMOS WAAAAAA"
+NOMBRE_BIBLIOTECA = "Biblioteca General POSTDATA"
+LEMA = "Llevate el libro que quieras; Devuélvelo cuando puedas"
 
 SECCIONES = {
     "A": "Literatura",
