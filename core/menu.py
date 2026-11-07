@@ -1,9 +1,10 @@
 import time
 
-from modulos import configuracion, errores, utilidades
+from proyecto_parcial.core import configuracion, errores, utilidades
 
 
 def portada(biblioteca):
+    """Muestra la pantalla de bienvenida y el resumen inicial de la biblioteca."""
     resumen = biblioteca.resumen()
     print()
     print(resumen["biblioteca"])
@@ -18,6 +19,7 @@ def portada(biblioteca):
 
 
 def menu_de_acceso(biblioteca):
+    """Muestra el menú principal de acceso al sistema mediante DNI."""
     while True:
         print()
         print("MENU DE ACCESO")
@@ -35,6 +37,7 @@ def menu_de_acceso(biblioteca):
 
 
 def entrar(biblioteca):
+    """Valida el DNI y el estado del usuario para permitirle el ingreso al sistema."""
     dni = input("Escribe tu DNI: ").strip()
     try:
         usuario = biblioteca.usuario(dni)
@@ -52,6 +55,7 @@ def entrar(biblioteca):
 
 
 def menu_de_sesion(biblioteca, usuario):
+    """Muestra las opciones disponibles dentro de la sesión según el tipo de usuario."""
     while True:
         print()
         print(f"MENU DE {usuario.tipo().upper()}")
@@ -83,6 +87,7 @@ def menu_de_sesion(biblioteca, usuario):
 
 
 def mostrar_catalogo(biblioteca):
+    """Muestra en pantalla la lista completa de libros disponibles en el catálogo."""
     datos = biblioteca.datos_del_catalogo()
     print()
     print(f"CATALOGO: {len(datos)} libros")
@@ -99,6 +104,7 @@ def mostrar_catalogo(biblioteca):
 
 
 def buscar_libro(biblioteca):
+    """Permite buscar libros filtrando por título, autor o categoría."""
     texto = input("Escribe una parte del titulo, del autor o de la categoria: ").strip()
     datos = biblioteca.buscar(texto)
     print()
@@ -113,6 +119,7 @@ def buscar_libro(biblioteca):
 
 
 def mostrar_libro(biblioteca):
+    """Muestra la información detallada de un libro consultado por su ISBN."""
     isbn = input("Escribe el ISBN del libro: ").strip()
     libro = biblioteca.datos_de_un_libro(isbn)
     print()
@@ -120,7 +127,7 @@ def mostrar_libro(biblioteca):
     print(f"Autor: {libro['autor']}")
     print(f"ISBN: {libro['isbn']}")
     print(f"Categoria: {libro['categoria']}")
-    print(f"Seccion: {libro['seccion']} - {libro['seccion_nombre']}")
+    print(f"Seccion: {libro['seccion']} {libro['seccion_nombre']}")
     print(f"Estante: {libro['estante']}")
     print(f"Ejemplares: {libro['ejemplares']}")
     print(f"En el estante: {libro['disponibles']}")
@@ -129,6 +136,7 @@ def mostrar_libro(biblioteca):
 
 
 def mostrar_membresia(usuario):
+    """Muestra los datos actuales de la membresía del usuario en sesión."""
     datos = usuario.datos_de_membresia()
     print()
     print("MEMBRESIA")
@@ -143,6 +151,7 @@ def mostrar_membresia(usuario):
 
 
 def mostrar_usuarios(biblioteca):
+    """Muestra la lista de todos los usuarios registrados (solo para administradores)."""
     datos = biblioteca.datos_de_los_usuarios()
     print()
     print(f"USUARIOS: {len(datos)}")

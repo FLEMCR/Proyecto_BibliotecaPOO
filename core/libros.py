@@ -1,7 +1,9 @@
-from modulos import configuracion, errores, utilidades
+from proyecto_parcial.core import configuracion, errores, utilidades
 
 
 class Libro:
+    """Representa un libro en el sistema con sus datos, reglas de validación y estado de disponibilidad."""
+
     def __init__(
         self, isbn, titulo, autor, categoria, seccion, estante, ejemplares, disponibles
     ):
@@ -16,36 +18,47 @@ class Libro:
         self.revisar_datos()
 
     def isbn(self):
+        """Retorna el ISBN del libro."""
         return self._isbn
 
     def titulo(self):
+        """Retorna el título del libro."""
         return self._titulo
 
     def autor(self):
+        """Retorna el autor del libro."""
         return self._autor
 
     def categoria(self):
+        """Retorna la categoría del libro."""
         return self._categoria
 
     def seccion(self):
+        """Retorna la sección del libro."""
         return self._seccion
 
     def estante(self):
+        """Retorna el número de estante del libro."""
         return self._estante
 
     def ejemplares(self):
+        """Retorna el total de ejemplares disponibles y prestados."""
         return self._ejemplares
 
     def disponibles(self):
+        """Retorna la cantidad de ejemplares disponibles en estante."""
         return self._disponibles
 
     def prestados(self):
-        return "Aun por hacer".upper()
+        """Calcula y retorna la cantidad de ejemplares prestados actualmente."""
+        return self._ejemplares - self._disponibles
 
     def se_puede_prestar(self):
+        """Indica si el libro cuenta con suficientes ejemplares para poder ser prestado."""
         return self._disponibles > 1
 
     def revisar_datos(self):
+        """Valida que todos los atributos del libro cumplan con las reglas de negocio del sistema."""
         if self._titulo == "":
             raise errores.ErrorDeDatos("El titulo no puede quedar vacio")
         elif self._autor == "":
@@ -69,6 +82,7 @@ class Libro:
         return True
 
     def a_diccionario(self):
+        """Convierte los atributos del libro en un diccionario para su almacenamiento en JSON."""
         return {
             "isbn": self._isbn,
             "titulo": self._titulo,
@@ -81,6 +95,7 @@ class Libro:
         }
 
     def datos_para_pantalla(self):
+        """Prepara un diccionario extendido con información legible para mostrar en la interfaz."""
         datos = self.a_diccionario()
         datos["seccion_nombre"] = configuracion.SECCIONES[self._seccion]
         datos["prestados"] = self.prestados()
@@ -89,6 +104,7 @@ class Libro:
 
 
 def crear_libro(datos):
+    """Fábrica que procesa un diccionario de datos para instanciar un objeto Libro."""
     if not isinstance(datos, dict):
         raise errores.ErrorDeDatos("Cada libro del JSON debe ser un diccionario")
     return Libro(
@@ -104,6 +120,7 @@ def crear_libro(datos):
 
 
 def coincide_con_la_busqueda(libro, texto):
+    """Verifica si un texto de búsqueda coincide con el título, autor o categoría del libro."""
     buscado = str(texto).strip().lower()
     if buscado == "":
         return False
@@ -114,6 +131,7 @@ def coincide_con_la_busqueda(libro, texto):
 
 
 def buscar_por_texto(libros, texto):
+    """Busca y filtra de forma recursiva los libros que coinciden con el texto ingresado."""
     if len(libros) == 0:
         return []
     primer_libro = libros[0]
@@ -124,6 +142,7 @@ def buscar_por_texto(libros, texto):
 
 
 def datos_del_catalogo(libros):
+    """Convierte de forma recursiva una lista de libros en una lista de diccionarios listos para pantalla."""
     if len(libros) == 0:
         return []
     primer_libro = libros[0]
