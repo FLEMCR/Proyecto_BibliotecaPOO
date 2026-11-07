@@ -1,5 +1,5 @@
-from modulos import menu
-from modulos.biblioteca import Biblioteca
+from proyecto_parcial.core import menu
+from proyecto_parcial.core.biblioteca import Biblioteca
 
 
 def main():
