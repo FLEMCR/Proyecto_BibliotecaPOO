@@ -1,45 +1,57 @@
-# Parcial de POO - sistema de biblioteca
+# Parcial de POO - Sistema de Biblioteca
 
-Trabajo grupal del parcial de Programacion Orientada a Objetos (IDAT, 2do ciclo). Es un
-sistema de biblioteca universitaria que corre en consola: catalogo de libros, miembros con
-membresia, consulta por categoria con una funcion recursiva, tres matrices de datos y un menu
-de gestion para el administrador. Los datos estan en dos archivos JSON, se pueden editar a
-mano y el programa los vuelve a leer al arrancar.
+Trabajo grupal del parcial de Programación Orientada a Objetos (IDAT, 2do ciclo). Es un sistema de biblioteca universitaria que corre en consola: catálogo de libros, miembros con membresía, consulta por categoría con una función recursiva, tres matrices de datos y un menú de gestión para el administrador. Los datos están en dos archivos JSON, se pueden editar a mano y el programa los vuelve a leer al arrancar.
 
-## Los modulos
+## Resumen
 
-| Archivo         | Que hace                                                      |
-| --------------- | ------------------------------------------------------------- |
-| `config.py`     | rutas de los JSON, reglas por tipo de miembro, leer y guardar |
-| `errores.py`    | las excepciones del sistema                                   |
-| `utilidades.py` | titulo, pausa, validar DNI e ISBN, responder si/no, fechas    |
-| `usuarios.py`   | Membresia y sus 4 subclases, Usuario, etc                     |
-| `libros.py`     | Libro, las matrices y las funciones recursivas de categorias  |
-| `biblioteca.py` | une todo: carga los JSON, resume, guarda                      |
-| `menu.py`       | las tablas de opciones y todas las acciones                   |
-| `main.py`       | arranca: portada, biblioteca y menu                           |
+El proyecto cuenta con una base sólida de POO: clases, encapsulación, herencia, polimorfismo, excepciones propias, lectura de JSON y búsqueda recursiva.
 
-## Los datos
+## Estructura
+proyecto_parcial/
+├── main.py                     Punto de entrada principal
+├── README.md                   Documentación y plan del proyecto
+├── core/
+│   ├── configuracion.py        Rutas, secciones, estantes y lectura de JSON
+│   ├── errores.py              Excepciones personalizadas (ErrorBiblioteca, ErrorDeDatos)
+│   ├── utilidades.py           Validaciones de DNI, ISBN, fechas y pausas
+│   ├── libros.py               Clase Libro, validaciones y funciones recursivas
+│   ├── usuarios.py             Clases Usuario, Administrador y fábrica de usuarios
+│   ├── biblioteca.py           Controlador central (catálogo, usuarios y resumen)
+│   └── menu.py                 Interfaz de consola y opciones de navegación
+├── datos/
+│   ├── libros.json             Catálogo de libros
+│   └── usuarios.json           Usuarios registrados
+└── interfaces/                 Diseños UI y estilos (QtDesigner)
 
-- `modulos/datos/libros.json`: 7 titulos, con categoria, seccion, estante, ejemplares y
-  disponibles.
-- `modulos/datos/miembros.json`: 10 miembros, con tipo, vencimiento de membresia y si esta
-  activo.
+## Nombres sugeridos
 
-## Lo que falta (es un avance)
+| Concepto de la rúbrica | Nombre sugerido en el código |
+|---|---|
+| Matriz de disponibilidad por sección y estante | `mapa_de_estantes` |
+| Matriz de devoluciones pendientes | `agenda_de_devoluciones` |
+| Matriz de historial por usuario | `historial_por_usuario` |
+| Matriz de penalizaciones | `penalizaciones_por_usuario` |
+| Recursión para buscar por categoría | `buscar_en_categoria` |
+| Recursión para contar disponibles | `contar_disponibles_en_seccion` |
+| Recursión para sumar existencias | `sumar_existencias` |
+| Préstamo | `Prestamo` / `prestar_ejemplar` |
+| Devolución | `devolver_ejemplar` |
+| Multa | `calcular_multa` |
+| Bitácora | `registrar_en_bitacora` |
 
-- Prestar y devolver libros. `Libro.prestar_uno()` y `Libro.devolver_uno()` ya estan escritos
-  y probados, con la validacion y el error si no quedan ejemplares. Falta la clase `Prestamo`,
-  el gestor y las dos acciones del menu.
-- Historial y multas por retraso. `Membresia.dias_prestamo()` y `multa_por_dia()` ya dan los
-  numeros por tipo y `utilidades.sumar_dias()` calcula el vencimiento; falta guardar la fecha
-  real de cada prestamo y restar fechas.
-- Registrar y actualizar libros desde el menu: hoy el catalogo solo se edita cambiando el
-  JSON. `utilidades.validar_isbn()` y el constructor de `Libro` con valores por defecto ya
-  estan para eso.
-- Dar de alta, de baja o renovar la membresia de un miembro desde el menu. Los metodos
-  `dar_de_baja()`, `reactivar()`, `renovar_membresia()` y `cancelar_membresia()` ya existen en
-  `Usuario`, falta la opcion del menu que los llame.
-- Buscar libros por titulo o autor (solo hay busqueda por categoria).
-- El tope de multa por prestamo.
-- El nombre y el lema definitivos en `config.py`.
+## Pendientes
+
+- Prestar y devolver libros mediante el gestor y las opciones del menú.
+- Historial y multas por retraso guardando la fecha real de cada préstamo y calculando los días de retraso.
+- Registrar y actualizar libros directamente desde el menú del programa.
+- Dar de alta, dar de baja, reactivar o renovar la membresía de un miembro desde las opciones del menú.
+- Búsqueda específica de libros por título o autor.
+- Establecer un tope de multa por préstamo.
+- Definir el nombre y el lema definitivos en `configuracion.py`.
+
+## Pendientes final
+
+- Diseñar y conectar las interfaces gráficas con PyQt5 y QtDesigner (incluyendo componentes avanzados como `QSpinBox`, `QComboBox`, `QTableWidget` y `QCalendarWidget`).
+- Implementar la persistencia avanzada con archivos de texto o binarios para el registro de calificaciones y asistencia.
+- Aplicar expresiones regulares para validaciones avanzadas de formato en los campos de entrada de la interfaz académica.
+- Estructurar el sistema bajo principios sólidos de POO separados por clases de ventana y lógica de negocio.
