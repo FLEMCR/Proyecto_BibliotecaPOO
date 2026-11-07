@@ -7,37 +7,40 @@ Trabajo grupal del parcial de Programación Orientada a Objetos (IDAT, 2do ciclo
 El proyecto cuenta con una base sólida de POO: clases, encapsulación, herencia, polimorfismo, excepciones propias, lectura de JSON y búsqueda recursiva.
 
 ## Estructura
-proyecto_parcial/
-├── main.py                     Punto de entrada principal
-├── README.md                   Documentación y plan del proyecto
+
+```
+proyecto/
+├── main.py Punto de entrada principal
+├── README.md Documentación y plan del proyecto
 ├── core/
-│   ├── configuracion.py        Rutas, secciones, estantes y lectura de JSON
-│   ├── errores.py              Excepciones personalizadas (ErrorBiblioteca, ErrorDeDatos)
-│   ├── utilidades.py           Validaciones de DNI, ISBN, fechas y pausas
-│   ├── libros.py               Clase Libro, validaciones y funciones recursivas
-│   ├── usuarios.py             Clases Usuario, Administrador y fábrica de usuarios
-│   ├── biblioteca.py           Controlador central (catálogo, usuarios y resumen)
-│   └── menu.py                 Interfaz de consola y opciones de navegación
+│ ├── configuracion.py Rutas, secciones, estantes y lectura de JSON
+│ ├── errores.py Excepciones personalizadas (ErrorBiblioteca, ErrorDeDatos)
+│ ├── utilidades.py Validaciones de DNI, ISBN, fechas y pausas
+│ ├── libros.py Clase Libro, validaciones y funciones recursivas
+│ ├── usuarios.py Clases Usuario, Administrador y fábrica de usuarios
+│ ├── biblioteca.py Controlador central (catálogo, usuarios y resumen)
+│ └── menu.py Interfaz de consola y opciones de navegación
 ├── datos/
-│   ├── libros.json             Catálogo de libros
-│   └── usuarios.json           Usuarios registrados
-└── interfaces/                 Diseños UI y estilos (QtDesigner)
+│ ├── libros.json Catálogo de libros
+│ └── usuarios.json Usuarios registrados
+└── interfaces/ Diseños UI y estilos (QtDesigner)
+```
 
 ## Nombres sugeridos
 
-| Concepto de la rúbrica | Nombre sugerido en el código |
-|---|---|
-| Matriz de disponibilidad por sección y estante | `mapa_de_estantes` |
-| Matriz de devoluciones pendientes | `agenda_de_devoluciones` |
-| Matriz de historial por usuario | `historial_por_usuario` |
-| Matriz de penalizaciones | `penalizaciones_por_usuario` |
-| Recursión para buscar por categoría | `buscar_en_categoria` |
-| Recursión para contar disponibles | `contar_disponibles_en_seccion` |
-| Recursión para sumar existencias | `sumar_existencias` |
-| Préstamo | `Prestamo` / `prestar_ejemplar` |
-| Devolución | `devolver_ejemplar` |
-| Multa | `calcular_multa` |
-| Bitácora | `registrar_en_bitacora` |
+| Concepto de la rúbrica                         | Nombre sugerido en el código    |
+| ---------------------------------------------- | ------------------------------- |
+| Matriz de disponibilidad por sección y estante | `mapa_de_estantes`              |
+| Matriz de devoluciones pendientes              | `agenda_de_devoluciones`        |
+| Matriz de historial por usuario                | `historial_por_usuario`         |
+| Matriz de penalizaciones                       | `penalizaciones_por_usuario`    |
+| Recursión para buscar por categoría            | `buscar_en_categoria`           |
+| Recursión para contar disponibles              | `contar_disponibles_en_seccion` |
+| Recursión para sumar existencias               | `sumar_existencias`             |
+| Préstamo                                       | `Prestamo` / `prestar_ejemplar` |
+| Devolución                                     | `devolver_ejemplar`             |
+| Multa                                          | `calcular_multa`                |
+| Bitácora                                       | `registrar_en_bitacora`         |
 
 ## Pendientes
 
