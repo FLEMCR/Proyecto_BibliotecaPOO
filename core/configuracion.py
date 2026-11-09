@@ -3,10 +3,11 @@ import os
 
 CARPETA_DEL_PROYECTO = os.path.dirname(os.path.dirname(__file__))
 CARPETA_DATOS = os.path.join(CARPETA_DEL_PROYECTO, "datos")
-CARPETA_INTERFACES = os.path.join(CARPETA_DEL_PROYECTO, "interfaces")
+CARPETA_INTERFACES = os.path.join(CARPETA_DEL_PROYECTO, "ui")
 
 ARCHIVO_LIBROS = "libros.json"
 ARCHIVO_USUARIOS = "usuarios.json"
+ARCHIVO_PRESTAMOS = "prestamoss.json"
 
 NOMBRE_BIBLIOTECA = "Biblioteca General POSTDATA"
 LEMA = "Llevate el libro que quieras; Devuélvelo cuando puedas"
