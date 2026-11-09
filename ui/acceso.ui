@@ -138,7 +138,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="entrarButton">
+       <widget class="QPushButton" name="entrarBtn">
         <property name="text">
          <string>Ingresar</string>
         </property>
@@ -151,7 +151,7 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="salirButton">
+       <widget class="QPushButton" name="salirBtn">
         <property name="text">
          <string>Salir</string>
         </property>

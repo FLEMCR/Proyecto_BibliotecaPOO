@@ -13,7 +13,7 @@ def validar_dni(texto):
     """Valida que el DNI sea una cadena numérica exacta de 8 dígitos y la retorna limpia."""
     dni = str(texto).strip()
     if len(dni) != 8 or not dni.isdigit():
-        raise errores.ErrorDeDatos("El DNI debe tener 8 digitos")
+        raise errores.ErrorDeDatos("El DNI debe tener 8 digitos numericos")
     return dni
 
 
