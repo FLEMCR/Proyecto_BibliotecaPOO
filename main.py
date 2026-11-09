@@ -1,5 +1,6 @@
-from proyecto_parcial.core import menu
-from proyecto_parcial.core.biblioteca import Biblioteca
+from pathlib import Path
+from core import menu
+from core.biblioteca import Biblioteca
 
 
 def main():

@@ -1,4 +1,4 @@
-from proyecto_parcial.core import configuracion, errores, utilidades
+from . import configuracion, errores, utilidades
 
 
 class Libro:

@@ -1,6 +1,6 @@
 import time
 
-from proyecto_parcial.core import configuracion, errores, utilidades
+from . import configuracion, errores, utilidades
 
 
 def portada(biblioteca):
