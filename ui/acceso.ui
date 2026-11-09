@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VentanaAcceso</class>
+ <widget class="QDialog" name="VentanaAcceso">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>520</width>
+    <height>560</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>520</width>
+    <height>560</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Biblioteca General POSTDATA</string>
+  </property>
+  <property name="modal">
+   <bool>false</bool>
+  </property>
+  <layout class="QVBoxLayout" name="layoutPrincipal">
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <property name="leftMargin">
+    <number>40</number>
+   </property>
+   <property name="topMargin">
+    <number>40</number>
+   </property>
+   <property name="rightMargin">
+    <number>40</number>
+   </property>
+   <property name="bottomMargin">
+    <number>28</number>
+   </property>
+   <item>
+    <spacer name="espacioSuperior">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QFrame" name="tarjetaFrame">
+     <property name="frameShape">
+      <enum>QFrame::StyledPanel</enum>
+     </property>
+     <property name="card" stdset="0">
+      <string>true</string>
+     </property>
+     <layout class="QVBoxLayout" name="layoutTarjeta">
+      <property name="spacing">
+       <number>12</number>
+      </property>
+      <property name="leftMargin">
+       <number>36</number>
+      </property>
+      <property name="topMargin">
+       <number>36</number>
+      </property>
+      <property name="rightMargin">
+       <number>36</number>
+      </property>
+      <property name="bottomMargin">
+       <number>36</number>
+      </property>
+      <item>
+       <widget class="QLabel" name="tituloLabel">
+        <property name="text">
+         <string>Biblioteca General POSTDATA</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="subtituloLabel">
+        <property name="text">
+         <string>Ingresa con tu DNI para consultar el catálogo y tu membresía</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="dniLabel">
+        <property name="text">
+         <string>DNI</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLineEdit" name="dniLineEdit">
+        <property name="maxLength">
+         <number>8</number>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="placeholderText">
+         <string>Escribe un DNI valido de 8 dígitos</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QLabel" name="ayudaLabel">
+        <property name="text">
+         <string>Prueba con 11111111 (estudiante) o 33333333 (administrador).</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+        <property name="wordWrap">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="entrarButton">
+        <property name="text">
+         <string>Ingresar</string>
+        </property>
+        <property name="default">
+         <bool>true</bool>
+        </property>
+        <property name="rol" stdset="0">
+         <string>primary</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="salirButton">
+        <property name="text">
+         <string>Salir</string>
+        </property>
+        <property name="rol" stdset="0">
+         <string>secondary</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <spacer name="espacioMedio">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>24</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item>
+    <widget class="QLabel" name="lemaLabel">
+     <property name="text">
+      <string>Llevate el libro que quieras; Devuélvelo cuando puedas</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
