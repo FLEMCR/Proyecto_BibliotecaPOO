@@ -1,4 +1,3 @@
-from pathlib import Path
 from core import menu
 from core.biblioteca import Biblioteca
 

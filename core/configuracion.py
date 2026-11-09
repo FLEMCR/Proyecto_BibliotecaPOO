@@ -7,7 +7,7 @@ CARPETA_INTERFACES = os.path.join(CARPETA_DEL_PROYECTO, "ui")
 
 ARCHIVO_LIBROS = "libros.json"
 ARCHIVO_USUARIOS = "usuarios.json"
-ARCHIVO_PRESTAMOS = "prestamoss.json"
+ARCHIVO_PRESTAMOS = "prestamos.json"
 
 NOMBRE_BIBLIOTECA = "Biblioteca General POSTDATA"
 LEMA = "Llevate el libro que quieras; Devuélvelo cuando puedas"
