@@ -1,5 +1,5 @@
-from proyecto_parcial.core import menu
-from proyecto_parcial.core.biblioteca import Biblioteca
+from core import menu
+from core.biblioteca import Biblioteca
 
 
 def main():
@@ -8,4 +8,5 @@ def main():
     menu.menu_de_acceso(biblioteca)
 
 
-main()
+if __name__ == "__main__":
+    main()

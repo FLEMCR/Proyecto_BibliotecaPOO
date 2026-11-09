@@ -1,4 +1,6 @@
-from proyecto_parcial.core import configuracion, errores, utilidades
+import unicodedata
+
+from core import configuracion, errores, utilidades
 
 
 class Libro:
@@ -103,42 +105,99 @@ class Libro:
         return datos
 
 
+def _campo_obligatorio(datos, clave):
+    """Devuelve un campo del JSON o lanza un error claro si falta o viene vacio."""
+    if clave not in datos or datos[clave] is None or str(datos[clave]).strip() == "":
+        raise errores.ErrorDeDatos(f"Falta el campo '{clave}' en un libro del catalogo")
+    return datos[clave]
+
+
 def crear_libro(datos):
     """Fábrica que procesa un diccionario de datos para instanciar un objeto Libro."""
     if not isinstance(datos, dict):
         raise errores.ErrorDeDatos("Cada libro del JSON debe ser un diccionario")
     return Libro(
-        datos.get("isbn", ""),
-        datos.get("titulo", ""),
-        datos.get("autor", ""),
-        datos.get("categoria"),
-        datos.get("seccion"),
-        datos.get("estante"),
-        datos.get("ejemplares"),
-        datos.get("disponibles"),
+        _campo_obligatorio(datos, "isbn"),
+        _campo_obligatorio(datos, "titulo"),
+        _campo_obligatorio(datos, "autor"),
+        _campo_obligatorio(datos, "categoria"),
+        _campo_obligatorio(datos, "seccion"),
+        _campo_obligatorio(datos, "estante"),
+        _campo_obligatorio(datos, "ejemplares"),
+        _campo_obligatorio(datos, "disponibles"),
     )
 
 
-def coincide_con_la_busqueda(libro, texto):
-    """Verifica si un texto de búsqueda coincide con el título, autor o categoría del libro."""
-    buscado = str(texto).strip().lower()
+def normalizar_texto(texto):
+    """Pasa un texto a minusculas y le quita tildes para comparar busquedas."""
+    sin_tildes = unicodedata.normalize("NFKD", str(texto))
+    solo_ascii = sin_tildes.encode("ascii", "ignore").decode("ascii")
+    return solo_ascii.strip().lower()
+
+
+def _texto_del_campo(libro, campo):
+    """Devuelve el texto del libro que corresponde al campo elegido en el buscador."""
+    campo_normalizado = normalizar_texto(campo)
+    if campo_normalizado == "isbn":
+        return libro.isbn()
+    if campo_normalizado in ("titulo", "título"):
+        return libro.titulo()
+    if campo_normalizado == "autor":
+        return libro.autor()
+    if campo_normalizado == "categoria":
+        return libro.categoria()
+    if campo_normalizado == "seccion":
+        return libro.seccion() + " " + configuracion.SECCIONES.get(libro.seccion(), "")
+    return " ".join(
+        [libro.isbn(), libro.titulo(), libro.autor(), libro.categoria(), libro.seccion()]
+    )
+
+
+def coincide_con_la_busqueda(libro, texto, campo="Todo"):
+    """Verifica si el texto aparece en el campo elegido del libro."""
+    buscado = normalizar_texto(texto)
     if buscado == "":
-        return False
-    esta_en_el_titulo = buscado in libro.titulo().lower()
-    esta_en_el_autor = buscado in libro.autor().lower()
-    esta_en_la_categoria = buscado in libro.categoria().lower()
-    return esta_en_el_titulo or esta_en_el_autor or esta_en_la_categoria
+        return True
+    return buscado in normalizar_texto(_texto_del_campo(libro, campo))
 
 
-def buscar_por_texto(libros, texto):
-    """Busca y filtra de forma recursiva los libros que coinciden con el texto ingresado."""
+def buscar_por_texto(libros, texto, campo="Todo"):
+    """Busca de forma recursiva los libros que coinciden con el texto y el campo.
+
+    Caso base: la lista llega vacia.
+    Paso recursivo: se evalua el primer libro y se continua con el resto.
+    """
     if len(libros) == 0:
         return []
     primer_libro = libros[0]
     libros_que_faltan = libros[1:]
-    if coincide_con_la_busqueda(primer_libro, texto):
-        return [primer_libro] + buscar_por_texto(libros_que_faltan, texto)
-    return buscar_por_texto(libros_que_faltan, texto)
+    if coincide_con_la_busqueda(primer_libro, texto, campo):
+        return [primer_libro] + buscar_por_texto(libros_que_faltan, texto, campo)
+    return buscar_por_texto(libros_que_faltan, texto, campo)
+
+
+def filtrar_por_categoria(libros, categoria):
+    """Filtra de forma recursiva los libros que pertenecen a una categoria."""
+    if len(libros) == 0:
+        return []
+    primer_libro = libros[0]
+    libros_que_faltan = libros[1:]
+    if normalizar_texto(categoria) in ("", "todas", "todos"):
+        return libros
+    if normalizar_texto(primer_libro.categoria()) == normalizar_texto(categoria):
+        return [primer_libro] + filtrar_por_categoria(libros_que_faltan, categoria)
+    return filtrar_por_categoria(libros_que_faltan, categoria)
+
+
+def filtrar_solo_disponibles(libros):
+    """Filtra de forma recursiva los libros que se pueden prestar."""
+    if len(libros) == 0:
+        return []
+    primer_libro = libros[0]
+    libros_que_faltan = libros[1:]
+    if primer_libro.se_puede_prestar():
+        return [primer_libro] + filtrar_solo_disponibles(libros_que_faltan)
+    return filtrar_solo_disponibles(libros_que_faltan)
 
 
 def datos_del_catalogo(libros):

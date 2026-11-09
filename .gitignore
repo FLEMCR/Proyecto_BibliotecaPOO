@@ -4,9 +4,7 @@ __pycache__/
 .vscode/
 .idea/
 *.zip
-
-
 prueba.py
-
-
-tests/
+datos/reportes/
+tests/a.py
+tests/pr.py

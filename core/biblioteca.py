@@ -1,6 +1,6 @@
 from datetime import date
 
-from proyecto_parcial.core import configuracion, errores, libros, usuarios, utilidades
+from core import configuracion, errores, libros, usuarios, utilidades
 
 
 class Biblioteca:
@@ -61,8 +61,53 @@ class Biblioteca:
 
     def buscar(self, texto_buscado):
         """Filtra y retorna libros que coincidan con el texto de búsqueda ingresado."""
-        encontrados = libros.buscar_por_texto(self.todos_los_libros(), texto_buscado)
-        return libros.datos_del_catalogo(encontrados)
+        return self.buscar_avanzado(texto=texto_buscado)
+
+    def buscar_avanzado(
+        self,
+        texto="",
+        campo="Todo",
+        categoria="",
+        solo_disponibles=False,
+        ordenar_por="titulo",
+        limite=None,
+    ):
+        """Busca libros combinando texto, campo, categoria y disponibilidad.
+
+        Devuelve una lista de diccionarios lista para llenar una tabla o una ficha.
+        """
+        encontrados = libros.buscar_por_texto(self.todos_los_libros(), texto, campo)
+        encontrados = libros.filtrar_por_categoria(encontrados, categoria)
+        if solo_disponibles:
+            encontrados = libros.filtrar_solo_disponibles(encontrados)
+
+        if ordenar_por == "autor":
+            encontrados = sorted(encontrados, key=lambda libro: libros.normalizar_texto(libro.autor()))
+        elif ordenar_por == "categoria":
+            encontrados = sorted(
+                encontrados,
+                key=lambda libro: (
+                    libros.normalizar_texto(libro.categoria()),
+                    libros.normalizar_texto(libro.titulo()),
+                ),
+            )
+        elif ordenar_por == "disponibles":
+            encontrados = sorted(
+                encontrados,
+                key=lambda libro: (-libro.disponibles(), libros.normalizar_texto(libro.titulo())),
+            )
+        else:
+            encontrados = sorted(encontrados, key=lambda libro: libros.normalizar_texto(libro.titulo()))
+
+        datos = libros.datos_del_catalogo(encontrados)
+        if limite is not None and limite > 0:
+            return datos[:limite]
+        return datos
+
+    def categorias(self):
+        """Retorna las categorias existentes, ordenadas y sin repetir."""
+        nombres = {libro.categoria() for libro in self.todos_los_libros()}
+        return sorted(nombres, key=libros.normalizar_texto)
 
     def datos_de_los_usuarios(self):
         """Retorna una lista con los datos de membresía de todos los usuarios."""

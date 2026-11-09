@@ -1,5 +1,7 @@
 # Guía de la versión base
 
+> **Nota de estructura:** esta guía describe la primera versión de consola, cuando el código estaba en `modulos/`. La versión actual usa `core/` para la lógica y `ui/` para las pantallas. Para la estructura vigente, los comandos y las tareas pendientes, revisa `README.md` y `docs/Plan_del_proyecto.md`.
+
 Esta guía recorre lo que se maneja por consola: se entra con el DNI, se navega por un menú según el tipo de usuario y se puede leer el catálogo, buscar, ver la ficha de un libro, ver la membresía y ver la lista de usuarios.
 
 ## Índice

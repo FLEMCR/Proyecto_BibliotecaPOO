@@ -1,6 +1,6 @@
 from datetime import date
 
-from proyecto_parcial.core import errores
+from core import errores
 
 
 def pausa():

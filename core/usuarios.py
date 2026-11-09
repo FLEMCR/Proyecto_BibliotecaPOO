@@ -1,6 +1,6 @@
 from datetime import date
 
-from proyecto_parcial.core import configuracion, errores, utilidades
+from core import configuracion, errores, utilidades
 
 
 class Usuario:

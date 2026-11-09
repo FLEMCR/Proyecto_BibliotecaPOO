@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>VentanaCatalogo</class>
+ <widget class="QWidget" name="VentanaCatalogo">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>980</width>
+    <height>700</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="layoutCatalogo">
+   <property name="spacing">
+    <number>14</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="layoutCabeceraCatalogo">
+     <item>
+      <widget class="QLabel" name="tituloCatalogoLabel">
+       <property name="text">
+        <string>Catálogo de libros</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="espacioCabeceraCatalogo">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QLabel" name="cantidadLibrosLabel">
+       <property name="text">
+        <string>0 libros</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QFrame" name="filtrosFrame">
+     <property name="card" stdset="0">
+      <string>true</string>
+     </property>
+     <layout class="QGridLayout" name="layoutFiltros">
+      <property name="horizontalSpacing">
+       <number>12</number>
+      </property>
+      <property name="verticalSpacing">
+       <number>8</number>
+      </property>
+      <property name="leftMargin">
+       <number>16</number>
+      </property>
+      <property name="topMargin">
+       <number>14</number>
+      </property>
+      <property name="rightMargin">
+       <number>16</number>
+      </property>
+      <property name="bottomMargin">
+       <number>14</number>
+      </property>
+      <item row="0" column="0">
+       <widget class="QLabel" name="campoLabel">
+        <property name="text">
+         <string>Buscar por</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="campoComboBox"/>
+      </item>
+      <item row="0" column="2">
+       <widget class="QLabel" name="textoLabel">
+        <property name="text">
+         <string>Texto</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="3">
+       <widget class="QLineEdit" name="buscarLineEdit">
+        <property name="placeholderText">
+         <string>ISBN, título, autor o categoría</string>
+        </property>
+        <property name="clearButtonEnabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="4">
+       <widget class="QPushButton" name="buscarButton">
+        <property name="text">
+         <string>Buscar</string>
+        </property>
+        <property name="rol" stdset="0">
+         <string>primary</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="5">
+       <widget class="QPushButton" name="limpiarButton">
+        <property name="text">
+         <string>Limpiar</string>
+        </property>
+        <property name="rol" stdset="0">
+         <string>secondary</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="categoriaLabel">
+        <property name="text">
+         <string>Categoría</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="categoriaComboBox"/>
+      </item>
+      <item row="1" column="2">
+       <widget class="QLabel" name="ordenarLabel">
+        <property name="text">
+         <string>Ordenar por</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="3">
+       <widget class="QComboBox" name="ordenarComboBox"/>
+      </item>
+      <item row="1" column="4">
+       <widget class="QCheckBox" name="soloDisponiblesCheckBox">
+        <property name="text">
+         <string>Solo disponibles</string>
+        </property>
+        <property name="toolTip">
+         <string>Muestra solo libros que se pueden prestar</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="5">
+       <layout class="QHBoxLayout" name="layoutLimite">
+        <item>
+         <widget class="QLabel" name="limiteLabel">
+          <property name="text">
+           <string>Mostrar</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="limiteSpinBox">
+          <property name="minimum">
+           <number>5</number>
+          </property>
+          <property name="maximum">
+           <number>100</number>
+          </property>
+          <property name="singleStep">
+           <number>5</number>
+          </property>
+          <property name="value">
+           <number>25</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSplitter" name="splitterCatalogo">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="childrenCollapsible">
+      <bool>false</bool>
+     </property>
+     <widget class="QTableWidget" name="tablaLibros">
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+      <property name="selectionMode">
+       <enum>QAbstractItemView::SingleSelection</enum>
+      </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::NoEditTriggers</set>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
+      <property name="columnCount">
+       <number>6</number>
+      </property>
+      <property name="rowCount">
+       <number>0</number>
+      </property>
+      <column>
+       <property name="text">
+        <string>ISBN</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Título</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Autor</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Categoría</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Disponibles</string>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string>Estado</string>
+       </property>
+      </column>
+     </widget>
+     <widget class="QFrame" name="detalleFrame">
+      <property name="minimumSize">
+       <size>
+        <width>280</width>
+        <height>0</height>
+       </size>
+      </property>
+      <property name="maximumSize">
+       <size>
+        <width>340</width>
+        <height>16777215</height>
+       </size>
+      </property>
+      <property name="card" stdset="0">
+       <string>true</string>
+      </property>
+      <layout class="QVBoxLayout" name="layoutDetalle">
+       <property name="leftMargin">
+        <number>16</number>
+       </property>
+       <property name="topMargin">
+        <number>14</number>
+       </property>
+       <property name="rightMargin">
+        <number>16</number>
+       </property>
+       <property name="bottomMargin">
+        <number>14</number>
+       </property>
+       <item>
+        <widget class="QLabel" name="detalleEncabezadoLabel">
+         <property name="text">
+          <string>Ficha del libro</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextEdit" name="detalleTextEdit">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="acceptRichText">
+          <bool>true</bool>
+         </property>
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

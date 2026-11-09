@@ -1,6 +1,6 @@
 import time
 
-from proyecto_parcial.core import configuracion, errores, utilidades
+from core import configuracion, errores, utilidades
 
 
 def portada(biblioteca):
@@ -33,7 +33,7 @@ def menu_de_acceso(biblioteca):
             time.sleep(0.5)
             return
         else:
-            print("Opción invalida. Preube de nuevo")
+            print("Opcion invalida. Prueba de nuevo")
 
 
 def entrar(biblioteca):
@@ -48,6 +48,13 @@ def entrar(biblioteca):
     if not usuario.esta_activo():
         print()
         print(f"{usuario.nombre()} no puede entrar, su usuario esta de baja")
+        return
+    if not usuario.tiene_membresia_vigente():
+        print()
+        print(
+            f"{usuario.nombre()} no puede entrar, su membresia vencio el "
+            f"{usuario.vencimiento_membresia()}"
+        )
         return
     print()
     print(f"Hola {usuario.nombre()}, tu tipo de membresia es {usuario.tipo()}")
