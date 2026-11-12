@@ -71,6 +71,16 @@ class Usuario:
             "estado": self.estado(),
         }
 
+    def a_diccionario(self):
+        """Convierte los datos del usuario en un diccionario para guardarlo en JSON."""
+        return {
+            "dni": self._dni,
+            "nombre": self._nombre,
+            "tipo": self._tipo,
+            "vencimiento_membresia": str(self._vencimiento_membresia),
+            "activo": self._activo,
+        }
+
 
 class Administrador(Usuario):
     """Subclase que otorga privilegios especiales de administración al usuario."""

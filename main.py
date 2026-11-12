@@ -7,6 +7,15 @@ from ui.acceso import VentanaAcceso
 from ui.principal import VentanaPrincipal
 
 
+def cargar_estilos(aplicacion):
+    """Carga la hoja de estilos QSS del proyecto en la aplicación."""
+    try:
+        with open(configuracion.ARCHIVO_ESTILOS, "r", encoding="utf-8") as archivo:
+            aplicacion.setStyleSheet(archivo.read())
+    except OSError as error:
+        print(f"No se pudo cargar el estilo: {error}", file=sys.stderr)
+
+
 class AplicacionBiblioteca:
     """Coordina el acceso, el panel principal y el cierre de sesión."""
 
@@ -49,6 +58,7 @@ def main():
     """Punto de entrada principal del sistema gráfico."""
     aplicacion = QApplication(sys.argv)
     aplicacion.setApplicationName(configuracion.NOMBRE_BIBLIOTECA)
+    cargar_estilos(aplicacion)
 
     try:
         controlador = AplicacionBiblioteca()

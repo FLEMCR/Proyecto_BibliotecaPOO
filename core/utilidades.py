@@ -1,6 +1,19 @@
+import calendar
+import unicodedata
 from datetime import date
 
 from . import errores
+
+
+def normalizar_texto(texto):
+    """Convierte un texto a minúsculas y quita tildes para comparar búsquedas."""
+    texto = str(texto).strip().lower()
+    sin_tildes = unicodedata.normalize("NFD", texto)
+    return "".join(
+        caracter
+        for caracter in sin_tildes
+        if unicodedata.category(caracter) != "Mn"
+    )
 
 
 def pausa():
@@ -35,6 +48,18 @@ def convertir_fecha(texto):
         return date(int(año), int(mes), int(dia))
     except ValueError:
         raise errores.ErrorDeDatos("La fecha " + str(texto) + " no es una fecha real")
+
+
+def sumar_meses(fecha, meses):
+    """Suma una cantidad de meses a una fecha y ajusta el día al último del mes."""
+    if not isinstance(fecha, date):
+        fecha = convertir_fecha(fecha)
+    meses_totales = fecha.month - 1 + int(meses)
+    año = fecha.year + meses_totales // 12
+    mes = meses_totales % 12 + 1
+    ultimo_dia = calendar.monthrange(año, mes)[1]
+    dia = min(fecha.day, ultimo_dia)
+    return date(año, mes, dia)
 
 
 def si_o_no(valor):

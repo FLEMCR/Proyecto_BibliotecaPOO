@@ -89,5 +89,12 @@
     "tipo": "Administrador",
     "vencimiento_membresia": "2026-03-15",
     "activo": true
+  },
+  {
+    "dni": "71828192",
+    "nombre": "pajuelin",
+    "tipo": "Estudiante",
+    "vencimiento_membresia": "2027-02-11",
+    "activo": true
   }
 ]

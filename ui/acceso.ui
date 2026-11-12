@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>520</width>
-    <height>560</height>
+    <width>500</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>520</width>
-    <height>560</height>
+    <width>460</width>
+    <height>580</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -27,13 +27,13 @@
     <number>0</number>
    </property>
    <property name="leftMargin">
-    <number>40</number>
+    <number>30</number>
    </property>
    <property name="topMargin">
     <number>40</number>
    </property>
    <property name="rightMargin">
-    <number>40</number>
+    <number>30</number>
    </property>
    <property name="bottomMargin">
     <number>28</number>
@@ -200,6 +200,9 @@
      </property>
      <property name="alignment">
       <set>Qt::AlignCenter</set>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>

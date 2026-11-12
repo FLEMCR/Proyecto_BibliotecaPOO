@@ -4,6 +4,7 @@ from core import configuracion, errores
 from PyQt5 import uic
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QDialog, QMessageBox
+from ui.registro import VentanaRegistro
 
 ruta_ui = Path(__file__).resolve().parent / "acceso.ui"
 
@@ -22,7 +23,16 @@ class VentanaAcceso(QDialog):
         self.lemaLabel.setText(configuracion.LEMA)
 
         self.entrarBtn.clicked.connect(self.validar_usuario)
+        self.registrarBtn.clicked.connect(self.abrir_registro)
         self.salirBtn.clicked.connect(self.reject)
+
+    def abrir_registro(self):
+        """Abre el formulario de registro y deja el DNI listo para ingresar."""
+        dialogo = VentanaRegistro(self.biblioteca, self)
+        if dialogo.exec_() == QDialog.Accepted:
+            self.dniLineEdit.setText(dialogo.dni_registrado or "")
+            self.dniLineEdit.setFocus()
+            self._mostrar_mensaje("Registro completado. Ya puedes ingresar.")
 
     def validar_usuario(self):
         """Valida DNI, estado de la cuenta y vigencia de la membresía."""

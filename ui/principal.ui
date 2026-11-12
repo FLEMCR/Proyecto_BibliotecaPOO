@@ -6,19 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>600</height>
+    <width>1024</width>
+    <height>640</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1000</width>
-    <height>600</height>
-   </size>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>1000</width>
+    <width>960</width>
     <height>600</height>
    </size>
   </property>
@@ -89,66 +83,6 @@
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="marca2Label">
-         <property name="text">
-          <string>POSTDATA</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QFrame" name="usuarioFrame">
-         <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
-         </property>
-         <property name="card" stdset="0">
-          <string>true</string>
-         </property>
-         <layout class="QVBoxLayout" name="layoutUsuario">
-          <property name="spacing">
-           <number>4</number>
-          </property>
-          <property name="leftMargin">
-           <number>14</number>
-          </property>
-          <property name="topMargin">
-           <number>12</number>
-          </property>
-          <property name="rightMargin">
-           <number>14</number>
-          </property>
-          <property name="bottomMargin">
-           <number>12</number>
-          </property>
-          <item>
-           <widget class="QLabel" name="bienvenidaLabel">
-            <property name="text">
-             <string>Bienvenido</string>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <widget class="QLabel" name="tipoLabel">
-            <property name="text">
-             <string>Estudiante</string>
-            </property>
-            <property name="alignment">
-             <set>Qt::AlignCenter</set>
-            </property>
-            <property name="wordWrap">
-             <bool>true</bool>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <widget class="QLabel" name="menuLabel">
          <property name="text">
           <string>NAVEGACIÓN</string>
@@ -175,7 +109,22 @@
          </item>
          <item>
           <property name="text">
+           <string>Registrar préstamo</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Registrar devolución</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
            <string>Mi membresía</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>Registrar libro</string>
           </property>
          </item>
          <item>
@@ -237,7 +186,7 @@
        <item>
         <widget class="QStackedWidget" name="paginasStackedWidget">
          <property name="currentIndex">
-          <number>2</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="inicioPage">
           <layout class="QVBoxLayout" name="layoutInicio">
@@ -340,7 +289,10 @@
                 <item>
                  <widget class="QLabel" name="disponiblesTextoLabel">
                   <property name="text">
-                   <string>Disponibles</string>
+                   <string>Disponibles para préstamo</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
                   </property>
                  </widget>
                 </item>
@@ -396,18 +348,6 @@
             </layout>
            </item>
            <item>
-            <widget class="QFrame" name="avisoFrame">
-             <property name="card" stdset="0">
-              <string>true</string>
-             </property>
-             <layout class="QVBoxLayout" name="layoutAviso">
-              <item>
-               <layout class="QHBoxLayout" name="layoutAccesosRapidos"/>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
             <spacer name="espacioInicio">
              <property name="orientation">
               <enum>Qt::Vertical</enum>
@@ -419,6 +359,83 @@
               </size>
              </property>
             </spacer>
+           </item>
+           <item>
+            <widget class="QFrame" name="inicioFooterFrame">
+             <property name="card" stdset="0">
+              <string>true</string>
+             </property>
+             <layout class="QHBoxLayout" name="layoutInicioFooter">
+              <property name="spacing">
+               <number>16</number>
+              </property>
+              <property name="leftMargin">
+               <number>18</number>
+              </property>
+              <property name="topMargin">
+               <number>14</number>
+              </property>
+              <property name="rightMargin">
+               <number>18</number>
+              </property>
+              <property name="bottomMargin">
+               <number>14</number>
+              </property>
+              <item>
+               <layout class="QVBoxLayout" name="layoutBienvenidaInicio">
+                <property name="spacing">
+                 <number>4</number>
+                </property>
+                <item>
+                 <widget class="QLabel" name="bienvenidaLabel">
+                  <property name="text">
+                   <string>Bienvenido</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+                <item>
+                 <widget class="QLabel" name="tipoLabel">
+                  <property name="text">
+                   <string>Estudiante</string>
+                  </property>
+                  <property name="wordWrap">
+                   <bool>true</bool>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <spacer name="espacioFooterInicio">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
+              <item>
+               <widget class="QLabel" name="marca2Label">
+                <property name="text">
+                 <string>POSTDATA</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignVCenter</set>
+                </property>
+                <property name="wordWrap">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
            </item>
           </layout>
          </widget>
@@ -458,6 +475,44 @@
              </property>
             </layout>
            </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="prestamoPage">
+          <layout class="QVBoxLayout" name="layoutPaginaPrestamo">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="devolucionPage">
+          <layout class="QVBoxLayout" name="layoutPaginaDevolucion">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
           </layout>
          </widget>
          <widget class="QWidget" name="membresiaPage">
@@ -618,6 +673,25 @@
              </property>
             </spacer>
            </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="libroPage">
+          <layout class="QVBoxLayout" name="layoutPaginaLibro">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
           </layout>
          </widget>
          <widget class="QWidget" name="usuariosPage">

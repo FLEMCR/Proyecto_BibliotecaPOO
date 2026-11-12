@@ -1,0 +1,11 @@
+[
+  {
+    "id": "P-0001",
+    "isbn": "9786123179380",
+    "dni": "71828192",
+    "fecha_prestamo": "2026-11-11",
+    "fecha_limite": "2026-11-26",
+    "fecha_devolucion": "2026-11-11",
+    "estado": "devuelto"
+  }
+]

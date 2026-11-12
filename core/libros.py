@@ -5,7 +5,15 @@ class Libro:
     """Representa un libro en el sistema con sus datos, reglas de validación y estado de disponibilidad."""
 
     def __init__(
-        self, isbn, titulo, autor, categoria, seccion, estante, ejemplares, disponibles
+        self,
+        isbn,
+        titulo,
+        autor,
+        categoria,
+        seccion,
+        estante,
+        ejemplares,
+        disponibles,
     ):
         self._isbn = utilidades.validar_isbn(isbn)
         self._titulo = str(titulo).strip()
@@ -57,6 +65,22 @@ class Libro:
         """Indica si el libro cuenta con suficientes ejemplares para poder ser prestado."""
         return self._disponibles > 1
 
+    def prestar_ejemplar(self):
+        """Descuenta un ejemplar disponible luego de validar que se puede prestar."""
+        if not self.se_puede_prestar():
+            raise errores.ErrorDeDatos(
+                "No hay ejemplares disponibles para prestar de este libro"
+            )
+        self._disponibles = self._disponibles - 1
+
+    def devolver_ejemplar(self):
+        """Repone un ejemplar disponible sin superar el total de ejemplares."""
+        if self._disponibles >= self._ejemplares:
+            raise errores.ErrorDeDatos(
+                "No se puede devolver un ejemplar que ya está disponible"
+            )
+        self._disponibles = self._disponibles + 1
+
     def revisar_datos(self):
         """Valida que todos los atributos del libro cumplan con las reglas de negocio del sistema."""
         if self._titulo == "":
@@ -65,6 +89,8 @@ class Libro:
             raise errores.ErrorDeDatos("El autor no puede quedar vacio")
         elif self._categoria == "":
             raise errores.ErrorDeDatos("La categoria no puede quedar vacia")
+        elif self._categoria not in configuracion.CATEGORIAS:
+            raise errores.ErrorDeDatos(f"La categoria {self._categoria} no existe.")
         elif self._seccion not in configuracion.SECCIONES:
             raise errores.ErrorDeDatos(f"La seccion {self._seccion} no existe.")
         elif self._estante < 1 or self._estante > configuracion.CANTIDAD_DE_ESTANTES:

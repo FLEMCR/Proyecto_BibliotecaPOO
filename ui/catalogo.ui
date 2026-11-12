@@ -27,38 +27,13 @@
     <number>0</number>
    </property>
    <item>
-    <layout class="QHBoxLayout" name="layoutCabeceraCatalogo">
-     <item>
-      <widget class="QLabel" name="tituloCatalogoLabel">
-       <property name="text">
-        <string>Catálogo de libros</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <spacer name="espacioCabeceraCatalogo">
-       <property name="orientation">
-        <enum>Qt::Horizontal</enum>
-       </property>
-       <property name="sizeHint" stdset="0">
-        <size>
-         <width>40</width>
-         <height>20</height>
-        </size>
-       </property>
-      </spacer>
-     </item>
-     <item>
-      <widget class="QLabel" name="cantidadLibrosLabel">
-       <property name="text">
-        <string>0 libros</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
-   <item>
     <widget class="QFrame" name="filtrosFrame">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="card" stdset="0">
       <string>true</string>
      </property>
@@ -136,7 +111,14 @@
        </widget>
       </item>
       <item row="1" column="1">
-       <widget class="QComboBox" name="categoriaComboBox"/>
+       <widget class="QComboBox" name="categoriaComboBox">
+        <property name="minimumSize">
+         <size>
+          <width>175</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
       </item>
       <item row="1" column="2">
        <widget class="QLabel" name="ordenarLabel">
@@ -146,22 +128,29 @@
        </widget>
       </item>
       <item row="1" column="3">
-       <widget class="QComboBox" name="ordenarComboBox"/>
+       <widget class="QComboBox" name="ordenarComboBox">
+        <property name="minimumSize">
+         <size>
+          <width>145</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
       </item>
-      <item row="1" column="4">
+      <item row="1" column="4" colspan="2">
        <widget class="QCheckBox" name="soloDisponiblesCheckBox">
         <property name="toolTip">
          <string>Muestra solo libros que se pueden prestar</string>
         </property>
         <property name="text">
-         <string>Solo disponibles</string>
+         <string>Solo disponibles para préstamo</string>
         </property>
        </widget>
       </item>
      </layout>
     </widget>
    </item>
-   <item>
+   <item stretch="1">
     <widget class="QSplitter" name="splitterCatalogo">
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
@@ -213,7 +202,7 @@
       </column>
       <column>
        <property name="text">
-        <string>Disponibles</string>
+        <string>Disponibles para préstamo</string>
        </property>
       </column>
       <column>
