@@ -77,6 +77,11 @@
       </property>
       <item>
        <widget class="QLabel" name="tituloLabel">
+        <property name="font">
+         <font>
+          <pointsize>19</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Biblioteca General POSTDATA</string>
         </property>
@@ -103,6 +108,11 @@
       </item>
       <item>
        <widget class="QLabel" name="dniLabel">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>DNI</string>
         </property>
@@ -147,6 +157,13 @@
         </property>
         <property name="rol" stdset="0">
          <string>primary</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="registrarBtn">
+        <property name="text">
+         <string>Registrarse</string>
         </property>
        </widget>
       </item>

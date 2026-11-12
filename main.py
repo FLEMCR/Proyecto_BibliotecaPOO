@@ -1,11 +1,68 @@
-from core import menu
+import sys
+
+from core import configuracion, errores
 from core.biblioteca import Biblioteca
+from PyQt5.QtWidgets import QApplication, QMessageBox
+from ui.acceso import VentanaAcceso
+from ui.principal import VentanaPrincipal
+
+
+class AplicacionBiblioteca:
+    """Coordina el acceso, el panel principal y el cierre de sesión."""
+
+    def __init__(self):
+        self.biblioteca = Biblioteca()
+        self.acceso = VentanaAcceso(self.biblioteca)
+        self.ventana_principal = None
+        self.acceso.usuario_autenticado.connect(self.abrir_panel)
+        self.acceso.rejected.connect(self.cerrar_aplicacion)
+
+    def iniciar(self):
+        """Muestra la ventana de acceso."""
+        self.acceso.show()
+
+    def abrir_panel(self, usuario):
+        """Crea y muestra el panel principal para el usuario autenticado."""
+        self.ventana_principal = VentanaPrincipal(self.biblioteca, usuario)
+        self.ventana_principal.sesion_cerrada.connect(self.volver_al_acceso)
+        self.ventana_principal.show()
+        self.acceso.hide()
+
+    def volver_al_acceso(self):
+        """Destruye el panel y vuelve a mostrar la pantalla de acceso."""
+        if self.ventana_principal is not None:
+            self.ventana_principal.deleteLater()
+            self.ventana_principal = None
+        self.acceso.limpiar()
+        self.acceso.show()
+        self.acceso.raise_()
+        self.acceso.activateWindow()
+
+    def cerrar_aplicacion(self):
+        """Sale de la aplicación solicitando QApplication.quit()."""
+        aplicacion = QApplication.instance()
+        if aplicacion is not None:
+            aplicacion.quit()
 
 
 def main():
-    biblioteca = Biblioteca()
-    menu.portada(biblioteca)
-    menu.menu_de_acceso(biblioteca)
+    """Punto de entrada principal del sistema gráfico."""
+    aplicacion = QApplication(sys.argv)
+    aplicacion.setApplicationName(configuracion.NOMBRE_BIBLIOTECA)
+
+    try:
+        controlador = AplicacionBiblioteca()
+    except errores.ErrorBiblioteca as error:
+        QMessageBox.critical(
+            None,
+            "No se pudo iniciar la biblioteca",
+            str(error),
+        )
+        return 1
+
+    controlador.iniciar()
+    return aplicacion.exec_()
 
 
-main()
+if __name__ == "__main__":
+    sys.exit(main())
