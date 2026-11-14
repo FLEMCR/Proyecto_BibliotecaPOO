@@ -125,7 +125,6 @@ class Libro:
         datos = self.a_diccionario()
         datos["seccion_nombre"] = configuracion.SECCIONES[self._seccion]
         datos["prestados"] = self.prestados()
-        datos["se_puede_prestar"] = utilidades.si_o_no(self.se_puede_prestar())
         return datos
 
 
@@ -143,28 +142,6 @@ def crear_libro(datos):
         datos.get("ejemplares"),
         datos.get("disponibles"),
     )
-
-
-def coincide_con_la_busqueda(libro, texto):
-    """Verifica si un texto de búsqueda coincide con el título, autor o categoría del libro."""
-    buscado = str(texto).strip().lower()
-    if buscado == "":
-        return False
-    esta_en_el_titulo = buscado in libro.titulo().lower()
-    esta_en_el_autor = buscado in libro.autor().lower()
-    esta_en_la_categoria = buscado in libro.categoria().lower()
-    return esta_en_el_titulo or esta_en_el_autor or esta_en_la_categoria
-
-
-def buscar_por_texto(libros, texto):
-    """Busca y filtra de forma recursiva los libros que coinciden con el texto ingresado."""
-    if len(libros) == 0:
-        return []
-    primer_libro = libros[0]
-    libros_que_faltan = libros[1:]
-    if coincide_con_la_busqueda(primer_libro, texto):
-        return [primer_libro] + buscar_por_texto(libros_que_faltan, texto)
-    return buscar_por_texto(libros_que_faltan, texto)
 
 
 def datos_del_catalogo(libros):

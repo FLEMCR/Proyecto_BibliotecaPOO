@@ -89,12 +89,6 @@ class Administrador(Usuario):
         """Habilita los permisos de administración."""
         return True
 
-    def datos_de_membresia(self):
-        """Extiende los datos de membresía agregando el indicador de permisos de administrador."""
-        datos = super().datos_de_membresia()
-        datos["puede_administrar"] = utilidades.si_o_no(self.puede_administrar())
-        return datos
-
 
 def crear_usuario(datos):
     """Fábrica que recibe un diccionario con datos y retorna una instancia de Usuario o Administrador."""

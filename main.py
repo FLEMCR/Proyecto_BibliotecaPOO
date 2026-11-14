@@ -10,8 +10,7 @@ from ui.principal import VentanaPrincipal
 def cargar_estilos(aplicacion):
     """Carga la hoja de estilos QSS del proyecto en la aplicación."""
 
-    with open(configuracion.ARCHIVO_ESTILOS, "r", encoding="utf-8") as archivo:
-        aplicacion.setStyleSheet(archivo.read())
+    aplicacion.setStyleSheet(configuracion.ARCHIVO_ESTILOS.read_text(encoding="utf-8"))
 
 
 class AplicacionBiblioteca:

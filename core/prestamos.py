@@ -88,9 +88,7 @@ class Prestamo:
             "fecha_prestamo": str(self._fecha_prestamo),
             "fecha_limite": str(self._fecha_limite),
             "fecha_devolucion": (
-                None
-                if self._fecha_devolucion is None
-                else str(self._fecha_devolucion)
+                None if self._fecha_devolucion is None else str(self._fecha_devolucion)
             ),
             "estado": self._estado,
         }

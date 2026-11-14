@@ -61,18 +61,9 @@ class Biblioteca:
             )
         return self._usuarios[dni_buscado]
 
-    def datos_del_catalogo(self):
-        """Retorna el catálogo completo formateado para mostrar en pantalla."""
-        return libros.datos_del_catalogo(self.todos_los_libros())
-
     def datos_de_un_libro(self, isbn):
         """Retorna los datos detallados de un libro específico para su visualización."""
         return self.libro(isbn).datos_para_pantalla()
-
-    def buscar(self, texto_buscado):
-        """Filtra y retorna libros que coincidan con el texto de búsqueda ingresado."""
-        encontrados = libros.buscar_por_texto(self.todos_los_libros(), texto_buscado)
-        return libros.datos_del_catalogo(encontrados)
 
     def buscar_avanzado(
         self,
@@ -142,14 +133,6 @@ class Biblioteca:
         """Retorna las categorías presentes en el catálogo, sin repetir y ordenadas."""
         return sorted({libro.categoria() for libro in self.todos_los_libros()})
 
-    def datos_de_los_usuarios(self):
-        """Retorna una lista con los datos de membresía de todos los usuarios."""
-        return [usuario.datos_de_membresia() for usuario in self.todos_los_usuarios()]
-
-    def datos_de_membresia(self, dni):
-        """Retorna los datos de membresía de un usuario específico."""
-        return self.usuario(dni).datos_de_membresia()
-
     def guardar_libros(self):
         """Escribe todos los libros cargados en libros.json."""
         configuracion.escribir_archivo(
@@ -205,7 +188,9 @@ class Biblioteca:
         self.guardar_libros()
         return libro
 
-    def registrar_usuario(self, datos, permitir_administrador=False, fecha_de_alta=None):
+    def registrar_usuario(
+        self, datos, permitir_administrador=False, fecha_de_alta=None
+    ):
         """Registra un usuario nuevo, calcula su vencimiento y lo guarda en el JSON."""
         if not isinstance(datos, dict):
             raise errores.ErrorDeDatos("Los datos del usuario deben ser un diccionario")
@@ -217,7 +202,9 @@ class Biblioteca:
         nombre = str(datos.get("nombre", "")).strip()
         tipo = str(datos.get("tipo", "Estudiante")).strip()
         if tipo == "Administrador" and not permitir_administrador:
-            raise errores.ErrorDeDatos("No se puede crear un administrador desde el acceso")
+            raise errores.ErrorDeDatos(
+                "No se puede crear un administrador desde el acceso"
+            )
 
         fecha_de_alta = fecha_de_alta or date.today()
         vencimiento = datos.get("vencimiento_membresia")
@@ -255,9 +242,7 @@ class Biblioteca:
         """Retorna el historial de préstamos de un usuario."""
         dni_buscado = utilidades.validar_dni(dni)
         return [
-            prestamo
-            for prestamo in self._prestamos
-            if prestamo.dni() == dni_buscado
+            prestamo for prestamo in self._prestamos if prestamo.dni() == dni_buscado
         ]
 
     def prestar(self, isbn, dni):

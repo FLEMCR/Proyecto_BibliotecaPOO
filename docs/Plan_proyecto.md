@@ -4,7 +4,7 @@
 > **Curso:** Programación Orientada a Objetos  
 > **Documento:** `docs/Plan_proyecto.md`  
 > **Última actualización:** 2026-11-10  
-> **Entrada del sistema:** `main.py` (interfaz gráfica). La consola (`main_consola.py`) es legacy temporal de la evaluación parcial y se retira al final.  
+> **Entrada del sistema:** `main.py` (interfaz gráfica), única entrada.  
 > **Datos:** `data/libros.json`, `data/usuarios.json` y `data/prestamos.json`
 
 Este documento reemplaza al plan anterior. Su objetivo es servir como guía de trabajo para terminar el sistema, conectar las interfaces con la lógica existente y agregar lo que falta sin duplicar código.
@@ -33,7 +33,7 @@ Este documento reemplaza al plan anterior. Su objetivo es servir como guía de t
 ## 1. Cómo usar este plan
 
 - Cada tarea se marca con `[ ]` al empezar y `[x]` al terminar.
-- **La meta es una sola interfaz:** todo lo que el usuario hace debe terminar en la GUI. La consola fue el medio de la evaluación parcial y se retira al final; no se le agregan funciones.
+- **La meta es una sola interfaz:** todo lo que el usuario hace pasa por la GUI de PyQt5. No existe una segunda entrada en el sistema.
 - El orden de las fases no es obligatorio, pero sí recomendable: primero se estabiliza la base, luego se conecta la interfaz y al final se agregan préstamos, reportes y estilos.
 - La lógica de negocio va en `core/`. La interfaz solo muestra datos y llama métodos de `core/`.
 - Los archivos `.ui` contienen únicamente el diseño. Las conexiones `clicked`, `currentRowChanged`, etc. se hacen en Python.
@@ -57,9 +57,7 @@ Este documento reemplaza al plan anterior. Su objetivo es servir como guía de t
 
 Completar un sistema de biblioteca **con una sola forma de uso: la interfaz gráfica** con PyQt5 y archivos `.ui` de QtDesigner.
 
-La consola (`main_consola.py` y `core/menu.py`) se mantuvo durante la cursada porque la evaluación parcial se hizo por consola. **No es una segunda entrada del sistema ni una funcionalidad que se deba ampliar:** es código legacy temporal que se conserva solo mientras la interfaz termina de cubrir todo. Cuando la GUI tenga registro, catálogo, préstamos, devoluciones, usuarios y reportes, la consola y sus archivos se retiran.
-
-La lógica vive una sola vez en `core/`. La interfaz gráfica es la que la usa; la consola actual usa ese mismo núcleo, y por eso puede convivir un tiempo sin duplicar código. Migrar hacia las interfaces significa mover toda la interacción del usuario a la GUI, no reescribir el núcleo.
+La lógica vive una sola vez en `core/` y la interfaz gráfica es la única que la usa. Toda la interacción del usuario pasa por la GUI: acceso, registro, catálogo, préstamos, devoluciones y administración.
 
 ### 2.2 Alcance funcional
 
@@ -87,7 +85,7 @@ Estas reglas ya están decididas y deben respetarse en el código y en la interf
 3. **No se implementan beneficios de membresía por ahora.** La página “Mi membresía” solo muestra nombre, DNI, tipo, vencimiento y estado. Los beneficios quedan descartados para esta etapa.
 4. **La devolución libera al usuario.** Cuando se registra la devolución, el stock sube y el usuario queda habilitado para pedir otro libro.
 5. **El registro desde el acceso crea la membresía por 3 meses.** La fecha de vencimiento se calcula con `sumar_meses(fecha_de_alta, 3)`; no se usa `timedelta(days=90)` porque los meses no tienen la misma cantidad de días. El autorregistro solo permite `Estudiante` o `Docente`, nunca `Administrador`.
-6. **Las categorías quedan sin subcategorías.** La categoría de ciencias se llama `Ciencias` y `Tecnología` se mantiene como categoría independiente. Los libros de matemáticas, cálculo, física y biología quedan en `Ciencias`; los de ingeniería aplicada, programación, inteligencia artificial y gestión industrial quedan en `Tecnología`. Así no se pisan los nombres ni hace falta un filtro adicional.
+6. **Las categorías quedan sin subcategorías.** La categoría de ciencias se llama `Ciencias básicas` y `Tecnología` se mantiene como categoría independiente. Los libros de matemáticas, cálculo, física y biología quedan en `Ciencias básicas`; los de ingeniería aplicada, programación, inteligencia artificial y gestión industrial quedan en `Tecnología`. Así se diferencia de `Ciencias sociales` sin necesidad de un filtro adicional.
 7. **Los formularios se abren dentro del panel principal.** Préstamo, devolución y registro de libro son páginas de `VentanaPrincipal`, no diálogos independientes; el usuario los recorre con el mismo menú lateral que el catálogo.
 
 Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mantienen el foco en el flujo de registro, préstamo y devolución.
@@ -99,12 +97,12 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 | Clases y objetos                    | `Libro`, `Usuario`, `Administrador`, `Prestamo`, `Biblioteca` y las ventanas.                |
 | Encapsulación                       | Atributos con `_` y métodos de lectura (`titulo()`, `dni()`, `estado()`, etc.).              |
 | Herencia                            | `Administrador(Usuario)`.                                                                    |
-| Polimorfismo                        | `puede_administrar()` y `datos_de_membresia()` cambian según el tipo de usuario.             |
+| Polimorfismo                        | `puede_administrar()` cambia según el tipo de usuario (`Usuario` o `Administrador`).         |
 | Constructores y valores por defecto | `Usuario(...)`, `Libro(...)` y las ventanas que reciben `biblioteca` y `usuario`.            |
 | Funciones y métodos                 | Validaciones, búsquedas, reportes, préstamos y devoluciones.                                 |
 | Parámetros y retornos               | Todas las operaciones del núcleo devuelven datos listos para la interfaz.                    |
 | Excepciones propias                 | `ErrorBiblioteca`, `ErrorDeDatos` y las nuevas excepciones de archivo, préstamo y membresía. |
-| Recursividad                        | Búsqueda por texto y funciones de reportes sobre listas y matrices.                          |
+| Recursividad                        | `datos_del_catalogo()` y funciones de reportes sobre listas y matrices.                      |
 | Matrices                            | Reportes de estantes, devoluciones, historial y préstamos por sección.                       |
 | Archivos JSON                       | Lectura y escritura de libros, usuarios y préstamos.                                         |
 | Archivo de texto                    | Bitácora de movimientos y exportación de reportes.                                           |
@@ -120,15 +118,14 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 - **Núcleo de la biblioteca:** carga de libros y usuarios desde JSON.
 - **Clases del dominio:** `Libro`, `Usuario`, `Administrador` y `Biblioteca`.
 - **Validaciones:** DNI de 8 dígitos, ISBN de 13 dígitos, fechas reales, sección y estante válidos.
-- **Búsqueda recursiva:** `buscar_por_texto()` y `datos_del_catalogo()`.
+- **Recorrido recursivo del catálogo:** `datos_del_catalogo()`.
 - **Resumen general:** títulos, ejemplares, disponibles, prestados y usuarios.
-- **Consola (legacy):** `main_consola.py` arranca y permite acceder, ver catálogo, buscar, consultar por ISBN, ver membresía y listar usuarios. Se conserva solo por la evaluación parcial; no se amplía.
 - **Acceso gráfico:** `ui/acceso.py` valida DNI, cuenta activa y membresía vigente, y emite `usuario_autenticado`.
 - **Coordinación acceso → panel:** `main.py` crea `VentanaAcceso`, escucha la señal y abre `VentanaPrincipal`.
 - **Cierre de sesión:** `VentanaPrincipal` emite `sesion_cerrada` y el controlador elimina el panel y vuelve al acceso.
 - **Panel principal:** navegación por 8 páginas, resumen, membresía, visibilidad por rol y tema oscuro.
 - **Catálogo:** búsqueda por campo, filtro por categoría, orden, filtro de disponibilidad, tabla y ficha del libro.
-- **Categorías:** `Ciencias` y `Tecnología` son categorías independientes, sin subcategorías; los 22 libros de `data/libros.json` ya están reclasificados.
+- **Categorías:** `Ciencias básicas` y `Tecnología` son categorías independientes, sin subcategorías; los 22 libros de `data/libros.json` ya están reclasificados.
 - **Préstamos:** `Prestamo`, `Biblioteca.prestar()`, `prestamo_activo_de_usuario()` y stock actualizado; solo se pide el ISBN porque el DNI sale de la sesión.
 - **Devoluciones:** `Biblioteca.devolver()`, selección del préstamo activo, stock repuesto y liberación del usuario.
 - **Registro de libros:** alta y edición desde la página interna, con categoría, sección y stock.
@@ -137,14 +134,13 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 
 ### 3.2 Lo que está a medias 🟡
 
-| Elemento           | Estado actual                                                                 | Qué falta                                                                                                |
-| ------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| `ui/principal.py`  | Incrusta catálogo, préstamo, devolución y libro; navega y refresca datos.     | Accesos rápidos de la página de inicio y cierre controlado con la X.                                     |
-| `ui/principal.ui`  | Tiene las 8 páginas, el nombre en la barra lateral y la bienvenida al pie de Inicio. | La página de usuarios y reportes aún es de solo lectura.                                            |
-| `ui/catalogo.ui`   | Filtros, tabla y ficha completos, con filtro por categoría y más espacio para la tabla. | Botones de administración para nuevo/editar/eliminar libro dentro del catálogo.                  |
-| `main.py`          | Abre, cierra sesión y vuelve al acceso.                                      | Decidir si cerrar la ventana principal con la X debe salir o volver al acceso.                           |
-| `ui/acceso.py`     | Valida y muestra errores con `QMessageBox`.                                   | Validator de DNI, mensaje inline y foco inicial opcionales.                                              |
-| Consola (legacy)   | Funciona con el catálogo actual.                                              | No se amplía: no conoce préstamos, devoluciones, CRUD ni membresías. Se retira cuando la GUI cubra todo. |
+| Elemento          | Estado actual                                                                           | Qué falta                                                                       |
+| ----------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `ui/principal.py` | Incrusta catálogo, préstamo, devolución y libro; navega y refresca datos.               | Accesos rápidos de la página de inicio y cierre controlado con la X.            |
+| `ui/principal.ui` | Tiene las 8 páginas, el nombre en la barra lateral y la bienvenida al pie de Inicio.    | La página de usuarios y reportes aún es de solo lectura.                        |
+| `ui/catalogo.ui`  | Filtros, tabla y ficha completos, con filtro por categoría y más espacio para la tabla. | Botones de administración para nuevo/editar/eliminar libro dentro del catálogo. |
+| `main.py`         | Abre, cierra sesión y vuelve al acceso.                                                 | Decidir si cerrar la ventana principal con la X debe salir o volver al acceso.  |
+| `ui/acceso.py`    | Valida y muestra errores con `QMessageBox`.                                             | Validator de DNI, mensaje inline y foco inicial opcionales.                     |
 
 ### 3.3 Lo que falta ⬜
 
@@ -156,14 +152,12 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 - Accesos rápidos en la página de inicio.
 - Estilos, íconos e imágenes finales.
 - Actualización del `README.md` con las instrucciones nuevas.
-- Retiro de la consola legacy (`main_consola.py`, `core/menu.py` y `utilidades.pausa()`) cuando la GUI cubra todas las funcionalidades.
 
 ### 3.4 Problemas técnicos que conviene corregir primero
 
 | Prioridad | Problema                                                                                | Efecto                                                                                           | Corrección propuesta                                                                                |
 | --------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------- |
 | Alta      | `core/biblioteca.py` usa `from core import ...` y otros módulos usan imports relativos. | Funciona al ejecutar desde la carpeta del proyecto, pero falla si se ejecuta como paquete.       | Unificar a imports relativos (`from . import ...`) y agregar `core/__init__.py` y `ui/__init__.py`. |
-| Alta      | `main_consola.py` llama a `main()` sin `if __name__ == "__main__":`.                            | Se ejecuta al importar el archivo.                                                               | Envolver la llamada en la condición mientras el archivo siga existiendo.                            |
 | Alta      | `crear_libro()` usa `datos.get(...)` sin valor por defecto en varios campos.            | Un JSON incompleto produce `TypeError` en lugar de `ErrorDeDatos`.                               | Poner valores por defecto o validar antes de construir el `Libro`.                                  |
 | Alta      | `leer_archivo()` no captura errores de JSON.                                            | Un JSON mal escrito muestra un traceback.                                                        | Capturar `json.JSONDecodeError` y lanzar `ErrorDeArchivo`.                                          |
 | Alta      | No existe función para escribir archivos.                                               | Ningún cambio del usuario se guarda.                                                             | Agregar `escribir_archivo()` en `configuracion.py`.                                                 |
@@ -173,7 +167,6 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 | Media     | `Libro.se_puede_prestar()` devuelve `True` solo si `disponibles > 1`.                   | El último ejemplar nunca se presta.                                                              | Decidir la regla y documentarla. Si se permite prestar el último, cambiar a `> 0`.                  |
 | Media     | `VentanaAcceso` no tiene validator ni Enter.                                            | Se pueden escribir letras y hay que usar el botón.                                               | Agregar `QIntValidator`, `maxLength` y `returnPressed`.                                             |
 | Baja      | Variables con tildes o nombres poco claros (`año`).                                     | Dificulta la lectura y puede causar errores de codificación.                                     | Renombrar a `anio`, `mes`, `dia`.                                                                   |
-| Baja      | `pausa()` y varias funciones de `menu.py` solo sirven a la consola.                     | Código que no usa la interfaz.                                                                   | Mantenerlos solo mientras exista `main_consola.py`; se eliminan junto con la consola al final.      |
 
 ---
 
@@ -207,12 +200,12 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 └─────────────────────────────────────────────┘
 ```
 
-> La consola no aparece en el diagrama porque no forma parte de la arquitectura final. `main_consola.py` y `core/menu.py` son un puente temporal de la evaluación parcial: usan el mismo núcleo, pero no se conectan con `ui/` ni reciben funcionalidades nuevas.
+> La interfaz gráfica es la única capa de presentación: usa el núcleo de `core/` y no existen otras entradas al sistema.
 
 ### 4.2 Reglas
 
 1. **La interfaz no abre archivos JSON.** Solo llama métodos de `Biblioteca`.
-2. **El núcleo no importa PyQt5.** `core/` no depende de la interfaz: así la GUI lo usa sin mezclar capas y la consola legacy puede seguir funcionando mientras exista.
+2. **El núcleo no importa PyQt5.** `core/` no depende de la interfaz: así la GUI lo usa sin mezclar capas.
 3. **Los `.ui` no contienen lógica.** Las conexiones se hacen en el `.py` de cada ventana.
 4. **Un dato se escribe una sola vez.** El nombre de la biblioteca, el lema, las rutas y las reglas van en `configuracion.py`.
 5. **Los nombres de los widgets son un contrato.** Si cambia un `objectName` en el `.ui`, hay que actualizar el `.py`.
@@ -250,8 +243,7 @@ El proyecto usa una estructura plana: en la raíz están los puntos de entrada y
 
 ```
 proyecto_parcial/
-├── main.py                     # entrada de la interfaz gráfica (final)
-├── main_consola.py             # entrada de consola (legacy temporal)
+├── main.py                     # entrada única de la interfaz gráfica
 ├── README.md
 ├── requirements.txt            # dependencias del proyecto
 ├── assets/
@@ -263,8 +255,7 @@ proyecto_parcial/
 │   ├── biblioteca.py           # controlador: catálogo, usuarios y resumen
 │   ├── configuracion.py        # rutas, secciones, estantes y lectura de JSON
 │   ├── errores.py              # ErrorBiblioteca y ErrorDeDatos
-│   ├── libros.py               # Libro, fábrica y búsqueda recursiva
-│   ├── menu.py                 # menú de consola (legacy temporal)
+│   ├── libros.py               # Libro, fábrica y recorrido recursivo
 │   ├── prestamos.py            # vacío por ahora
 │   ├── reportes.py             # vacío por ahora
 │   ├── usuarios.py             # Usuario, Administrador y fábrica
@@ -272,7 +263,7 @@ proyecto_parcial/
 ├── data/
 │   ├── libros.json             # 22 libros
 │   ├── prestamos.json          # vacío por ahora
-│   └── usuarios.json           # 13 usuarios
+│   └── usuarios.json           # 14 usuarios
 ├── docs/
 │   ├── Guia_base.ipynb
 │   ├── Guia_base.md
@@ -351,49 +342,42 @@ proyecto_parcial/
     └── registro.ui             [conectado]
 ```
 
-**Lo que ya no aparece en la estructura final:**
-
-- `main_consola.py`: se retira con la consola.
-- `core/menu.py`: no existe en la estructura final porque es lógica de consola; se elimina junto con `main_consola.py`.
-
 **Decisión sobre `.ui`:** los archivos `.ui` quedan **junto a su `.py`** dentro de `ui/`. Así `uic.loadUi(Path(__file__).with_suffix(".ui"))` sigue funcionando sin rutas adicionales y el diseñador y el código están en la misma carpeta.
 
 **Decisión sobre `assets/`:** hay dos subcarpetas, `assets/images/` para todos los íconos e imágenes y `assets/styles/` para las hojas `.qss` de las ventanas. No se separan los íconos de las imágenes: ambos son recursos gráficos y se cargan igual desde `configuracion.py`.
 
 ### 5.3 Qué se conserva, qué se modifica y qué se retira
 
-| Archivo o elemento                    | Acción      | Motivo                                                                                                    |
-| ------------------------------------- | ----------- | --------------------------------------------------------------------------------------------------------- |
-| `main.py`                             | Conservar   | Es la entrada única de la interfaz gráfica.                                                               |
-| `main_consola.py`                     | Retirar     | Entrada de consola usada en la evaluación parcial. La entrada final es `main.py`.                         |
-| `core/__init__.py`                    | Conservar   | Paquete del núcleo.                                                                                       |
-| `ui/__init__.py`                      | Conservar   | Paquete de la interfaz.                                                                                   |
-| `core/configuracion.py`               | Modificar   | Agregar escritura de archivos, ajustar `CARPETA_DATOS` a `data/` y sumar constantes de préstamos.         |
-| `core/biblioteca.py`                  | Modificar   | Es el punto de entrada de la lógica; debe crecer ordenadamente.                                          |
-| `core/libros.py`                      | Modificar   | Agregar `buscar_avanzado`, CRUD y defaults seguros.                                                      |
-| `core/usuarios.py`                    | Modificar   | Agregar renovación y cambios de estado.                                                                  |
-| `core/prestamos.py`                   | Implementar | Implementar `Prestamo` y el control de préstamo único.                                                   |
-| `core/reportes.py`                    | Implementar | Implementar matrices y recursividad.                                                                     |
-| `core/menu.py`                        | Retirar     | Es lógica de consola; la GUI la reemplaza. Se elimina junto con `main_consola.py`.                        |
-| `ui/principal.py`                     | Modificar   | Es el panel central y hoy está incompleto.                                                               |
-| `ui/principal.ui`                     | Modificar   | Agregar el contenedor del catálogo y quitar textos fijos.                                                |
-| `ui/catalogo.ui`                      | Conservar   | El diseño ya sirve; solo falta su `.py`.                                                                 |
-| `ui/catalogo.py`                      | Implementar | Conecta el diseño con `Biblioteca`.                                                                      |
-| `ui/acceso.py`                        | Modificar   | Agregar el botón y la apertura del registro.                                                             |
-| `ui/acceso.ui`                        | Modificar   | Agregar `registrarBtn` junto a `entrarBtn`.                                                              |
-| `ui/registro.ui`                      | Implementar | Formulario de autorregistro de usuarios.                                                                 |
-| `ui/registro.py`                      | Implementar | Valida y envía los datos a `Biblioteca.registrar_usuario()`.                                             |
-| `ui/libro_form.py` y `.ui`            | En progreso | `.ui` creado con layouts y spacers; falta conectar `.py`.                                                |
-| `ui/prestamo.py` y `.ui`              | En progreso | `.ui` creado con layouts y spacers; falta conectar `.py`.                                                 |
-| `ui/devolucion.py` y `.ui`            | En progreso | `.ui` creado con layouts y spacers; falta conectar `.py`.                                                 |
-| `assets/images/`                      | Crear       | Guardar todos los íconos e imágenes de la interfaz.                                                      |
-| `assets/styles/`                      | Crear       | Guardar las hojas de estilo `.qss` de las ventanas.                                                      |
-| `data/`                               | Conservar   | Los JSON y la bitácora no son código fuente.                                                             |
-| `requirements.txt`                    | Crear       | Declarar la dependencia `PyQt5`.                                                                         |
-| `docs/Plan_mejora_parcial_y_final.md` | Reemplazado | Su contenido quedó integrado en este plan.                                                               |
-| Textos fijos de marca en los `.ui`    | Modificar   | Deben venir de `configuracion.py`.                                                                       |
-| `tests/a.py` y `tests/pr.py`          | Uso local   | Son pruebas sueltas; no forman parte del entregable.                                                     |
-| `tests/test_biblioteca.py`            | Uso local   | Está desactualizado respecto al núcleo actual; se ajusta cuando se implementen las funciones nuevas.     |
+| Archivo o elemento                    | Acción      | Motivo                                                                                               |
+| ------------------------------------- | ----------- | ---------------------------------------------------------------------------------------------------- |
+| `main.py`                             | Conservar   | Es la entrada única de la interfaz gráfica.                                                          |
+| `core/__init__.py`                    | Conservar   | Paquete del núcleo.                                                                                  |
+| `ui/__init__.py`                      | Conservar   | Paquete de la interfaz.                                                                              |
+| `core/configuracion.py`               | Modificar   | Agregar escritura de archivos, ajustar `CARPETA_DATOS` a `data/` y sumar constantes de préstamos.    |
+| `core/biblioteca.py`                  | Modificar   | Es el punto de entrada de la lógica; debe crecer ordenadamente.                                      |
+| `core/libros.py`                      | Modificar   | Agregar `buscar_avanzado`, CRUD y defaults seguros.                                                  |
+| `core/usuarios.py`                    | Modificar   | Agregar renovación y cambios de estado.                                                              |
+| `core/prestamos.py`                   | Implementar | Implementar `Prestamo` y el control de préstamo único.                                               |
+| `core/reportes.py`                    | Implementar | Implementar matrices y recursividad.                                                                 |
+| `ui/principal.py`                     | Modificar   | Es el panel central y hoy está incompleto.                                                           |
+| `ui/principal.ui`                     | Modificar   | Agregar el contenedor del catálogo y quitar textos fijos.                                            |
+| `ui/catalogo.ui`                      | Conservar   | El diseño ya sirve; solo falta su `.py`.                                                             |
+| `ui/catalogo.py`                      | Implementar | Conecta el diseño con `Biblioteca`.                                                                  |
+| `ui/acceso.py`                        | Modificar   | Agregar el botón y la apertura del registro.                                                         |
+| `ui/acceso.ui`                        | Modificar   | Agregar `registrarBtn` junto a `entrarBtn`.                                                          |
+| `ui/registro.ui`                      | Implementar | Formulario de autorregistro de usuarios.                                                             |
+| `ui/registro.py`                      | Implementar | Valida y envía los datos a `Biblioteca.registrar_usuario()`.                                         |
+| `ui/libro_form.py` y `.ui`            | En progreso | `.ui` creado con layouts y spacers; falta conectar `.py`.                                            |
+| `ui/prestamo.py` y `.ui`              | En progreso | `.ui` creado con layouts y spacers; falta conectar `.py`.                                            |
+| `ui/devolucion.py` y `.ui`            | En progreso | `.ui` creado con layouts y spacers; falta conectar `.py`.                                            |
+| `assets/images/`                      | Crear       | Guardar todos los íconos e imágenes de la interfaz.                                                  |
+| `assets/styles/`                      | Crear       | Guardar las hojas de estilo `.qss` de las ventanas.                                                  |
+| `data/`                               | Conservar   | Los JSON y la bitácora no son código fuente.                                                         |
+| `requirements.txt`                    | Crear       | Declarar la dependencia `PyQt5`.                                                                     |
+| `docs/Plan_mejora_parcial_y_final.md` | Reemplazado | Su contenido quedó integrado en este plan.                                                           |
+| Textos fijos de marca en los `.ui`    | Modificar   | Deben venir de `configuracion.py`.                                                                   |
+| `tests/a.py` y `tests/pr.py`          | Uso local   | Son pruebas sueltas; no forman parte del entregable.                                                 |
+| `tests/test_biblioteca.py`            | Uso local   | Está desactualizado respecto al núcleo actual; se ajusta cuando se implementen las funciones nuevas. |
 
 ### 5.4 Criterio para retirar código
 
@@ -403,7 +387,7 @@ Un archivo o función se retira solo si:
 - su lógica está cubierta por otra función del núcleo,
 - y no forma parte de la demostración de los requisitos del curso.
 
-La consola se conserva únicamente mientras se termina la migración, porque la evaluación parcial se hizo con ella. **No recibe funcionalidades nuevas y no se considera una entrada del sistema final.** Cuando la GUI cubra registro, catálogo, préstamos, devoluciones, usuarios y reportes, se eliminan `core/menu.py`, `main_consola.py` y `utilidades.pausa()` en una sola fase de limpieza. La comprobación de que ya se puede retirar es simple: ninguna pantalla de `ui/` importa `menu.py` y todas las operaciones existen en `Biblioteca`.
+La interfaz gráfica es la única entrada y cubre acceso, registro, catálogo, préstamos, devoluciones y administración. No queda código de presentación alternativo.
 
 ### 5.5 Convención de carpetas
 
@@ -421,7 +405,6 @@ No se usa `src/`: la raíz del proyecto es la carpeta de trabajo y los paquetes 
 ```
 proyecto_parcial/
 ├── main.py
-├── main_consola.py        # temporal
 ├── README.md
 ├── requirements.txt
 ├── assets/
@@ -438,7 +421,7 @@ proyecto_parcial/
 - **Carpetas en inglés:** `core`, `ui`, `assets`, `images`, `styles`, `data`, `docs`.
 - **Archivos y clases en español por ahora:** `biblioteca.py`, `principal.py`, `VentanaPrincipal`. Cambiar todo a inglés es un refactor aparte; la estructura ya queda ordenada y se puede traducir más adelante sin mover carpetas.
 - **Un `.ui` junto a su `.py`:** `ui/acceso.py` y `ui/acceso.ui`. Así la ruta relativa del `.ui` no cambia.
-- **Sin archivos sueltos en la raíz:** solo `main.py`, `main_consola.py` (temporal), `README.md`, `requirements.txt` y las carpetas del proyecto.
+- **Sin archivos sueltos en la raíz:** solo `main.py`, `README.md`, `requirements.txt` y las carpetas del proyecto.
 
 #### Rutas de `configuracion.py`
 
@@ -543,43 +526,43 @@ Reglas:
 
 #### Barra lateral
 
-| `objectName`           | Widget        | Uso                                                              |
-| ---------------------- | ------------- | ---------------------------------------------------------------- |
-| `marca1Label`          | `QLabel`      | Nombre de la biblioteca.                                         |
-| `marca2Label`          | `QLabel`      | Lema o texto corto.                                              |
-| `bienvenidaLabel`      | `QLabel`      | “Hola, {nombre}”.                                                |
-| `tipoLabel`            | `QLabel`      | Tipo y estado del usuario.                                       |
+| `objectName`           | Widget        | Uso                                                                                                                          |
+| ---------------------- | ------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| `marca1Label`          | `QLabel`      | Nombre de la biblioteca.                                                                                                     |
+| `marca2Label`          | `QLabel`      | Lema o texto corto.                                                                                                          |
+| `bienvenidaLabel`      | `QLabel`      | “Hola, {nombre}”.                                                                                                            |
+| `tipoLabel`            | `QLabel`      | Tipo y estado del usuario.                                                                                                   |
 | `navegacionListWidget` | `QListWidget` | Filas 0 a 7: Inicio, Catálogo, Registrar préstamo, Registrar devolución, Mi membresía, Registrar libro, Usuarios y Reportes. |
-| `cerrarSesionButton`   | `QPushButton` | Vuelve al acceso.                                                |
+| `cerrarSesionButton`   | `QPushButton` | Vuelve al acceso.                                                                                                            |
 
 #### Páginas del `paginasStackedWidget`
 
-| Índice | Página            | Contenido                                    | Acceso              |
-| ------ | ----------------- | -------------------------------------------- | ------------------- |
-| 0      | `inicioPage`      | Tarjetas de resumen y accesos rápidos.       | Todos.              |
-| 1      | `catalogoPage`    | `catalogo.ui` incrustado.                    | Todos.              |
-| 2      | `prestamoPage`    | `prestamo.ui` incrustado; solo pide ISBN.    | Todos.              |
-| 3      | `devolucionPage`  | `devolucion.ui` incrustado.                  | Todos.              |
-| 4      | `membresiaPage`   | Datos de la membresía.                       | Todos.              |
-| 5      | `libroPage`       | `libro_form.ui` incrustado.                  | Solo administrador. |
-| 6      | `usuariosPage`    | Tabla y búsqueda de usuarios.                | Solo administrador. |
-| 7      | `reportesPage`    | Reporte y exportación.                       | Solo administrador. |
+| Índice | Página           | Contenido                                 | Acceso              |
+| ------ | ---------------- | ----------------------------------------- | ------------------- |
+| 0      | `inicioPage`     | Tarjetas de resumen y accesos rápidos.    | Todos.              |
+| 1      | `catalogoPage`   | `catalogo.ui` incrustado.                 | Todos.              |
+| 2      | `prestamoPage`   | `prestamo.ui` incrustado; solo pide ISBN. | Todos.              |
+| 3      | `devolucionPage` | `devolucion.ui` incrustado.               | Todos.              |
+| 4      | `membresiaPage`  | Datos de la membresía.                    | Todos.              |
+| 5      | `libroPage`      | `libro_form.ui` incrustado.               | Solo administrador. |
+| 6      | `usuariosPage`   | Tabla y búsqueda de usuarios.             | Solo administrador. |
+| 7      | `reportesPage`   | Reporte y exportación.                    | Solo administrador. |
 
 Las filas 5, 6 y 7 se ocultan para estudiantes y docentes. Las páginas 2 y 3 se centran horizontalmente con un ancho máximo de 640 px; la página 1 ocupa todo el espacio disponible.
 
 #### Widgets de la página de inicio
 
-| `objectName`            | Uso                                       |
-| ----------------------- | ----------------------------------------- |
-| `titulosValorLabel`     | Cantidad de títulos.                      |
-| `ejemplaresValorLabel`  | Cantidad de ejemplares.                   |
-| `disponiblesValorLabel` | Ejemplares disponibles.                   |
-| `prestadosValorLabel`   | Ejemplares prestados.                     |
-| `usuariosValorLabel`    | Cantidad de usuarios.                     |
+| `objectName`            | Uso                                                     |
+| ----------------------- | ------------------------------------------------------- |
+| `titulosValorLabel`     | Cantidad de títulos.                                    |
+| `ejemplaresValorLabel`  | Cantidad de ejemplares.                                 |
+| `disponiblesValorLabel` | Ejemplares disponibles.                                 |
+| `prestadosValorLabel`   | Ejemplares prestados.                                   |
+| `usuariosValorLabel`    | Cantidad de usuarios.                                   |
 | `inicioFooterFrame`     | Pie de la página de inicio con la bienvenida y el lema. |
-| `bienvenidaLabel`       | “Hola, {nombre}” en el pie de Inicio.     |
-| `tipoLabel`             | Tipo y estado del usuario en el pie.      |
-| `marca2Label`           | Lema de la biblioteca en el pie de Inicio. |
+| `bienvenidaLabel`       | “Hola, {nombre}” en el pie de Inicio.                   |
+| `tipoLabel`             | Tipo y estado del usuario en el pie.                    |
+| `marca2Label`           | Lema de la biblioteca en el pie de Inicio.              |
 
 #### Widgets de membresía
 
@@ -680,19 +663,19 @@ self.layoutCatalogoContenedor.addWidget(self.catalogo)
 
 **Señales:**
 
-| Señal                                   | Método              | Qué hace                            |
-| --------------------------------------- | ------------------- | ----------------------------------- |
-| `buscarButton.clicked`                  | `buscar()`          | Pide los resultados a `Biblioteca`. |
-| `buscarLineEdit.returnPressed`          | `buscar()`          | Busca con Enter.                    |
-| `limpiarButton.clicked`                 | `limpiar()`         | Vuelve al catálogo completo.        |
-| `categoriaComboBox.currentIndexChanged` | `buscar()`          | Filtra al cambiar la categoría.     |
-| `tablaLibros.itemSelectionChanged`      | `_mostrar_detalle()` | Actualiza la ficha.                |
+| Señal                                   | Método               | Qué hace                            |
+| --------------------------------------- | -------------------- | ----------------------------------- |
+| `buscarButton.clicked`                  | `buscar()`           | Pide los resultados a `Biblioteca`. |
+| `buscarLineEdit.returnPressed`          | `buscar()`           | Busca con Enter.                    |
+| `limpiarButton.clicked`                 | `limpiar()`          | Vuelve al catálogo completo.        |
+| `categoriaComboBox.currentIndexChanged` | `buscar()`           | Filtra al cambiar la categoría.     |
+| `tablaLibros.itemSelectionChanged`      | `_mostrar_detalle()` | Actualiza la ficha.                 |
 
 **Criterio de aceptación:**
 
 - Al abrir la página se ven los 22 libros.
 - Buscar “arte” devuelve los 4 libros de la categoría Arte.
-- “Ciencias” muestra 4 libros y “Tecnología” muestra 5 libros.
+- “Ciencias básicas” muestra 4 libros y “Tecnología” muestra 5 libros.
 - “Limpiar” restaura la lista completa.
 - Seleccionar una fila actualiza la ficha.
 - Una búsqueda sin resultados no rompe la ventana.
@@ -703,23 +686,23 @@ self.layoutCatalogoContenedor.addWidget(self.catalogo)
 
 **Por qué es un `QDialog`:** es un formulario breve, modal, que se abre desde el acceso, se completa y devuelve `Accepted` o `Rejected`. No necesita barra de estado ni menús. Se abre con `exec_()` porque el acceso necesita esperar el resultado para saber si debe dejar el DNI escrito.
 
-| `objectName`         | Widget        | Uso                                                                               |
-| -------------------- | ------------- | --------------------------------------------------------------------------------- |
-| `nombreLineEdit`     | `QLineEdit`   | Nombre completo. Va en la primera fila del formulario.                            |
-| `dniLineEdit`        | `QLineEdit`   | DNI nuevo, 8 dígitos. Va en la segunda fila.                                      |
-| `tipoComboBox`       | `QComboBox`   | Solo `Estudiante` o `Docente`; nunca `Administrador`.                             |
-| `membresiaLabel`     | `QLabel`      | Explica que la membresía dura 3 meses y muestra la fecha estimada de vencimiento. |
-| `registrarButton`    | `QPushButton` | Valida, crea el usuario y cierra.                                                 |
-| `cancelarButton`     | `QPushButton` | Cierra sin crear nada.                                                            |
+| `objectName`      | Widget        | Uso                                                                               |
+| ----------------- | ------------- | --------------------------------------------------------------------------------- |
+| `nombreLineEdit`  | `QLineEdit`   | Nombre completo. Va en la primera fila del formulario.                            |
+| `dniLineEdit`     | `QLineEdit`   | DNI nuevo, 8 dígitos. Va en la segunda fila.                                      |
+| `tipoComboBox`    | `QComboBox`   | Solo `Estudiante` o `Docente`; nunca `Administrador`.                             |
+| `membresiaLabel`  | `QLabel`      | Explica que la membresía dura 3 meses y muestra la fecha estimada de vencimiento. |
+| `registrarButton` | `QPushButton` | Valida, crea el usuario y cierra.                                                 |
+| `cancelarButton`  | `QPushButton` | Cierra sin crear nada.                                                            |
 
 **Señales:**
 
-| Señal                       | Método        | Qué hace                                                      |
-| --------------------------- | ------------- | ------------------------------------------------------------- |
-| `registrarButton.clicked`   | `registrar()` | Valida los campos y llama a `Biblioteca.registrar_usuario()`. |
-| `cancelarButton.clicked`    | `reject()`    | Cierra el diálogo sin guardar.                                |
-| `nombreLineEdit.returnPressed` | `dniLineEdit.setFocus()` | Pasa el foco al DNI.                             |
-| `dniLineEdit.returnPressed` | `registrar()` | Permite confirmar con Enter.                                  |
+| Señal                          | Método                   | Qué hace                                                      |
+| ------------------------------ | ------------------------ | ------------------------------------------------------------- |
+| `registrarButton.clicked`      | `registrar()`            | Valida los campos y llama a `Biblioteca.registrar_usuario()`. |
+| `cancelarButton.clicked`       | `reject()`               | Cierra el diálogo sin guardar.                                |
+| `nombreLineEdit.returnPressed` | `dniLineEdit.setFocus()` | Pasa el foco al DNI.                                          |
+| `dniLineEdit.returnPressed`    | `registrar()`            | Permite confirmar con Enter.                                  |
 
 **Orden del formulario:** primero el nombre, luego el DNI y al final el tipo de usuario. El foco inicial queda en `nombreLineEdit`; al presionar Enter se pasa al DNI y desde ahí se registra.
 
@@ -761,16 +744,16 @@ self.permisosValorLabel.setText(
 
 ### 6.7 Página de usuarios 🟡
 
-Solo para administradores. Se llena con `biblioteca.datos_de_los_usuarios()`.
+Solo para administradores. Se llena recorriendo `biblioteca.todos_los_usuarios()` y llamando a `usuario.datos_de_membresia()`.
 
-| Columna     | Dato                            |
-| ----------- | ------------------------------- |
-| DNI         | `dni`                           |
-| Nombre      | `nombre`                        |
-| Tipo        | `tipo`                          |
-| Vencimiento | `vencimiento_membresia`         |
-| Estado      | `estado`                        |
-| Administra  | `puede_administrar` (si existe) |
+| Columna     | Dato                          |
+| ----------- | ----------------------------- |
+| DNI         | `dni`                         |
+| Nombre      | `nombre`                      |
+| Tipo        | `tipo`                        |
+| Vencimiento | `vencimiento_membresia`       |
+| Estado      | `estado`                      |
+| Administra  | `usuario.puede_administrar()` |
 
 **Acciones que conviene agregar como botones:**
 
@@ -785,9 +768,9 @@ Solo para administradores. Se llena con `biblioteca.datos_de_los_usuarios()`.
 
 Se llena con las funciones de `core/reportes.py` y se muestra en `reporteTextEdit`.
 
-| Botón                     | Acción                                                                      |
-| ------------------------- | --------------------------------------------------------------------------- |
-| `actualizarReporteButton` | Recalcula las matrices y el resumen.                                        |
+| Botón                     | Acción                                                                     |
+| ------------------------- | -------------------------------------------------------------------------- |
+| `actualizarReporteButton` | Recalcula las matrices y el resumen.                                       |
 | `exportarReporteButton`   | Guarda el contenido en `data/reportes/` o en la ruta que elija el usuario. |
 
 **Criterio de aceptación:** los totales del reporte coinciden con el resumen, las matrices se ven como tablas y la exportación genera un archivo legible.
@@ -798,19 +781,19 @@ Se llena con las funciones de `core/reportes.py` y se muestra en `reporteTextEdi
 
 Formulario para registrar o editar un libro. Se muestra en `libroPage` y la fila del menú solo aparece si el usuario es administrador.
 
-| `objectName`            | Widget        | Uso                                      |
-| ----------------------- | ------------- | ---------------------------------------- |
-| `isbnLineEdit`          | `QLineEdit`   | ISBN de 13 dígitos.                      |
-| `tituloLineEdit`        | `QLineEdit`   | Título.                                  |
-| `autorLineEdit`         | `QLineEdit`   | Autor.                                   |
-| `categoriaComboBox`     | `QComboBox`   | Categoría principal del libro.           |
-| `seccionComboBox`       | `QComboBox`   | Sección A–E, con su nombre.              |
-| `estanteSpinBox`        | `QSpinBox`    | Estante 1–3.                             |
-| `ejemplaresSpinBox`     | `QSpinBox`    | Total de ejemplares.                     |
-| `disponiblesSpinBox`    | `QSpinBox`    | Ejemplares disponibles para préstamo.    |
-| `ayudaLibroLabel`       | `QLabel`      | Mensajes de éxito o error.               |
-| `guardarButton`         | `QPushButton` | Registra o actualiza y emite la señal.   |
-| `cancelarButton`        | `QPushButton` | Limpia el formulario.                    |
+| `objectName`         | Widget        | Uso                                    |
+| -------------------- | ------------- | -------------------------------------- |
+| `isbnLineEdit`       | `QLineEdit`   | ISBN de 13 dígitos.                    |
+| `tituloLineEdit`     | `QLineEdit`   | Título.                                |
+| `autorLineEdit`      | `QLineEdit`   | Autor.                                 |
+| `categoriaComboBox`  | `QComboBox`   | Categoría principal del libro.         |
+| `seccionComboBox`    | `QComboBox`   | Sección A–E, con su nombre.            |
+| `estanteSpinBox`     | `QSpinBox`    | Estante 1–3.                           |
+| `ejemplaresSpinBox`  | `QSpinBox`    | Total de ejemplares.                   |
+| `disponiblesSpinBox` | `QSpinBox`    | Ejemplares disponibles para préstamo.  |
+| `ayudaLibroLabel`    | `QLabel`      | Mensajes de éxito o error.             |
+| `guardarButton`      | `QPushButton` | Registra o actualiza y emite la señal. |
+| `cancelarButton`     | `QPushButton` | Limpia el formulario.                  |
 
 **Comportamiento:**
 
@@ -853,16 +836,16 @@ Formulario para prestar un ejemplar al usuario conectado. **Solo se pide el ISBN
 
 Formulario para devolver uno de los préstamos activos del usuario conectado.
 
-| `objectName`           | Widget        | Uso                                             |
-| ---------------------- | ------------- | ----------------------------------------------- |
-| `usuarioLabel`         | `QLabel`      | Usuario conectado; no se pide DNI otra vez.     |
-| `prestamoComboBox`     | `QComboBox`   | Préstamos activos del usuario para elegir.      |
-| `fechaLimiteLabel`     | `QLabel`      | Fecha límite del préstamo.                      |
-| `fechaDevolucionLabel` | `QLabel`      | Fecha de hoy.                                   |
-| `estadoPrestamoLabel`  | `QLabel`      | “En plazo” o “Vencido”.                         |
-| `devolverButton`       | `QPushButton` | Registra la devolución.                         |
-| `ayudaDevolucionLabel` | `QLabel`      | Mensajes de éxito o error.                      |
-| `cancelarButton`       | `QPushButton` | Recarga la página (“Actualizar”).               |
+| `objectName`           | Widget        | Uso                                         |
+| ---------------------- | ------------- | ------------------------------------------- |
+| `usuarioLabel`         | `QLabel`      | Usuario conectado; no se pide DNI otra vez. |
+| `prestamoComboBox`     | `QComboBox`   | Préstamos activos del usuario para elegir.  |
+| `fechaLimiteLabel`     | `QLabel`      | Fecha límite del préstamo.                  |
+| `fechaDevolucionLabel` | `QLabel`      | Fecha de hoy.                               |
+| `estadoPrestamoLabel`  | `QLabel`      | “En plazo” o “Vencido”.                     |
+| `devolverButton`       | `QPushButton` | Registra la devolución.                     |
+| `ayudaDevolucionLabel` | `QLabel`      | Mensajes de éxito o error.                  |
+| `cancelarButton`       | `QPushButton` | Recarga la página (“Actualizar”).           |
 
 **Método del núcleo:** `Biblioteca.devolver(isbn, self.usuario.dni())`.
 
@@ -938,13 +921,13 @@ class VentanaPrincipal(QMainWindow):
 
 #### Contenedores y navegación
 
-| Componente                                                 | Para qué se usa en el proyecto                                  | Por qué                                                                                                     | Alternativas descartadas                                                                                      |
-| ---------------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
-| `QStackedWidget`                                           | Cambiar entre Inicio, Catálogo, Préstamo, Devolución, Membresía, Libro, Usuarios y Reportes. | Mantiene las ocho páginas cargadas y solo cambia la visible; el índice coincide con la fila del menú. | Abrir ocho ventanas independientes, que se acumulan y pierden el estado.                                       |
-| `QListWidget`                                              | Menú lateral de navegación.                                     | Muestra las opciones siempre visibles y permite ocultar filas de administración con `item.setHidden(True)`. | `QComboBox` esconde las opciones; `QTabWidget` cambia el diseño y no permite ocultar pestañas tan fácilmente. |
-| `QFrame`                                                   | Tarjetas de resumen, avisos y separadores visuales.             | Agrupa visualmente sin agregar un título obligatorio.                                                       | `QGroupBox` sirve para grupos con título; para una tarjeta simple es más pesado.                              |
-| `QSplitter`                                                | Separar la tabla del catálogo y la ficha del libro.             | El usuario puede ensanchar la tabla o la ficha según lo que necesite.                                       | Un layout fijo obliga a dejar tamaños que no siempre son cómodos.                                             |
-| `QVBoxLayout`, `QHBoxLayout`, `QFormLayout`, `QGridLayout` | Organizar widgets.                                              | Se adaptan al tamaño de la ventana y evitan posiciones absolutas.                                           | `setGeometry` fijo se rompe al cambiar de resolución.                                                         |
+| Componente                                                 | Para qué se usa en el proyecto                                                               | Por qué                                                                                                     | Alternativas descartadas                                                                                      |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `QStackedWidget`                                           | Cambiar entre Inicio, Catálogo, Préstamo, Devolución, Membresía, Libro, Usuarios y Reportes. | Mantiene las ocho páginas cargadas y solo cambia la visible; el índice coincide con la fila del menú.       | Abrir ocho ventanas independientes, que se acumulan y pierden el estado.                                      |
+| `QListWidget`                                              | Menú lateral de navegación.                                                                  | Muestra las opciones siempre visibles y permite ocultar filas de administración con `item.setHidden(True)`. | `QComboBox` esconde las opciones; `QTabWidget` cambia el diseño y no permite ocultar pestañas tan fácilmente. |
+| `QFrame`                                                   | Tarjetas de resumen, avisos y separadores visuales.                                          | Agrupa visualmente sin agregar un título obligatorio.                                                       | `QGroupBox` sirve para grupos con título; para una tarjeta simple es más pesado.                              |
+| `QSplitter`                                                | Separar la tabla del catálogo y la ficha del libro.                                          | El usuario puede ensanchar la tabla o la ficha según lo que necesite.                                       | Un layout fijo obliga a dejar tamaños que no siempre son cómodos.                                             |
+| `QVBoxLayout`, `QHBoxLayout`, `QFormLayout`, `QGridLayout` | Organizar widgets.                                                                           | Se adaptan al tamaño de la ventana y evitan posiciones absolutas.                                           | `setGeometry` fijo se rompe al cambiar de resolución.                                                         |
 
 **Ejemplo de navegación:**
 
@@ -992,10 +975,10 @@ self.estanteSpinBox.setMaximum(configuracion.CANTIDAD_DE_ESTANTES)
 
 | Componente     | Para qué se usa en el proyecto                 | Por qué                                                                                                  | Alternativas descartadas                                                                                                        |
 | -------------- | ---------------------------------------------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `QTableWidget` | Tabla de libros y tabla de usuarios.           | Muestra varias columnas, encabezados, selección por fila y ordenamiento sin escribir un modelo de datos. | `QListWidget` solo tiene una columna; `QTableView` con un modelo es más potente, pero innecesario para 22 libros y 13 usuarios. |
+| `QTableWidget` | Tabla de libros y tabla de usuarios.           | Muestra varias columnas, encabezados, selección por fila y ordenamiento sin escribir un modelo de datos. | `QListWidget` solo tiene una columna; `QTableView` con un modelo es más potente, pero innecesario para 22 libros y 14 usuarios. |
 | `QTextEdit`    | Ficha del libro y reporte general.             | Permite texto largo con formato HTML, scroll y selección.                                                | `QLabel` se corta con textos largos; `QPlainTextEdit` no interpreta HTML.                                                       |
 | `QLabel`       | Títulos, valores de resumen y mensajes cortos. | Es el componente correcto para texto estático y etiquetas de datos.                                      | `QTextEdit` para un título es demasiado pesado y editable si no se configura.                                                   |
-| `QMessageBox`  | Errores críticos, confirmaciones y avisos.     | Bloquea la acción y obliga al usuario a leer el mensaje.                                                 | `print()` no se ve en la interfaz; un `QLabel` es mejor para ayudas simples, pero no para confirmar una acción.                 |
+| `QMessageBox`  | Errores críticos, confirmaciones y avisos.     | Bloquea la acción y obliga al usuario a leer el mensaje.                                                 | Un `QLabel` es mejor para ayudas simples, pero no para confirmar una acción.                                                    |
 | `QFileDialog`  | Exportar el reporte.                           | Permite elegir la ruta y el nombre del archivo.                                                          | Una ruta fija obliga a buscar el archivo a mano y puede fallar por permisos.                                                    |
 
 **Ejemplo de tabla:**
@@ -1250,7 +1233,7 @@ El nombre de la biblioteca queda solo en la barra lateral (`marca1Label`).
 | `devolverButton`         | `self.devolverButton`         | `clicked.connect(self.devolver)`           |
 | `nuevoUsuarioButton`     | `self.nuevoUsuarioButton`     | `clicked.connect(self._nuevo_usuario)`     |
 | `renovarMembresiaButton` | `self.renovarMembresiaButton` | `clicked.connect(self._renovar_membresia)` |
-| `inicioFooterFrame`      | `self.inicioFooterFrame`      | Pie de Inicio con bienvenida y lema         |
+| `inicioFooterFrame`      | `self.inicioFooterFrame`      | Pie de Inicio con bienvenida y lema        |
 
 **Ejemplo de por qué el nombre importa:**
 
@@ -1282,11 +1265,9 @@ self.pushButton_2.clicked.connect(self.registrar)
 | `Biblioteca.resumen()`               | Diccionario con títulos, ejemplares, disponibles, prestados, usuarios y fecha. | Inicio y reportes.       |
 | `Biblioteca.libro(isbn)`             | Objeto `Libro`.                                                                | Ficha y préstamos.       |
 | `Biblioteca.usuario(dni)`            | Objeto `Usuario` o `Administrador`.                                            | Acceso y préstamos.      |
-| `Biblioteca.datos_del_catalogo()`    | Lista de diccionarios.                                                         | Catálogo completo.       |
+| `Biblioteca.buscar_avanzado(...)`    | Lista de diccionarios filtrados y ordenados.                                   | Catálogo.                |
 | `Biblioteca.datos_de_un_libro(isbn)` | Diccionario.                                                                   | Ficha del libro.         |
-| `Biblioteca.buscar(texto)`           | Lista de diccionarios.                                                         | Búsqueda simple.         |
-| `Biblioteca.datos_de_los_usuarios()` | Lista de diccionarios.                                                         | Página de usuarios.      |
-| `Biblioteca.datos_de_membresia(dni)` | Diccionario.                                                                   | Membresía.               |
+| `Biblioteca.todos_los_usuarios()`    | Lista de objetos `Usuario`.                                                    | Página de usuarios.      |
 | `Libro.datos_para_pantalla()`        | Diccionario extendido.                                                         | Tabla y ficha.           |
 | `Usuario.datos_de_membresia()`       | Diccionario.                                                                   | Página de membresía.     |
 | `Usuario.estado()`                   | Texto del estado.                                                              | Membresía y usuarios.    |
@@ -1360,17 +1341,17 @@ No se debe volver a escribir esta lógica en las ventanas. Si una ventana necesi
 
 #### `core/configuracion.py`
 
-| Elemento nuevo                    | Valor sugerido           | Uso                                                        |
-| --------------------------------- | ------------------------ | ---------------------------------------------------------- |
-| `MAXIMO_PRESTAMOS_POR_USUARIO`    | `1`                      | Un solo préstamo activo por usuario.                       |
-| `DIAS_DE_PRESTAMO`                | `15`                     | Plazo de devolución; si vence, solo se marca como vencido. |
-| `MESES_DE_MEMBRESIA`              | `3`                      | Duración de la membresía al registrarse o renovarse.       |
-| `CATEGORIAS`                      | `Literatura`, `Ciencias sociales`, `Ciencias`, `Tecnología`, `Arte` | Categorías principales válidas, sin subcategorías. |
-| `ESTADOS_DE_PRESTAMO`             | `["activo", "devuelto"]` | Valores válidos del campo `estado`.                        |
-| `CARPETA_REPORTES`                | `data/reportes`         | Exportaciones.                                             |
-| `ARCHIVO_BITACORA`                | `bitacora.txt`           | Registro de movimientos.                                   |
-| `escribir_archivo(nombre, datos)` | Función                  | Guardar JSON de forma segura.                              |
-| `agregar_a_bitacora(texto)`       | Función                  | Agregar una línea al archivo de texto.                     |
+| Elemento nuevo                    | Valor sugerido                                                              | Uso                                                        |
+| --------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------- |
+| `MAXIMO_PRESTAMOS_POR_USUARIO`    | `1`                                                                         | Un solo préstamo activo por usuario.                       |
+| `DIAS_DE_PRESTAMO`                | `15`                                                                        | Plazo de devolución; si vence, solo se marca como vencido. |
+| `MESES_DE_MEMBRESIA`              | `3`                                                                         | Duración de la membresía al registrarse o renovarse.       |
+| `CATEGORIAS`                      | `Literatura`, `Ciencias sociales`, `Ciencias básicas`, `Tecnología`, `Arte` | Categorías principales válidas, sin subcategorías.         |
+| `ESTADOS_DE_PRESTAMO`             | `["activo", "devuelto"]`                                                    | Valores válidos del campo `estado`.                        |
+| `CARPETA_REPORTES`                | `data/reportes`                                                             | Exportaciones.                                             |
+| `ARCHIVO_BITACORA`                | `bitacora.txt`                                                              | Registro de movimientos.                                   |
+| `escribir_archivo(nombre, datos)` | Función                                                                     | Guardar JSON de forma segura.                              |
+| `agregar_a_bitacora(texto)`       | Función                                                                     | Agregar una línea al archivo de texto.                     |
 
 #### `core/reportes.py`
 
@@ -1393,7 +1374,7 @@ Ver la sección 8.
 }
 ```
 
-Cada libro guarda una sola categoría: `Literatura`, `Ciencias sociales`, `Ciencias`, `Tecnología` o `Arte`. Los libros de ciencias básicas quedan en `Ciencias` y los de ingeniería aplicada, programación e inteligencia artificial en `Tecnología`.
+Cada libro guarda una sola categoría: `Literatura`, `Ciencias sociales`, `Ciencias básicas`, `Tecnología` o `Arte`. Los libros de ciencias básicas quedan en `Ciencias básicas` y los de ingeniería aplicada, programación e inteligencia artificial en `Tecnología`.
 
 #### `data/usuarios.json`
 
@@ -1590,7 +1571,7 @@ Reglas de oro:
 
 | Pantalla o archivo | Señal o evento                           | Método de la ventana             | Método del núcleo                                         | Archivo que cambia               |
 | ------------------ | ---------------------------------------- | -------------------------------- | --------------------------------------------------------- | -------------------------------- |
-| `main.py` | arranque                                 | `AplicacionBiblioteca.iniciar()` | `Biblioteca()`                                            | —                                |
+| `main.py`          | arranque                                 | `AplicacionBiblioteca.iniciar()` | `Biblioteca()`                                            | —                                |
 | `acceso.py`        | `entrarBtn.clicked`                      | `validar_usuario()`              | `usuario()`, `esta_activo()`, `tiene_membresia_vigente()` | —                                |
 | `acceso.py`        | `registrarBtn.clicked`                   | `abrir_registro()`               | `registrar_usuario()`                                     | `usuarios.json`                  |
 | `registro.py`      | `registrarButton.clicked`                | `registrar()`                    | `registrar_usuario()`                                     | `usuarios.json`                  |
@@ -1609,7 +1590,7 @@ Reglas de oro:
 | `principal.py`     | `darDeBajaButton.clicked`                | `_dar_de_baja()`                 | `dar_de_baja()`                                           | `usuarios.json`                  |
 | `principal.py`     | `reactivarButton.clicked`                | `_reactivar()`                   | `reactivar()`                                             | `usuarios.json`                  |
 | `principal.py`     | `actualizarReporteButton.clicked`        | `_cargar_reporte()`              | `reporte_general()`                                       | —                                |
-| `principal.py`     | `exportarReporteButton.clicked`          | `_exportar_reporte()`            | texto del reporte                                         | `data/reportes/`                |
+| `principal.py`     | `exportarReporteButton.clicked`          | `_exportar_reporte()`            | texto del reporte                                         | `data/reportes/`                 |
 
 ### 9.2 Checklist para arrancar cualquier avance
 
@@ -1656,7 +1637,7 @@ VentanaAcceso
 | `ui/acceso.py`          | Modificar         | Agregar `abrir_registro()` y la conexión del botón.   |
 | `ui/registro.ui`        | Crear             | Formulario con nombre, DNI, tipo, aviso y botones.    |
 | `ui/registro.py`        | Crear             | `VentanaRegistro(QDialog)` y `registrar()`.           |
-| `data/usuarios.json`   | Se actualiza solo | Guarda el usuario nuevo.                              |
+| `data/usuarios.json`    | Se actualiza solo | Guarda el usuario nuevo.                              |
 
 #### Por qué `sumar_meses()` y no `timedelta(days=90)`
 
@@ -2017,11 +1998,11 @@ class VentanaLibro(QWidget):
 
 **Conexiones de la página:**
 
-| Señal                        | Método           | Núcleo                                      |
-| ---------------------------- | ---------------- | ------------------------------------------- |
+| Señal                        | Método           | Núcleo                                         |
+| ---------------------------- | ---------------- | ---------------------------------------------- |
 | `prestarButton.clicked`      | `prestar()`      | `Biblioteca.prestar(isbn, self.usuario.dni())` |
-| `cancelarButton.clicked`     | `limpiar()`      | Limpia el ISBN y el detalle.                |
-| `isbnLineEdit.returnPressed` | `buscar_libro()` | `Biblioteca.libro(isbn)`                    |
+| `cancelarButton.clicked`     | `limpiar()`      | Limpia el ISBN y el detalle.                   |
+| `isbnLineEdit.returnPressed` | `buscar_libro()` | `Biblioteca.libro(isbn)`                       |
 
 Al confirmar, la página emite `datos_actualizados`; `VentanaPrincipal` refresca el resumen, el catálogo y las páginas de préstamo y devolución.
 
@@ -2051,11 +2032,11 @@ Al confirmar, la página emite `datos_actualizados`; `VentanaPrincipal` refresca
 
 **Conexiones de la página:**
 
-| Señal                                | Método             | Núcleo                                       |
-| ------------------------------------ | ------------------ | -------------------------------------------- |
-| `devolverButton.clicked`             | `devolver()`       | `Biblioteca.devolver(isbn, self.usuario.dni())` |
-| `cancelarButton.clicked`             | `actualizar()`     | Recarga los préstamos activos.               |
-| `prestamoComboBox.currentIndexChanged` | `_mostrar_detalle()` | Muestra fechas y estado del préstamo.     |
+| Señal                                  | Método               | Núcleo                                          |
+| -------------------------------------- | -------------------- | ----------------------------------------------- |
+| `devolverButton.clicked`               | `devolver()`         | `Biblioteca.devolver(isbn, self.usuario.dni())` |
+| `cancelarButton.clicked`               | `actualizar()`       | Recarga los préstamos activos.                  |
+| `prestamoComboBox.currentIndexChanged` | `_mostrar_detalle()` | Muestra fechas y estado del préstamo.           |
 
 **Reglas:** no hay multa. Si la fecha límite ya pasó, solo se muestra “Vencido” antes de devolver. Después de devolver, el usuario queda libre para pedir otro libro y la página emite `datos_actualizados`.
 
@@ -2065,7 +2046,7 @@ Al confirmar, la página emite `datos_actualizados`; `VentanaPrincipal` refresca
 
 **Orden para empezar:**
 
-1. Llenar `tablaUsuarios` con `biblioteca.datos_de_los_usuarios()`.
+1. Llenar `tablaUsuarios` recorriendo `biblioteca.todos_los_usuarios()` y usando `usuario.datos_de_membresia()`.
 2. Conectar `buscarUsuarioLineEdit` y `buscarUsuarioButton` a un filtro local.
 3. Conectar `nuevoUsuarioButton` para abrir `VentanaRegistro(self.biblioteca, self, permitir_administrador=True)`.
 4. Implementar `renovar_membresia()`, `dar_de_baja()` y `reactivar()`.
@@ -2121,13 +2102,12 @@ def renovar_membresia(self, dni, meses=None):
 - [x] Crear `core/__init__.py`, `ui/__init__.py` y los marcadores de posición de las ventanas.
 - [x] Ajustar `CARPETA_DATOS` de `datos` a `data` en `configuracion.py` (sección 5.5).
 - [ ] Unificar imports relativos en `core/`.
-- [ ] Envolver la llamada de `main_consola.py` en `if __name__ == "__main__":` (solo mientras se conserve el legacy).
 - [ ] Agregar valores por defecto a `crear_libro()`.
 - [ ] Capturar errores de JSON en `leer_archivo()`.
 - [x] Agregar `escribir_archivo()` en `configuracion.py`.
-- [x] Revisar que `python3 main.py` arranque sin traceback. `python3 main_consola.py` se revisa solo mientras la consola siga existiendo.
+- [x] Revisar que `python3 main.py` arranque sin traceback.
 
-**Hecho cuando:** `main.py` arranca sin traceback y un JSON inválido muestra un error controlado. La consola no es parte del criterio de terminado.
+**Hecho cuando:** `main.py` arranca sin traceback y un JSON inválido muestra un error controlado.
 
 ### Fase 1 — Acceso, registro y panel principal
 
@@ -2235,10 +2215,9 @@ def renovar_membresia(self, dni, meses=None):
 
 - [x] Crear `assets/images/` y `assets/styles/app.qss` como estructura base.
 - [x] Escribir un QSS básico y cargarlo desde `main.py`; los `.ui` quedan sin colores incrustados.
-- [ ] Actualizar `README.md` con la estructura nueva, la entrada `main.py` y las credenciales de prueba.
-- [ ] Confirmar que todas las funcionalidades se pueden hacer desde la GUI; si alguna solo existe en consola, pasarla primero a la interfaz.
-- [ ] Retirar la consola: eliminar `core/menu.py`, `main_consola.py` y `utilidades.pausa()`.
-- [ ] Quitar del `README.md` las instrucciones de `python3 main_consola.py`.
+- [x] Actualizar `README.md` con la estructura nueva, la entrada `main.py` y las credenciales de prueba.
+- [x] Confirmar que todas las funcionalidades se pueden hacer desde la GUI.
+- [x] Verificar que no queden archivos ni funciones de presentación sin uso.
 - [ ] Revisar imports sin usar, nombres con tildes y textos duplicados.
 - [ ] Hacer la prueba manual completa de la sección 11.
 
@@ -2281,23 +2260,23 @@ def renovar_membresia(self, dni, meses=None):
 
 ### 11.3 Catálogo
 
-| Caso                     | Resultado esperado                                            |
-| ------------------------ | ------------------------------------------------------------- |
-| Abrir catálogo           | 22 libros.                                                    |
-| Buscar “arte”            | 4 resultados de la categoría Arte.                            |
-| Buscar “tolkien”         | 1 resultado.                                                  |
-| Buscar texto inexistente | 0 resultados y mensaje claro.                                 |
-| Limpiar filtros          | Vuelve a los 22 libros.                                       |
-| Filtrar “Ciencias”       | 4 libros de ciencias básicas.                                 |
-| Filtrar “Tecnología”     | 5 libros de ingeniería aplicada, programación e IA.           |
-| Seleccionar fila         | La ficha muestra ISBN, autor, categoría, ubicación, ejemplares y estado. |
-| Solo disponibles         | Solo libros prestables según la regla del último ejemplar.    |
+| Caso                       | Resultado esperado                                                       |
+| -------------------------- | ------------------------------------------------------------------------ |
+| Abrir catálogo             | 22 libros.                                                               |
+| Buscar “arte”              | 4 resultados de la categoría Arte.                                       |
+| Buscar “tolkien”           | 1 resultado.                                                             |
+| Buscar texto inexistente   | 0 resultados y mensaje claro.                                            |
+| Limpiar filtros            | Vuelve a los 22 libros.                                                  |
+| Filtrar “Ciencias básicas” | 4 libros de ciencias básicas.                                            |
+| Filtrar “Tecnología”       | 5 libros de ingeniería aplicada, programación e IA.                      |
+| Seleccionar fila           | La ficha muestra ISBN, autor, categoría, ubicación, ejemplares y estado. |
+| Solo disponibles           | Solo libros prestables según la regla del último ejemplar.               |
 
 ### 11.4 Préstamos y devoluciones
 
 | Caso                                | Resultado esperado                                                                 |
 | ----------------------------------- | ---------------------------------------------------------------------------------- |
-| Abrir “Registrar préstamo”          | Se muestra dentro del panel, con el usuario de la sesión y sin campo de DNI.        |
+| Abrir “Registrar préstamo”          | Se muestra dentro del panel, con el usuario de la sesión y sin campo de DNI.       |
 | Prestar escribiendo solo el ISBN    | El préstamo queda a nombre del usuario conectado y `disponibles` baja en 1.        |
 | Prestar un libro disponible         | `disponibles` baja en 1 y se crea el préstamo.                                     |
 | Prestar sin stock                   | Mensaje de error; no se modifica el stock.                                         |
@@ -2327,20 +2306,15 @@ def renovar_membresia(self, dni, meses=None):
 Desde `proyecto_parcial/`:
 
 ```bash
-# Entrada final: interfaz gráfica
+# Entrada única: interfaz gráfica
 python3 main.py
-
-# Mientras dure la migración, la consola legacy sigue disponible
-# python3 main_consola.py
 
 # Verificar que los módulos se importan sin abrir ventanas
 QT_QPA_PLATFORM=offscreen python3 -c "import main; print('import ok')"
 
 # Revisar errores de sintaxis
-python3 -m compileall -q core ui main.py main_consola.py
+python3 -m compileall -q core ui main.py
 ```
-
-Cuando la consola se retire, los comandos de verificación quedan solo con `main.py` y ya no se compila `main_consola.py`.
 
 ---
 
@@ -2362,7 +2336,7 @@ Cuando la consola se retire, los comandos de verificación quedan solo con `main
 - **Recursos en `assets/`**, datos en `data/` y documentación en `docs/`. No se mezclan con el código.
 - **Recursos gráficos en `assets/images/`** (íconos e imágenes juntos) y **estilos en `assets/styles/`** (`.qss`).
 - **Los `.ui` viven junto a su `.py`** dentro de `ui/`.
-- **La raíz solo tiene puntos de entrada y archivos del proyecto:** `main.py`, `main_consola.py` (temporal), `README.md`, `requirements.txt` y las carpetas.
+- **La raíz solo tiene puntos de entrada y archivos del proyecto:** `main.py`, `README.md`, `requirements.txt` y las carpetas.
 - **Los imports de la entrada son cortos:** `from core import ...` y `from ui...`.
 
 ### 12.2 Interfaz
@@ -2391,37 +2365,36 @@ Una funcionalidad está terminada cuando:
 
 ### 13.1 Decisiones ya tomadas
 
-| Decisión                         | Regla acordada                                                                                                                                                                         |
-| -------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Multas                           | No se usan. No hay cálculo, cobro ni bloqueo por deuda.                                                                                                                                |
-| Préstamos por usuario            | Solo uno activo. Hasta que no se devuelva, no se puede pedir otro.                                                                                                                     |
-| Beneficios de membresía          | No se implementan por ahora. La página de membresía solo muestra datos y estado.                                                                                                       |
-| Devolución                       | Repone el stock y libera al usuario para un nuevo préstamo.                                                                                                                            |
-| Categorías                       | `Ciencias` y `Tecnología` son categorías independientes y no se usan subcategorías.                                                                                                    |
-| Formularios                      | Préstamo, devolución y libro son páginas internas de `VentanaPrincipal`, no diálogos.                                                                                                  |
-| Préstamo sin DNI                 | El formulario de préstamo solo pide el ISBN; el DNI se toma del usuario conectado.                                                                                                     |
-| Orden del registro               | En el registro de usuario se pide primero el nombre, luego el DNI y al final el tipo de usuario.                                                                                       |
-| Plazo                            | Se puede mantener una fecha límite de 15 días solo para marcar “Vencido”; no genera multa.                                                                                             |
-| Registro desde el acceso         | Cualquier persona puede crear su cuenta con DNI, nombre y tipo `Estudiante` o `Docente`. No puede crear administradores.                                                               |
-| Duración de membresía            | 3 meses exactos desde la fecha de alta, calculados con `sumar_meses()` y `MESES_DE_MEMBRESIA = 3`.                                                                                     |
-| Renovación                       | Se suman 3 meses desde la fecha de hoy o desde el vencimiento actual, el que sea mayor.                                                                                                |
-| Autoingreso después del registro | No. Se cierra el diálogo, se deja el DNI escrito y la persona ingresa manualmente.                                                                                                     |
-| Entrada del sistema              | La única entrada final es `main.py`. La consola (`main_consola.py` y `menu.py`) fue el medio de la evaluación parcial y se retira cuando la GUI cubra todas las funcionalidades. |
-| Alcance de la consola            | No recibe funcionalidades nuevas. Solo se mantiene funcionando con el catálogo actual mientras dura la migración.                                                                      |
+| Decisión                         | Regla acordada                                                                                                                                                                                               |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Multas                           | No se usan. No hay cálculo, cobro ni bloqueo por deuda.                                                                                                                                                      |
+| Préstamos por usuario            | Solo uno activo. Hasta que no se devuelva, no se puede pedir otro.                                                                                                                                           |
+| Beneficios de membresía          | No se implementan por ahora. La página de membresía solo muestra datos y estado.                                                                                                                             |
+| Devolución                       | Repone el stock y libera al usuario para un nuevo préstamo.                                                                                                                                                  |
+| Categorías                       | `Ciencias básicas` y `Tecnología` son categorías independientes y no se usan subcategorías.                                                                                                                  |
+| Formularios                      | Préstamo, devolución y libro son páginas internas de `VentanaPrincipal`, no diálogos.                                                                                                                        |
+| Préstamo sin DNI                 | El formulario de préstamo solo pide el ISBN; el DNI se toma del usuario conectado.                                                                                                                           |
+| Orden del registro               | En el registro de usuario se pide primero el nombre, luego el DNI y al final el tipo de usuario.                                                                                                             |
+| Plazo                            | Se puede mantener una fecha límite de 15 días solo para marcar “Vencido”; no genera multa.                                                                                                                   |
+| Registro desde el acceso         | Cualquier persona puede crear su cuenta con DNI, nombre y tipo `Estudiante` o `Docente`. No puede crear administradores.                                                                                     |
+| Duración de membresía            | 3 meses exactos desde la fecha de alta, calculados con `sumar_meses()` y `MESES_DE_MEMBRESIA = 3`.                                                                                                           |
+| Renovación                       | Se suman 3 meses desde la fecha de hoy o desde el vencimiento actual, el que sea mayor.                                                                                                                      |
+| Autoingreso después del registro | No. Se cierra el diálogo, se deja el DNI escrito y la persona ingresa manualmente.                                                                                                                           |
+| Entrada del sistema              | `main.py` es la única entrada y no existe una segunda forma de uso.                                                                                                                                          |
 | Organización de carpetas         | `core/` y `ui/` en la raíz para el código, `assets/images/` para íconos e imágenes, `assets/styles/` para los `.qss`, `data/` para los JSON y la bitácora y `docs/` para la documentación. No se usa `src/`. |
-| Nombres de carpetas y archivos   | Carpetas en inglés (`core`, `ui`, `assets`, `images`, `styles`, `data`, `docs`). Los archivos y clases siguen en español por ahora; traducirlos es un refactor aparte.                     |
-| Ubicación de los `.ui`           | Cada `.ui` queda junto a su `.py` dentro de `ui/` para que la ruta relativa no cambie.                                                                                                   |
+| Nombres de carpetas y archivos   | Carpetas en inglés (`core`, `ui`, `assets`, `images`, `styles`, `data`, `docs`). Los archivos y clases siguen en español por ahora; traducirlos es un refactor aparte.                                       |
+| Ubicación de los `.ui`           | Cada `.ui` queda junto a su `.py` dentro de `ui/` para que la ruta relativa no cambie.                                                                                                                       |
 
 ### 13.2 Decisiones pendientes
 
 | Decisión                                           | Opciones                                                        | Recomendación                                                                                                                  |
 | -------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | ¿Se presta el último ejemplar?                     | `disponibles > 0` o `disponibles > 1`.                          | Decidirlo antes de implementar préstamos y escribirlo en el README. La regla actual reserva el último.                         |
-| ¿Dónde se guardan los reportes?                    | `data/reportes/` o la carpeta que elija el usuario.            | `data/reportes/` por defecto, con opción de elegir otra ruta.                                                                 |
+| ¿Dónde se guardan los reportes?                    | `data/reportes/` o la carpeta que elija el usuario.             | `data/reportes/` por defecto, con opción de elegir otra ruta.                                                                  |
 | ¿Se usa `QCalendarWidget`?                         | Solo `QLineEdit` con fecha o un calendario.                     | Usar calendario solo si se permite una fecha personalizada; si la renovación siempre suma 3 meses, no hace falta.              |
 | ¿Se agregan estilos ahora?                         | QSS desde el inicio o al final.                                 | Al final, para no mezclar presentación con conexión.                                                                           |
 | ¿Se usa `id` en los préstamos?                     | Sí o buscar por ISBN + DNI.                                     | Usar `id` si se quiere conservar un historial claro; con un solo préstamo activo, buscar por ISBN + DNI también es suficiente. |
-| ¿Qué pasa con `data/prestamos.json` vacío?        | Dejarlo vacío o inicializarlo con `[]`.                         | `leer_archivo()` ya devuelve `[]` si está vacío; al guardar por primera vez quedará con contenido.                             |
+| ¿Qué pasa con `data/prestamos.json` vacío?         | Dejarlo vacío o inicializarlo con `[]`.                         | `leer_archivo()` ya devuelve `[]` si está vacío; al guardar por primera vez quedará con contenido.                             |
 | ¿Se guarda `fecha_registro`?                       | Guardar solo el vencimiento o guardar también la fecha de alta. | Guardar solo `vencimiento_membresia`; si se quiere mostrar “miembro desde”, agregar `fecha_registro` como campo opcional.      |
 | ¿Se valida que un `Docente` sea realmente docente? | Permitir el autorregistro o pedir una clave administrativa.     | Para la demo, permitir `Estudiante` y `Docente`; dejar la validación formal fuera del alcance.                                 |
 | ¿Cuántos meses dura la membresía?                  | 1, 3 o 6 meses.                                                 | 3 meses, como se acordó. El valor queda en `MESES_DE_MEMBRESIA` para cambiarlo en un solo lugar.                               |
@@ -2440,4 +2413,4 @@ Si se retoma el trabajo en una sola sesión, el orden más corto para ver result
 6. **Fase 6:** reportes, matrices y recursividad.
 7. **Fase 7:** estilos, íconos y limpieza final.
 
-Con las fases 0, 1 y 2 el sistema ya permite registrarse, entrar, navegar y consultar el catálogo. Con la fase 4 empieza a comportarse como una biblioteca real. Las fases 5 y 6 completan la parte administrativa y los reportes. La fase 7 cierra la migración: deja `main.py` como única entrada y retira la consola.
+Con las fases 0, 1 y 2 el sistema ya permite registrarse, entrar, navegar y consultar el catálogo. Con la fase 4 empieza a comportarse como una biblioteca real. Las fases 5 y 6 completan la parte administrativa y los reportes. La fase 7 cierra la presentación y la limpieza: deja `main.py` como única entrada.

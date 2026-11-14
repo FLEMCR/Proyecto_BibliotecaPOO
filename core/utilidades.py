@@ -10,16 +10,8 @@ def normalizar_texto(texto):
     texto = str(texto).strip().lower()
     sin_tildes = unicodedata.normalize("NFD", texto)
     return "".join(
-        caracter
-        for caracter in sin_tildes
-        if unicodedata.category(caracter) != "Mn"
+        caracter for caracter in sin_tildes if unicodedata.category(caracter) != "Mn"
     )
-
-
-def pausa():
-    """Pausa la ejecución en la consola hasta que el usuario presione ENTER."""
-    print()
-    input("Pulsa ENTER para volver al menu")
 
 
 def validar_dni(texto):
@@ -60,10 +52,3 @@ def sumar_meses(fecha, meses):
     ultimo_dia = calendar.monthrange(año, mes)[1]
     dia = min(fecha.day, ultimo_dia)
     return date(año, mes, dia)
-
-
-def si_o_no(valor):
-    """Convierte un valor booleano True/False en un texto legible 'Si' o 'No' para mostrar en pantalla."""
-    if valor:
-        return "Si"
-    return "No"

@@ -1,12 +1,12 @@
 import json
-import os
+from pathlib import Path
 
-CARPETA_DEL_PROYECTO = os.path.dirname(os.path.dirname(__file__))
-CARPETA_DATOS = os.path.join(CARPETA_DEL_PROYECTO, "data")
-CARPETA_INTERFACES = os.path.join(CARPETA_DEL_PROYECTO, "ui")
-CARPETA_ASSETS = os.path.join(CARPETA_DEL_PROYECTO, "assets")
-CARPETA_ESTILOS = os.path.join(CARPETA_ASSETS, "styles")
-ARCHIVO_ESTILOS = os.path.join(CARPETA_ESTILOS, "app.qss")
+CARPETA_DEL_PROYECTO = Path(__file__).resolve().parent.parent
+CARPETA_DATOS = CARPETA_DEL_PROYECTO / "data"
+CARPETA_INTERFACES = CARPETA_DEL_PROYECTO / "ui"
+CARPETA_ASSETS = CARPETA_DEL_PROYECTO / "assets"
+CARPETA_ESTILOS = CARPETA_ASSETS / "styles"
+ARCHIVO_ESTILOS = CARPETA_ESTILOS / "app.qss"
 
 ARCHIVO_LIBROS = "libros.json"
 ARCHIVO_USUARIOS = "usuarios.json"
@@ -22,7 +22,7 @@ LEMA = "Llevate el libro que quieras; Devuélvelo cuando puedas"
 CATEGORIAS = [
     "Literatura",
     "Ciencias sociales",
-    "Ciencias",
+    "Ciencias básicas",
     "Tecnología",
     "Arte",
 ]
@@ -30,7 +30,7 @@ CATEGORIAS = [
 SECCIONES = {
     "A": "Literatura",
     "B": "Ciencias sociales",
-    "C": "Ciencias",
+    "C": "Ciencias básicas",
     "D": "Tecnología",
     "E": "Arte",
 }
@@ -43,15 +43,14 @@ TIPOS_DE_USUARIO = ["Estudiante", "Docente", "Administrador"]
 
 
 def ruta_del_archivo(nombre_del_archivo):
-    return os.path.join(CARPETA_DATOS, nombre_del_archivo)
+    return CARPETA_DATOS / nombre_del_archivo
 
 
 def leer_archivo(nombre_del_archivo):
     ruta = ruta_del_archivo(nombre_del_archivo)
-    if not os.path.exists(ruta):
+    if not ruta.exists():
         return []
-    with open(ruta, "r", encoding="utf-8") as archivo:
-        contenido = archivo.read().strip()
+    contenido = ruta.read_text(encoding="utf-8").strip()
     if contenido == "":
         return []
     return json.loads(contenido)
@@ -60,7 +59,8 @@ def leer_archivo(nombre_del_archivo):
 def escribir_archivo(nombre_del_archivo, datos):
     """Escribe una lista o un diccionario en un archivo JSON del proyecto."""
     ruta = ruta_del_archivo(nombre_del_archivo)
-    os.makedirs(CARPETA_DATOS, exist_ok=True)
-    with open(ruta, "w", encoding="utf-8") as archivo:
-        json.dump(datos, archivo, ensure_ascii=False, indent=2)
-        archivo.write("\n")
+    CARPETA_DATOS.mkdir(parents=True, exist_ok=True)
+    ruta.write_text(
+        json.dumps(datos, ensure_ascii=False, indent=2) + "\n",
+        encoding="utf-8",
+    )
