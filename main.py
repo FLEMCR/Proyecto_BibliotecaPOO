@@ -9,11 +9,9 @@ from ui.principal import VentanaPrincipal
 
 def cargar_estilos(aplicacion):
     """Carga la hoja de estilos QSS del proyecto en la aplicación."""
-    try:
-        with open(configuracion.ARCHIVO_ESTILOS, "r", encoding="utf-8") as archivo:
-            aplicacion.setStyleSheet(archivo.read())
-    except OSError as error:
-        print(f"No se pudo cargar el estilo: {error}", file=sys.stderr)
+
+    with open(configuracion.ARCHIVO_ESTILOS, "r", encoding="utf-8") as archivo:
+        aplicacion.setStyleSheet(archivo.read())
 
 
 class AplicacionBiblioteca:
@@ -27,7 +25,6 @@ class AplicacionBiblioteca:
         self.acceso.rejected.connect(self.cerrar_aplicacion)
 
     def iniciar(self):
-        """Muestra la ventana de acceso."""
         self.acceso.show()
 
     def abrir_panel(self, usuario):
@@ -48,7 +45,6 @@ class AplicacionBiblioteca:
         self.acceso.activateWindow()
 
     def cerrar_aplicacion(self):
-        """Sale de la aplicación solicitando QApplication.quit()."""
         aplicacion = QApplication.instance()
         if aplicacion is not None:
             aplicacion.quit()

@@ -87,7 +87,7 @@ Estas reglas ya están decididas y deben respetarse en el código y en la interf
 3. **No se implementan beneficios de membresía por ahora.** La página “Mi membresía” solo muestra nombre, DNI, tipo, vencimiento y estado. Los beneficios quedan descartados para esta etapa.
 4. **La devolución libera al usuario.** Cuando se registra la devolución, el stock sube y el usuario queda habilitado para pedir otro libro.
 5. **El registro desde el acceso crea la membresía por 3 meses.** La fecha de vencimiento se calcula con `sumar_meses(fecha_de_alta, 3)`; no se usa `timedelta(days=90)` porque los meses no tienen la misma cantidad de días. El autorregistro solo permite `Estudiante` o `Docente`, nunca `Administrador`.
-6. **Las categorías se agrupan en `Ciencias aplicadas`.** Las antiguas categorías `Ciencias e ingeniería` y `Tecnología` se unifican en una sola categoría principal llamada `Ciencias aplicadas`, con las subcategorías `Ciencias básicas`, `Ingeniería` y `Tecnología`. Así no quedan dos categorías que parezcan lo mismo y el nombre principal es más corto.
+6. **Las categorías quedan sin subcategorías.** La categoría de ciencias se llama `Ciencias` y `Tecnología` se mantiene como categoría independiente. Los libros de matemáticas, cálculo, física y biología quedan en `Ciencias`; los de ingeniería aplicada, programación, inteligencia artificial y gestión industrial quedan en `Tecnología`. Así no se pisan los nombres ni hace falta un filtro adicional.
 7. **Los formularios se abren dentro del panel principal.** Préstamo, devolución y registro de libro son páginas de `VentanaPrincipal`, no diálogos independientes; el usuario los recorre con el mismo menú lateral que el catálogo.
 
 Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mantienen el foco en el flujo de registro, préstamo y devolución.
@@ -126,12 +126,12 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 - **Acceso gráfico:** `ui/acceso.py` valida DNI, cuenta activa y membresía vigente, y emite `usuario_autenticado`.
 - **Coordinación acceso → panel:** `main.py` crea `VentanaAcceso`, escucha la señal y abre `VentanaPrincipal`.
 - **Cierre de sesión:** `VentanaPrincipal` emite `sesion_cerrada` y el controlador elimina el panel y vuelve al acceso.
-- **Panel principal:** navegación por 8 páginas, resumen, membresía, visibilidad por rol y estilos base.
-- **Catálogo:** búsqueda por campo, filtros por categoría y subcategoría, orden, filtro de disponibilidad, tabla y ficha del libro.
-- **Categorías:** `Ciencias aplicadas` agrupa `Ciencias básicas`, `Ingeniería` y `Tecnología`; los 22 libros de `data/libros.json` ya están migrados.
+- **Panel principal:** navegación por 8 páginas, resumen, membresía, visibilidad por rol y tema oscuro.
+- **Catálogo:** búsqueda por campo, filtro por categoría, orden, filtro de disponibilidad, tabla y ficha del libro.
+- **Categorías:** `Ciencias` y `Tecnología` son categorías independientes, sin subcategorías; los 22 libros de `data/libros.json` ya están reclasificados.
 - **Préstamos:** `Prestamo`, `Biblioteca.prestar()`, `prestamo_activo_de_usuario()` y stock actualizado; solo se pide el ISBN porque el DNI sale de la sesión.
 - **Devoluciones:** `Biblioteca.devolver()`, selección del préstamo activo, stock repuesto y liberación del usuario.
-- **Registro de libros:** alta y edición desde la página interna, con categoría, subcategoría, sección y stock.
+- **Registro de libros:** alta y edición desde la página interna, con categoría, sección y stock.
 - **Registro de usuarios:** autorregistro desde el acceso con membresía de 3 meses calculada con `sumar_meses()`.
 - **Persistencia:** escritura de `libros.json`, `usuarios.json` y `prestamos.json`.
 
@@ -140,8 +140,8 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 | Elemento           | Estado actual                                                                 | Qué falta                                                                                                |
 | ------------------ | ----------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | `ui/principal.py`  | Incrusta catálogo, préstamo, devolución y libro; navega y refresca datos.     | Accesos rápidos de la página de inicio y cierre controlado con la X.                                     |
-| `ui/principal.ui`  | Tiene las 8 páginas y los widgets principales.                                | `layoutAccesosRapidos` no tiene botones; la página de usuarios y reportes aún es de solo lectura.        |
-| `ui/catalogo.ui`   | Filtros, tabla y ficha completos, con categoría y subcategoría.               | Botones de administración para nuevo/editar/eliminar libro dentro del catálogo.                          |
+| `ui/principal.ui`  | Tiene las 8 páginas, el nombre en la barra lateral y la bienvenida al pie de Inicio. | La página de usuarios y reportes aún es de solo lectura.                                            |
+| `ui/catalogo.ui`   | Filtros, tabla y ficha completos, con filtro por categoría y más espacio para la tabla. | Botones de administración para nuevo/editar/eliminar libro dentro del catálogo.                  |
 | `main.py`          | Abre, cierra sesión y vuelve al acceso.                                      | Decidir si cerrar la ventana principal con la X debe salir o volver al acceso.                           |
 | `ui/acceso.py`     | Valida y muestra errores con `QMessageBox`.                                   | Validator de DNI, mensaje inline y foco inicial opcionales.                                              |
 | Consola (legacy)   | Funciona con el catálogo actual.                                              | No se amplía: no conoce préstamos, devoluciones, CRUD ni membresías. Se retira cuando la GUI cubra todo. |
@@ -257,7 +257,7 @@ proyecto_parcial/
 ├── assets/
 │   ├── images/                 # íconos e imágenes (vacío por ahora)
 │   └── styles/
-│       └── app.qss             # estilos básicos de las ventanas
+│       └── app.qss             # tema oscuro de las ventanas
 ├── core/
 │   ├── __init__.py
 │   ├── biblioteca.py           # controlador: catálogo, usuarios y resumen
@@ -338,11 +338,11 @@ proyecto_parcial/
     ├── acceso.py               [modificar] validación y Enter
     ├── acceso.ui               [modificar] textos desde configuración
     ├── catalogo.py             [implementado] VentanaCatalogo
-    ├── catalogo.ui             [modificado] filtros por categoría y subcategoría
+    ├── catalogo.ui             [modificado] filtros por categoría y más espacio para la tabla
     ├── devolucion.py           [implementado] página de devolución
     ├── devolucion.ui           [modificado] QWidget interno
     ├── libro_form.py           [implementado] alta y edición de libros
-    ├── libro_form.ui           [modificado] QWidget interno con subcategoría
+    ├── libro_form.ui           [modificado] QWidget interno sin subcategoría
     ├── prestamo.py             [implementado] página de préstamo por ISBN
     ├── prestamo.ui             [modificado] QWidget interno sin DNI
     ├── principal.py            [implementado] navegación y páginas
@@ -460,6 +460,7 @@ ARCHIVO_ESTILOS = os.path.join(CARPETA_ESTILOS, "app.qss")
 - Las imágenes y los íconos se cargan desde `configuracion.CARPETA_IMAGENES`.
 - La hoja de estilos se carga desde `configuracion.ARCHIVO_ESTILOS` al arrancar `main.py`, después de crear `QApplication`.
 - Ninguna ventana arma rutas a mano: todas pasan por las constantes de `configuracion.py`.
+- `assets/styles/app.qss` define un tema oscuro con fondos gris casi negro, texto claro y botones rojizos.
 - En QtDesigner no se configura `styleSheet`: los widgets quedan con el estilo por defecto y allí solo se ajustan layouts, `objectName` y tamaños de letra. Los colores y bordes se definen en `assets/styles/app.qss`.
 - Para previsualizar la hoja mientras se edita: `designer -stylesheet assets/styles/app.qss`.
 
@@ -575,7 +576,10 @@ Las filas 5, 6 y 7 se ocultan para estudiantes y docentes. Las páginas 2 y 3 se
 | `disponiblesValorLabel` | Ejemplares disponibles.                   |
 | `prestadosValorLabel`   | Ejemplares prestados.                     |
 | `usuariosValorLabel`    | Cantidad de usuarios.                     |
-| `layoutAccesosRapidos`  | Contenedor para botones de acceso rápido. |
+| `inicioFooterFrame`     | Pie de la página de inicio con la bienvenida y el lema. |
+| `bienvenidaLabel`       | “Hola, {nombre}” en el pie de Inicio.     |
+| `tipoLabel`             | Tipo y estado del usuario en el pie.      |
+| `marca2Label`           | Lema de la biblioteca en el pie de Inicio. |
 
 #### Widgets de membresía
 
@@ -655,16 +659,14 @@ def _cambiar_pagina(self, fila):
 | `buscarLineEdit`          | `QLineEdit`    | Texto de búsqueda.                         |
 | `campoComboBox`           | `QComboBox`    | Todo, ISBN, Título, Autor o Categoría.     |
 | `categoriaComboBox`       | `QComboBox`    | Filtro por categoría.                      |
-| `subcategoriaComboBox`    | `QComboBox`    | Filtro por subcategoría.                   |
 | `ordenarComboBox`         | `QComboBox`    | Título, autor, categoría o disponibilidad. |
 | `soloDisponiblesCheckBox` | `QCheckBox`    | Solo libros prestables.                    |
 | `buscarButton`            | `QPushButton`  | Aplica los filtros.                        |
 | `limpiarButton`           | `QPushButton`  | Restablece los filtros.                    |
 | `tablaLibros`             | `QTableWidget` | Resultados.                                |
 | `detalleTextEdit`         | `QTextEdit`    | Ficha del libro seleccionado.              |
-| `cantidadLibrosLabel`     | `QLabel`       | Cantidad de resultados.                    |
 
-**Columnas actuales de la tabla:** ISBN, Título, Autor, Categoría completa, Disponibles y Estado. La ficha del panel derecho muestra sección, estante, ejemplares, disponibles, prestados y estado con `datos_de_un_libro()`.
+**Columnas actuales de la tabla:** ISBN, Título, Autor, Categoría, Disponibles y Estado. La ficha del panel derecho muestra sección, estante, ejemplares, disponibles, prestados y estado con `datos_de_un_libro()`. La cabecera con el título “Catálogo de libros” y el contador de resultados se retiró para darle más altura a la tabla.
 
 **Integración en el panel:**
 
@@ -683,15 +685,14 @@ self.layoutCatalogoContenedor.addWidget(self.catalogo)
 | `buscarButton.clicked`                  | `buscar()`          | Pide los resultados a `Biblioteca`. |
 | `buscarLineEdit.returnPressed`          | `buscar()`          | Busca con Enter.                    |
 | `limpiarButton.clicked`                 | `limpiar()`         | Vuelve al catálogo completo.        |
-| `categoriaComboBox.currentIndexChanged` | `_cambiar_categoria()` | Recarga subcategorías y filtra.  |
-| `subcategoriaComboBox.currentIndexChanged` | `buscar()`       | Filtra al cambiar la subcategoría.  |
+| `categoriaComboBox.currentIndexChanged` | `buscar()`          | Filtra al cambiar la categoría.     |
 | `tablaLibros.itemSelectionChanged`      | `_mostrar_detalle()` | Actualiza la ficha.                |
 
 **Criterio de aceptación:**
 
 - Al abrir la página se ven los 22 libros.
 - Buscar “arte” devuelve los 4 libros de la categoría Arte.
-- “Ciencias aplicadas” muestra 9 libros y permite filtrar por sus subcategorías.
+- “Ciencias” muestra 4 libros y “Tecnología” muestra 5 libros.
 - “Limpiar” restaura la lista completa.
 - Seleccionar una fila actualiza la ficha.
 - Una búsqueda sin resultados no rompe la ventana.
@@ -803,7 +804,6 @@ Formulario para registrar o editar un libro. Se muestra en `libroPage` y la fila
 | `tituloLineEdit`        | `QLineEdit`   | Título.                                  |
 | `autorLineEdit`         | `QLineEdit`   | Autor.                                   |
 | `categoriaComboBox`     | `QComboBox`   | Categoría principal del libro.           |
-| `subcategoriaComboBox`  | `QComboBox`   | Subcategoría según la categoría elegida. |
 | `seccionComboBox`       | `QComboBox`   | Sección A–E, con su nombre.              |
 | `estanteSpinBox`        | `QSpinBox`    | Estante 1–3.                             |
 | `ejemplaresSpinBox`     | `QSpinBox`    | Total de ejemplares.                     |
@@ -815,14 +815,13 @@ Formulario para registrar o editar un libro. Se muestra en `libroPage` y la fila
 **Comportamiento:**
 
 - `categoriaComboBox` se llena desde `configuracion.CATEGORIAS`.
-- `subcategoriaComboBox` se actualiza al cambiar la categoría; agrega “Sin subcategoría” con dato vacío.
 - Al editar un libro existente, `isbnLineEdit` se deshabilita y el título cambia a “Editar libro”.
 - Al guardar emite `datos_actualizados`, que `VentanaPrincipal` usa para refrescar el catálogo y el resumen.
 - El ancho máximo de la página es 640 px y se centra horizontalmente.
 
 **Métodos del núcleo:** `Biblioteca.registrar_libro(datos)` y `Biblioteca.actualizar_libro(isbn, datos)`.
 
-**Criterio de aceptación:** el libro nuevo aparece en el catálogo y sigue ahí después de cerrar y abrir el programa; un ISBN repetido muestra un error; la subcategoría elegida se guarda y se muestra como `Categoría · Subcategoría`.
+**Criterio de aceptación:** el libro nuevo aparece en el catálogo y sigue ahí después de cerrar y abrir el programa; un ISBN repetido muestra un error; la categoría y la sección elegidas se guardan correctamente.
 
 ### 6.10 `prestamo.ui` — `VentanaPrestamo` (QWidget) ✅
 
@@ -1124,7 +1123,6 @@ QWidget VentanaLibro
     │       ├── Título        → QLineEdit tituloLineEdit
     │       ├── Autor         → QLineEdit autorLineEdit
     │       ├── Categoría     → QComboBox categoriaComboBox
-    │       ├── Subcategoría  → QComboBox subcategoriaComboBox
     │       ├── Sección       → QComboBox seccionComboBox
     │       ├── Estante       → QSpinBox estanteSpinBox
     │       ├── Ejemplares    → QSpinBox ejemplaresSpinBox
@@ -1226,15 +1224,19 @@ QVBoxLayout layoutUsuarios
 └── QTableWidget tablaUsuarios           (ya existe)
 ```
 
-En `inicioPage`, el layout `layoutAccesosRapidos` ya existe y está vacío. Ahí se agregan los botones de acceso directo:
+En `inicioPage`, el pie `inicioFooterFrame` queda al fondo y reúne la bienvenida del usuario y el lema de la biblioteca:
 
 ```text
-QHBoxLayout layoutAccesosRapidos
-├── QPushButton catalogoRapidoButton
-├── QPushButton prestamoRapidoButton
-├── QPushButton devolucionRapidaButton
-└── QPushButton membresiaRapidaButton
+QFrame inicioFooterFrame
+└── QHBoxLayout layoutInicioFooter
+    ├── QVBoxLayout layoutBienvenidaInicio
+    │   ├── QLabel bienvenidaLabel  → “Hola, {nombre}”
+    │   └── QLabel tipoLabel        → tipo y estado
+    ├── spacer
+    └── QLabel marca2Label          → lema de la biblioteca
 ```
+
+El nombre de la biblioteca queda solo en la barra lateral (`marca1Label`).
 
 #### Tabla de nombres y uso desde Python
 
@@ -1248,7 +1250,7 @@ QHBoxLayout layoutAccesosRapidos
 | `devolverButton`         | `self.devolverButton`         | `clicked.connect(self.devolver)`           |
 | `nuevoUsuarioButton`     | `self.nuevoUsuarioButton`     | `clicked.connect(self._nuevo_usuario)`     |
 | `renovarMembresiaButton` | `self.renovarMembresiaButton` | `clicked.connect(self._renovar_membresia)` |
-| `layoutAccesosRapidos`   | `self.layoutAccesosRapidos`   | `addWidget(...)` si se crea en código      |
+| `inicioFooterFrame`      | `self.inicioFooterFrame`      | Pie de Inicio con bienvenida y lema         |
 
 **Ejemplo de por qué el nombre importa:**
 
@@ -1363,8 +1365,7 @@ No se debe volver a escribir esta lógica en las ventanas. Si una ventana necesi
 | `MAXIMO_PRESTAMOS_POR_USUARIO`    | `1`                      | Un solo préstamo activo por usuario.                       |
 | `DIAS_DE_PRESTAMO`                | `15`                     | Plazo de devolución; si vence, solo se marca como vencido. |
 | `MESES_DE_MEMBRESIA`              | `3`                      | Duración de la membresía al registrarse o renovarse.       |
-| `CATEGORIAS`                      | `Literatura`, `Ciencias sociales`, `Ciencias aplicadas`, `Arte` | Categorías principales válidas. |
-| `SUBCATEGORIAS`                   | `Ciencias aplicadas`: `Ciencias básicas`, `Ingeniería`, `Tecnología` | Subcategorías válidas por categoría. |
+| `CATEGORIAS`                      | `Literatura`, `Ciencias sociales`, `Ciencias`, `Tecnología`, `Arte` | Categorías principales válidas, sin subcategorías. |
 | `ESTADOS_DE_PRESTAMO`             | `["activo", "devuelto"]` | Valores válidos del campo `estado`.                        |
 | `CARPETA_REPORTES`                | `data/reportes`         | Exportaciones.                                             |
 | `ARCHIVO_BITACORA`                | `bitacora.txt`           | Registro de movimientos.                                   |
@@ -1385,7 +1386,6 @@ Ver la sección 8.
   "titulo": "Cien años de soledad",
   "autor": "Gabriel García Márquez",
   "categoria": "Literatura",
-  "subcategoria": "",
   "seccion": "A",
   "estante": 1,
   "ejemplares": 3,
@@ -1393,7 +1393,7 @@ Ver la sección 8.
 }
 ```
 
-`subcategoria` es opcional: puede ser `""` cuando la categoría no se divide. Para `Ciencias aplicadas` se usa `Ciencias básicas`, `Ingeniería` o `Tecnología`. La interfaz muestra `categoria_completa()`, que une ambos valores como `Ciencias aplicadas · Tecnología`.
+Cada libro guarda una sola categoría: `Literatura`, `Ciencias sociales`, `Ciencias`, `Tecnología` o `Arte`. Los libros de ciencias básicas quedan en `Ciencias` y los de ingeniería aplicada, programación e inteligencia artificial en `Tecnología`.
 
 #### `data/usuarios.json`
 
@@ -1914,7 +1914,6 @@ def buscar_avanzado(
     texto="",
     campo="Todo",
     categoria="Todas",
-    subcategoria="Todas",
     solo_disponibles=False,
     ordenar_por="Título",
     limite=None,
@@ -1931,8 +1930,7 @@ La función puede vivir en `core/libros.py` y recibir la lista de libros; `Bibli
 | `buscarButton.clicked`                  | `buscar()`          | Reúne los filtros y llama al núcleo. |
 | `buscarLineEdit.returnPressed`          | `buscar()`          | Busca con Enter.                     |
 | `limpiarButton.clicked`                 | `limpiar_filtros()` | Restablece los controles.            |
-| `categoriaComboBox.currentIndexChanged` | `_cambiar_categoria()` | Recarga subcategorías y filtra.   |
-| `subcategoriaComboBox.currentIndexChanged` | `buscar()`        | Filtra al cambiar la subcategoría.   |
+| `categoriaComboBox.currentIndexChanged` | `buscar()`          | Filtra al cambiar la categoría.      |
 | `tablaLibros.itemSelectionChanged`      | `mostrar_detalle()` | Llena `detalleTextEdit`.             |
 
 **Incrustar:**
@@ -1943,7 +1941,7 @@ self.catalogo = VentanaCatalogo(self.biblioteca, self.usuario)
 self.layoutCatalogoContenedor.addWidget(self.catalogo)
 ```
 
-La tabla muestra `categoria_completa` en la columna de categoría, así que un libro de `Ciencias aplicadas` aparece como `Ciencias aplicadas · Ingeniería`, `Ciencias aplicadas · Ciencias básicas` o `Ciencias aplicadas · Tecnología`. El combo de subcategorías se llena con `biblioteca.subcategorias(categoria)`.
+La tabla muestra la categoría directamente en su columna. El combo de categorías se llena con `biblioteca.categorias()` y no hay un segundo filtro jerárquico.
 
 **Cuidado:** no se debe reemplazar `catalogoPage` ni crear una ventana nueva; `catalogo.ui` es un `QWidget` que se agrega al layout que ya existe.
 
@@ -2149,7 +2147,7 @@ def renovar_membresia(self, dni, meses=None):
 - [x] Cargar la página de membresía con `usuario.datos_de_membresia()`.
 - [x] Corregir el controlador para eliminar el panel al volver al acceso.
 - [ ] Implementar `closeEvent` y el cierre de sesión con confirmación.
-- [ ] Agregar botones de acceso rápido en `layoutAccesosRapidos` (catálogo, préstamo, devolución y membresía).
+- [x] Mover la bienvenida y el lema al pie de `inicioPage`; dejar solo el nombre en la barra lateral.
 
 **Hecho cuando:** una persona nueva se registra con membresía de 3 meses, puede ingresar, el estudiante y el administrador ven opciones distintas, las páginas cambian y el cierre de sesión vuelve al acceso sin dejar ventanas ocultas.
 
@@ -2160,10 +2158,10 @@ def renovar_membresia(self, dni, meses=None):
 - [x] Crear `ui/catalogo.py` con `VentanaCatalogo(QWidget)`.
 - [x] Cargar `catalogo.ui` con `uic.loadUi()`.
 - [x] Configurar la tabla con las seis columnas actuales.
-- [x] Llenar los combos con categorías, subcategorías, campos y órdenes.
+- [x] Llenar los combos con categorías, campos y órdenes.
 - [x] Conectar búsqueda, limpiar, filtros y selección.
 - [x] Incrustar la ventana en `layoutCatalogoContenedor`.
-- [x] Implementar `buscar_avanzado()` en `Biblioteca` con filtros por categoría y subcategoría.
+- [x] Implementar `buscar_avanzado()` en `Biblioteca` con filtro por categoría.
 - [x] Mostrar la ficha del libro en `detalleTextEdit`.
 
 **Hecho cuando:** se ven los 22 libros, la búsqueda y los filtros funcionan y la ficha cambia al seleccionar una fila.
@@ -2174,7 +2172,7 @@ def renovar_membresia(self, dni, meses=None):
 
 - [x] Implementar `guardar_libros()` y `guardar_usuarios()`.
 - [x] Implementar `registrar_libro()`, `actualizar_libro()` y `eliminar_libro()`.
-- [x] Crear `ui/libro_form.ui` con layouts, spacers y subcategoría.
+- [x] Crear `ui/libro_form.ui` con layouts, spacers y categoría.
 - [x] Implementar `ui/libro_form.py` y conectarlo con el núcleo.
 - [x] Incrustar el formulario en `libroPage` y ocultar la fila a quien no administra.
 - [ ] Agregar botones de “Nuevo”, “Editar” y “Eliminar” dentro del catálogo.
@@ -2290,9 +2288,9 @@ def renovar_membresia(self, dni, meses=None):
 | Buscar “tolkien”         | 1 resultado.                                                  |
 | Buscar texto inexistente | 0 resultados y mensaje claro.                                 |
 | Limpiar filtros          | Vuelve a los 22 libros.                                       |
-| Filtrar “Ciencias aplicadas” | 9 libros repartidos en Ciencias básicas, Ingeniería y Tecnología. |
-| Elegir subcategoría “Tecnología” | Solo los libros de esa subcategoría.                  |
-| Seleccionar fila         | La ficha muestra ISBN, autor, categoría completa, ubicación, ejemplares y estado. |
+| Filtrar “Ciencias”       | 4 libros de ciencias básicas.                                 |
+| Filtrar “Tecnología”     | 5 libros de ingeniería aplicada, programación e IA.           |
+| Seleccionar fila         | La ficha muestra ISBN, autor, categoría, ubicación, ejemplares y estado. |
 | Solo disponibles         | Solo libros prestables según la regla del último ejemplar.    |
 
 ### 11.4 Préstamos y devoluciones
@@ -2399,7 +2397,7 @@ Una funcionalidad está terminada cuando:
 | Préstamos por usuario            | Solo uno activo. Hasta que no se devuelva, no se puede pedir otro.                                                                                                                     |
 | Beneficios de membresía          | No se implementan por ahora. La página de membresía solo muestra datos y estado.                                                                                                       |
 | Devolución                       | Repone el stock y libera al usuario para un nuevo préstamo.                                                                                                                            |
-| Categorías                       | `Ciencias aplicadas` agrupa `Ciencias básicas`, `Ingeniería` y `Tecnología`; se eliminan `Ciencias e ingeniería` y `Tecnología` como categorías principales.                          |
+| Categorías                       | `Ciencias` y `Tecnología` son categorías independientes y no se usan subcategorías.                                                                                                    |
 | Formularios                      | Préstamo, devolución y libro son páginas internas de `VentanaPrincipal`, no diálogos.                                                                                                  |
 | Préstamo sin DNI                 | El formulario de préstamo solo pide el ISBN; el DNI se toma del usuario conectado.                                                                                                     |
 | Orden del registro               | En el registro de usuario se pide primero el nombre, luego el DNI y al final el tipo de usuario.                                                                                       |
