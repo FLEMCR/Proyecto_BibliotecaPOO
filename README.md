@@ -72,3 +72,8 @@ python3 main.py
 ## Datos
 
 Los archivos de `data/` se pueden editar a mano. El sistema los vuelve a leer al arrancar y guarda los cambios realizados desde la interfaz.
+
+## ¿Qué falta?
+
+Las funciones de administrador de usuarios (buscar) y reportes, ademas de añadir las matrices y las otras funciones que pida la rubrica. 
+Del resto esta listo
