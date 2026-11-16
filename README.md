@@ -77,3 +77,10 @@ Los archivos de `data/` se pueden editar a mano. El sistema los vuelve a leer al
 
 Las funciones de administrador de usuarios (buscar) y reportes, ademas de añadir las matrices y las otras funciones que pida la rubrica. 
 Del resto esta listo
+
+
+
+M I  P O L L A   E N   U N   C A S T I L L O LOLOLOLOLOLOLO¯\_(ツ)_/¯¯\_(ツ)_/¯¯\_(ツ)_/¯( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)( ͡°( ͡° ͜ʖ( ͡° ͜ʖ ͡°)ʖ ͡°) ͡°)¯\_( ͡° ͜ʖ ͡°)_/¯( ⓛ ω ⓛ *)( ⓛ ω ⓛ *)( ⓛ ω ⓛ *)
+
+
+OWO OWO OWO OWO OWO
