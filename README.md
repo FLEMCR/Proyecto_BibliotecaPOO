@@ -45,7 +45,6 @@ proyecto_parcial/
 
 ## Temas aplicados
 
-<<<<<<< HEAD
 POO (clases, encapsulación, herencia, polimorfismo, abstracción), PyQt5 y Qt Designer, componentes básicos y avanzados, señales y slots, QSS, `pathlib`, JSON, expresiones regulares, excepciones propias, matrices, recursividad, generadores y cierres.
 
 ## Usuarios de prueba
