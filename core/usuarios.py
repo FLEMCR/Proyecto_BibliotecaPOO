@@ -53,6 +53,13 @@ class Usuario:
         """Verifica si la fecha actual es menor o igual a la fecha de vencimiento."""
         return date.today() <= self._vencimiento_membresia
 
+    def renovar_membresia(self, meses=None):
+        """Extiende la membresía sin acortarla y devuelve el nuevo vencimiento."""
+        meses = configuracion.MESES_DE_MEMBRESIA if meses is None else meses
+        base = max(date.today(), self._vencimiento_membresia)
+        self._vencimiento_membresia = utilidades.sumar_meses(base, meses)
+        return self._vencimiento_membresia
+
     def estado(self):
         """Evalúa y retorna el estado actual de la cuenta (De baja, Vencida o Activa)."""
         if not self.esta_activo():

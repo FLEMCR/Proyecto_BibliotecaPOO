@@ -3,7 +3,6 @@ from pathlib import Path
 
 CARPETA_DEL_PROYECTO = Path(__file__).resolve().parent.parent
 CARPETA_DATOS = CARPETA_DEL_PROYECTO / "data"
-CARPETA_INTERFACES = CARPETA_DEL_PROYECTO / "ui"
 CARPETA_ASSETS = CARPETA_DEL_PROYECTO / "assets"
 CARPETA_ESTILOS = CARPETA_ASSETS / "styles"
 ARCHIVO_ESTILOS = CARPETA_ESTILOS / "app.qss"
@@ -17,7 +16,10 @@ MAXIMO_PRESTAMOS_POR_USUARIO = 1
 DIAS_DE_PRESTAMO = 15
 
 NOMBRE_BIBLIOTECA = "Biblioteca General POSTDATA"
-LEMA = "Llevate el libro que quieras; Devuélvelo cuando puedas"
+LEMA = (
+    "Un libro es un viaje de ida y vuelta: llévalo contigo y devuélvelo "
+    "cuando el viaje haya terminado."
+)
 
 CATEGORIAS = [
     "Literatura",

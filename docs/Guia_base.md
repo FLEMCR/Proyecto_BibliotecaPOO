@@ -278,7 +278,7 @@ print("ErrorDeDatos es ErrorBiblioteca?", issubclass(errores.ErrorDeDatos, error
 print("ErrorDeDatos es ValueError?", issubclass(errores.ErrorDeDatos, ValueError))
 print()
 
-intentos = ["12345", "99999999", "97884376049470"]
+intentos = ["12345", "55555555", "97884376049470"]
 for intento in intentos:
     try:
         if len(intento) == 13:
@@ -743,7 +743,7 @@ Y `crear_usuario()` es la fábrica: mira el `tipo` y decide qué clase instancia
 ```python
 
 estudiante = mi_biblioteca.usuario("11111111")
-administrador = mi_biblioteca.usuario("33333333")
+administrador = mi_biblioteca.usuario("99999999")
 
 print("de que clase es cada uno:")
 print("  ", estudiante.nombre(), "->", type(estudiante).__name__)
@@ -765,16 +765,16 @@ Salida:
 ```
 
 de que clase es cada uno:
-   P_ESTUDIANTE -> Usuario
-   P_ADMINISTRADOR -> Administrador
+   ESTUDIANTE -> Usuario
+   ADMINISTRADOR -> Administrador
 
 los dos son Usuario? True True
 el estudiante es Administrador? False
 el administrador es Administrador? True
 
 el mismo llamado, dos respuestas:
-   P_ESTUDIANTE puede administrar: False
-   P_ADMINISTRADOR puede administrar: True
+   ESTUDIANTE puede administrar: False
+   ADMINISTRADOR puede administrar: True
 
 ```
 
@@ -800,16 +800,16 @@ la diferencia en el diccionario:
 
 un usuario comun devuelve 5 claves:
     dni = 11111111
-    nombre = P_ESTUDIANTE
+    nombre = ESTUDIANTE
     tipo = Estudiante
     vencimiento_membresia = 2027-12-31
     estado = Activo y con membresia vigente
 
 un administrador devuelve 6 claves:
-    dni = 33333333
-    nombre = P_ADMINISTRADOR
+    dni = 99999999
+    nombre = ADMINISTRADOR
     tipo = Administrador
-    vencimiento_membresia = 2027-12-31
+    vencimiento_membresia = 2036-11-17
     estado = Activo y con membresia vigente
     puede_administrar = Si
 
@@ -832,9 +832,9 @@ Salida:
 
 los tres estados posibles de una cuenta:
 
-    11111111 | P_ESTUDIANTE             | Estudiante    | 2027-12-31 | Activo y con membresia vigente
-    22222222 | P_DOCENTE                | Docente       | 2027-12-31 | Activo y con membresia vigente
-    33333333 | P_ADMINISTRADOR          | Administrador | 2027-12-31 | Activo y con membresia vigente
+    11111111 | ESTUDIANTE             | Estudiante    | 2027-12-31 | Activo y con membresia vigente
+    22222222 | DOCENTE                | Docente       | 2027-12-31 | Activo y con membresia vigente
+    99999999 | ADMINISTRADOR           | Administrador | 2036-11-17 | Activo y con membresia vigente
     70445566 | Luis Ramos               | Docente       | 2027-05-21 | Activo y con membresia vigente
     71234567 | Carla Mendoza            | Docente       | 2025-12-15 | De baja
     76789012 | Diego Vargas             | Docente       | 2026-10-20 | Membresia vencida
@@ -995,7 +995,7 @@ propio mensaje.
 
 print("las opciones se imprimen segun el usuario:")
 print()
-for dni in ["11111111", "22222222", "33333333"]:
+for dni in ["11111111", "22222222", "99999999"]:
     usuario = mi_biblioteca.usuario(dni)
     print(f"MENU DE {usuario.tipo().upper()}")
     print("1) Ver el catalogo")
@@ -1043,7 +1043,7 @@ MENU DE ADMINISTRADOR
 
 print("los tres rechazos al entrar:")
 print()
-for dni in ["70778899", "76789012", "99999999"]:
+for dni in ["70778899", "76789012", "55555555"]:
     try:
         usuario = mi_biblioteca.usuario(dni)
         if not usuario.esta_activo():
@@ -1068,7 +1068,7 @@ los tres rechazos al entrar:
 
   No se pudo entrar: Rosa Palomino no puede entrar, su usuario esta de baja
   No se pudo entrar: Diego Vargas no puede entrar, su membresia vencio el 2026-10-20
-  No se pudo entrar: No hay ningun usuario con el DNI 99999999
+  No se pudo entrar: No hay ningun usuario con el DNI 55555555
 
 ```
 
@@ -1088,7 +1088,7 @@ import subprocess
 lineas_del_teclado = [
     "1", "11111111", "1", "", "2", "arte", "", "3", "9788437604947", "",
     "4", "", "0",
-    "1", "33333333", "5", "", "9", "", "0",
+    "1", "99999999", "5", "", "9", "", "0",
     "0",
 ]
 entrada = chr(10).join(lineas_del_teclado) + chr(10)
@@ -1143,7 +1143,7 @@ MENU DE ACCESO
 1) Acceder con DNI
 0) Salir
 Elige una opcion: Escribe tu DNI:
-Hola P_ESTUDIANTE, tu tipo de membresia es Estudiante
+Hola ESTUDIANTE, tu tipo de membresia es Estudiante
 
 MENU DE ESTUDIANTE
 
@@ -1205,7 +1205,7 @@ Salida:
 la membresia del estudiante:
 
 MEMBRESIA
-Nombre: P_ESTUDIANTE
+Nombre: ESTUDIANTE
 DNI: 11111111
 Tipo de membresia: Estudiante
 Vencimiento: 2027-12-31
@@ -1224,7 +1224,7 @@ MENU DE ADMINISTRADOR
 0) Cerrar sesion
 Elige una opcion:
 USUARIOS: 13
-11111111 | P_ESTUDIANTE | Estudiante | vence 2027-12-31 | Activo y con membresia vigente
+11111111 | ESTUDIANTE | Estudiante | vence 2027-12-31 | Activo y con membresia vigente
 
 ```
 
@@ -1263,11 +1263,11 @@ Los DNIs que sirven para probar:
 | ---------- | ------------------------------------ |
 | `11111111` | entra, estudiante                    |
 | `22222222` | entra, docente                       |
-| `33333333` | entra, administrador, ve la opción 5 |
+| `99999999` | entra, administrador, ve la opción 5 |
 | `78901234` | entra, el otro administrador         |
 | `70778899` | rechazado, está de baja              |
 | `76789012` | rechazado, su membresía venció       |
-| `99999999` | rechazado, no existe                 |
+| `55555555` | rechazado, no existe                 |
 
 ## 14. f-strings y concatenación con `+`
 

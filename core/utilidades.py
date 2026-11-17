@@ -1,8 +1,12 @@
 import calendar
+import re
 import unicodedata
 from datetime import date
 
 from . import errores
+
+PATRON_DNI = re.compile(r"\d{8}")
+PATRON_ISBN = re.compile(r"\d{13}")
 
 
 def normalizar_texto(texto):
@@ -17,7 +21,7 @@ def normalizar_texto(texto):
 def validar_dni(texto):
     """Valida que el DNI sea una cadena numérica exacta de 8 dígitos y la retorna limpia."""
     dni = str(texto).strip()
-    if len(dni) != 8 or not dni.isdigit():
+    if PATRON_DNI.fullmatch(dni) is None:
         raise errores.ErrorDeDatos("El DNI debe tener 8 digitos numericos")
     return dni
 
@@ -25,7 +29,7 @@ def validar_dni(texto):
 def validar_isbn(codigo):
     """Valida que el código ISBN sea una cadena numérica de 13 dígitos para identificar un libro."""
     isbn = str(codigo).strip()
-    if len(isbn) != 13 or not isbn.isdigit():
+    if PATRON_ISBN.fullmatch(isbn) is None:
         raise errores.ErrorDeDatos("El ISBN debe tener 13 digitos")
     return isbn
 

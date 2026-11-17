@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 
 from . import configuracion, errores, utilidades
 
@@ -21,6 +21,14 @@ class Prestamo:
         self._dni = utilidades.validar_dni(dni)
         self._fecha_prestamo = utilidades.convertir_fecha(fecha_prestamo)
         self._fecha_limite = utilidades.convertir_fecha(fecha_limite)
+        limite_maximo = self._fecha_prestamo + timedelta(
+            days=configuracion.DIAS_DE_PRESTAMO
+        )
+        if not self._fecha_prestamo <= self._fecha_limite <= limite_maximo:
+            raise errores.ErrorDeDatos(
+                "La fecha límite debe estar entre la fecha de préstamo y "
+                f"{configuracion.DIAS_DE_PRESTAMO} días después"
+            )
         self._estado = str(estado).strip().lower()
         if self._estado not in configuracion.ESTADOS_DE_PRESTAMO:
             raise errores.ErrorDeDatos(

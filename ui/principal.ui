@@ -1,905 +1,911 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <ui version="4.0">
- <class>VentanaPrincipal</class>
- <widget class="QMainWindow" name="VentanaPrincipal">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>1024</width>
-    <height>640</height>
-   </rect>
-  </property>
-  <property name="minimumSize">
-   <size>
-    <width>960</width>
-    <height>600</height>
-   </size>
-  </property>
-  <property name="windowTitle">
-   <string>Biblioteca General POSTDATA</string>
-  </property>
-  <widget class="QWidget" name="centralwidget">
-   <layout class="QHBoxLayout" name="layoutRaiz">
-    <property name="spacing">
-     <number>0</number>
+  <class>VentanaPrincipal</class>
+  <widget class="QMainWindow" name="VentanaPrincipal">
+    <property name="geometry">
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1240</width>
+        <height>720</height>
+      </rect>
     </property>
-    <property name="leftMargin">
-     <number>0</number>
+    <property name="minimumSize">
+      <size>
+        <width>1140</width>
+        <height>640</height>
+      </size>
     </property>
-    <property name="topMargin">
-     <number>0</number>
+    <property name="windowTitle">
+      <string>Biblioteca General POSTDATA</string>
     </property>
-    <property name="rightMargin">
-     <number>0</number>
-    </property>
-    <property name="bottomMargin">
-     <number>0</number>
-    </property>
-    <item>
-     <widget class="QFrame" name="sidebarFrame">
-      <property name="minimumSize">
-       <size>
-        <width>230</width>
-        <height>0</height>
-       </size>
-      </property>
-      <property name="maximumSize">
-       <size>
-        <width>230</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <layout class="QVBoxLayout" name="layoutSidebar">
-       <property name="spacing">
-        <number>10</number>
-       </property>
-       <property name="leftMargin">
-        <number>22</number>
-       </property>
-       <property name="topMargin">
-        <number>26</number>
-       </property>
-       <property name="rightMargin">
-        <number>22</number>
-       </property>
-       <property name="bottomMargin">
-        <number>22</number>
-       </property>
-       <item>
-        <widget class="QLabel" name="marca1Label">
-         <property name="layoutDirection">
-          <enum>Qt::LeftToRight</enum>
-         </property>
-         <property name="text">
-          <string>Biblioteca universitaria</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignCenter</set>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QLabel" name="menuLabel">
-         <property name="text">
-          <string>NAVEGACIÓN</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QListWidget" name="navegacionListWidget">
-         <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <item>
-          <property name="text">
-           <string>Inicio</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Catálogo de libros</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Registrar préstamo</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Registrar devolución</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Mi membresía</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Registrar libro</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Usuarios</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Reportes</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item>
-        <spacer name="espacioSidebar">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item>
-        <widget class="QPushButton" name="cerrarSesionButton">
-         <property name="text">
-          <string>Cerrar sesión</string>
-         </property>
-         <property name="rol" stdset="0">
-          <string>ghost</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFrame" name="contenidoFrame">
-      <layout class="QVBoxLayout" name="layoutContenido">
-       <property name="spacing">
-        <number>18</number>
-       </property>
-       <property name="leftMargin">
-        <number>30</number>
-       </property>
-       <property name="topMargin">
-        <number>26</number>
-       </property>
-       <property name="rightMargin">
-        <number>30</number>
-       </property>
-       <property name="bottomMargin">
-        <number>20</number>
-       </property>
-       <item>
-        <widget class="QStackedWidget" name="paginasStackedWidget">
-         <property name="currentIndex">
+    <widget class="QWidget" name="centralwidget">
+      <layout class="QHBoxLayout" name="layoutRaiz">
+        <property name="spacing">
           <number>0</number>
-         </property>
-         <widget class="QWidget" name="inicioPage">
-          <layout class="QVBoxLayout" name="layoutInicio">
-           <property name="spacing">
-            <number>16</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="tituloInicioLabel">
-             <property name="text">
-              <string>Resumen de la biblioteca</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="subtituloInicioLabel">
-             <property name="text">
-              <string>Datos calculados en tiempo real a partir del catálogo y de los usuarios registrados.</string>
-             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <layout class="QHBoxLayout" name="layoutTarjetas">
-             <property name="spacing">
-              <number>12</number>
-             </property>
-             <item>
-              <widget class="QFrame" name="tarjetaTitulos">
-               <property name="card" stdset="0">
-                <string>true</string>
-               </property>
-               <layout class="QVBoxLayout" name="layoutTarjetaTitulos">
-                <item>
-                 <widget class="QLabel" name="titulosValorLabel">
-                  <property name="text">
-                   <string>0</string>
+        </property>
+        <property name="leftMargin">
+          <number>0</number>
+        </property>
+        <property name="topMargin">
+          <number>0</number>
+        </property>
+        <property name="rightMargin">
+          <number>0</number>
+        </property>
+        <property name="bottomMargin">
+          <number>0</number>
+        </property>
+        <item>
+          <widget class="QFrame" name="sidebarFrame">
+            <property name="minimumSize">
+              <size>
+                <width>230</width>
+                <height>0</height>
+              </size>
+            </property>
+            <property name="maximumSize">
+              <size>
+                <width>230</width>
+                <height>16777215</height>
+              </size>
+            </property>
+            <layout class="QVBoxLayout" name="layoutSidebar">
+              <property name="leftMargin">
+                <number>22</number>
+              </property>
+              <property name="rightMargin">
+                <number>22</number>
+              </property>
+              <item>
+                <widget class="QLabel" name="marca1Label">
+                  <property name="layoutDirection">
+                    <enum>Qt::LeftToRight</enum>
                   </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="titulosTextoLabel">
                   <property name="text">
-                   <string>Títulos</string>
+                    <string>Biblioteca universitaria</string>
                   </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="tarjetaEjemplares">
-               <property name="card" stdset="0">
-                <string>true</string>
-               </property>
-               <layout class="QVBoxLayout" name="layoutTarjetaEjemplares">
-                <item>
-                 <widget class="QLabel" name="ejemplaresValorLabel">
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="ejemplaresTextoLabel">
-                  <property name="text">
-                   <string>Ejemplares</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="tarjetaDisponibles">
-               <property name="card" stdset="0">
-                <string>true</string>
-               </property>
-               <layout class="QVBoxLayout" name="layoutTarjetaDisponibles">
-                <item>
-                 <widget class="QLabel" name="disponiblesValorLabel">
-                  <property name="text">
-                   <string>0</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="disponiblesTextoLabel">
-                  <property name="text">
-                   <string>Disponibles para préstamo</string>
+                  <property name="alignment">
+                    <set>Qt::AlignCenter</set>
                   </property>
                   <property name="wordWrap">
-                   <bool>true</bool>
+                    <bool>true</bool>
                   </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="tarjetaPrestados">
-               <property name="card" stdset="0">
-                <string>true</string>
-               </property>
-               <layout class="QVBoxLayout" name="layoutTarjetaPrestados">
-                <item>
-                 <widget class="QLabel" name="prestadosValorLabel">
+                </widget>
+              </item>
+              <item>
+                <widget class="QLabel" name="menuLabel">
                   <property name="text">
-                   <string>0</string>
+                    <string>NAVEGACIÓN</string>
                   </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="prestadosTextoLabel">
+                </widget>
+              </item>
+              <item>
+                <widget class="QListWidget" name="navegacionListWidget">
+                  <property name="focusPolicy">
+                    <enum>Qt::NoFocus</enum>
+                  </property>
+                  <property name="frameShape">
+                    <enum>QFrame::NoFrame</enum>
+                  </property>
+                  <item>
+                    <property name="text">
+                      <string>Inicio</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>Catálogo de libros</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>Registrar préstamo</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>Registrar devolución</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>Mi membresía</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>Registrar libro</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>Usuarios</string>
+                    </property>
+                  </item>
+                  <item>
+                    <property name="text">
+                      <string>Reportes</string>
+                    </property>
+                  </item>
+                  <property name="verticalScrollBarPolicy">
+                    <enum>Qt::ScrollBarAlwaysOff</enum>
+                  </property>
+                  <property name="uniformItemSizes">
+                    <bool>true</bool>
+                  </property>
+                  <property name="spacing">
+                    <number>2</number>
+                  </property>
+                </widget>
+              </item>
+              <item>
+                <spacer name="espacioSidebar">
+                  <property name="orientation">
+                    <enum>Qt::Vertical</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                    <size>
+                      <width>20</width>
+                      <height>40</height>
+                    </size>
+                  </property>
+                </spacer>
+              </item>
+              <item>
+                <widget class="QPushButton" name="cerrarSesionButton">
                   <property name="text">
-                   <string>Prestados</string>
+                    <string>Cerrar sesión</string>
                   </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-             <item>
-              <widget class="QFrame" name="tarjetaUsuarios">
-               <property name="card" stdset="0">
-                <string>true</string>
-               </property>
-               <layout class="QVBoxLayout" name="layoutTarjetaUsuarios">
-                <item>
-                 <widget class="QLabel" name="usuariosValorLabel">
-                  <property name="text">
-                   <string>0</string>
+                  <property name="rol" stdset="0">
+                    <string>ghost</string>
                   </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="usuariosTextoLabel">
-                  <property name="text">
-                   <string>Usuarios</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <spacer name="espacioInicio">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item>
-            <widget class="QFrame" name="inicioFooterFrame">
-             <property name="card" stdset="0">
-              <string>true</string>
-             </property>
-             <layout class="QHBoxLayout" name="layoutInicioFooter">
+                </widget>
+              </item>
               <property name="spacing">
-               <number>16</number>
-              </property>
-              <property name="leftMargin">
-               <number>18</number>
+                <number>6</number>
               </property>
               <property name="topMargin">
-               <number>14</number>
-              </property>
-              <property name="rightMargin">
-               <number>18</number>
+                <number>18</number>
               </property>
               <property name="bottomMargin">
-               <number>14</number>
+                <number>16</number>
               </property>
-              <item>
-               <layout class="QVBoxLayout" name="layoutBienvenidaInicio">
-                <property name="spacing">
-                 <number>4</number>
-                </property>
-                <item>
-                 <widget class="QLabel" name="bienvenidaLabel">
-                  <property name="text">
-                   <string>Bienvenido</string>
-                  </property>
-                  <property name="wordWrap">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel" name="tipoLabel">
-                  <property name="text">
-                   <string>Estudiante</string>
-                  </property>
-                  <property name="wordWrap">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <spacer name="espacioFooterInicio">
-                <property name="orientation">
-                 <enum>Qt::Horizontal</enum>
-                </property>
-                <property name="sizeHint" stdset="0">
-                 <size>
-                  <width>40</width>
-                  <height>20</height>
-                 </size>
-                </property>
-               </spacer>
-              </item>
-              <item>
-               <widget class="QLabel" name="marca2Label">
-                <property name="text">
-                 <string>POSTDATA</string>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignVCenter</set>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="catalogoPage">
-          <layout class="QVBoxLayout" name="layoutPaginaCatalogo">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <layout class="QVBoxLayout" name="layoutCatalogoContenedor">
-             <property name="spacing">
-              <number>0</number>
-             </property>
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
             </layout>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="prestamoPage">
-          <layout class="QVBoxLayout" name="layoutPaginaPrestamo">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="devolucionPage">
-          <layout class="QVBoxLayout" name="layoutPaginaDevolucion">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="membresiaPage">
-          <layout class="QVBoxLayout" name="layoutMembresia">
-           <property name="spacing">
-            <number>16</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QLabel" name="tituloMembresiaLabel">
-             <property name="text">
-              <string>Mi membresía</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="subtituloMembresiaLabel">
-             <property name="text">
-              <string>Información de la cuenta con la que iniciaste sesión.</string>
-             </property>
-             <property name="wordWrap">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QFrame" name="membresiaFrame">
-             <property name="card" stdset="0">
-              <string>true</string>
-             </property>
-             <layout class="QGridLayout" name="layoutDatosMembresia">
+          </widget>
+        </item>
+        <item>
+          <widget class="QFrame" name="contenidoFrame">
+            <layout class="QVBoxLayout" name="layoutContenido">
+              <property name="spacing">
+                <number>18</number>
+              </property>
               <property name="leftMargin">
-               <number>24</number>
+                <number>30</number>
               </property>
               <property name="topMargin">
-               <number>22</number>
+                <number>26</number>
               </property>
               <property name="rightMargin">
-               <number>24</number>
+                <number>30</number>
               </property>
               <property name="bottomMargin">
-               <number>22</number>
+                <number>20</number>
               </property>
-              <property name="horizontalSpacing">
-               <number>24</number>
-              </property>
-              <property name="verticalSpacing">
-               <number>14</number>
-              </property>
-              <item row="0" column="0">
-               <widget class="QLabel" name="nombreEtiquetaLabel">
-                <property name="text">
-                 <string>Nombre</string>
-                </property>
-               </widget>
+              <item>
+                <widget class="QStackedWidget" name="paginasStackedWidget">
+                  <property name="currentIndex">
+                    <number>0</number>
+                  </property>
+                  <widget class="QWidget" name="inicioPage">
+                  <layout class="QVBoxLayout" name="layoutInicio">
+                    <property name="spacing">
+                      <number>16</number>
+                    </property>
+                    <property name="leftMargin">
+                      <number>24</number>
+                    </property>
+                    <property name="topMargin">
+                      <number>24</number>
+                    </property>
+                    <property name="rightMargin">
+                      <number>24</number>
+                    </property>
+                    <property name="bottomMargin">
+                      <number>24</number>
+                    </property>
+                    <item>
+                      <widget class="QFrame" name="inicioFooterFrame">
+                        <layout class="QVBoxLayout" name="layoutInicioFooter">
+                          <property name="spacing">
+                            <number>3</number>
+                          </property>
+                          <property name="leftMargin">
+                            <number>0</number>
+                          </property>
+                          <property name="topMargin">
+                            <number>0</number>
+                          </property>
+                          <property name="rightMargin">
+                            <number>0</number>
+                          </property>
+                          <property name="bottomMargin">
+                            <number>0</number>
+                          </property>
+                          <item>
+                            <widget class="QLabel" name="bienvenidaLabel">
+                              <property name="text">
+                                <string>Bienvenido</string>
+                              </property>
+                              <property name="wordWrap">
+                                <bool>true</bool>
+                              </property>
+                            </widget>
+                          </item>
+                          <item>
+                            <widget class="QLabel" name="tipoLabel">
+                              <property name="text">
+                                <string>Estudiante</string>
+                              </property>
+                              <property name="wordWrap">
+                                <bool>true</bool>
+                              </property>
+                            </widget>
+                          </item>
+                          <item>
+                            <widget class="QLabel" name="marca2Label">
+                              <property name="text">
+                                <string>POSTDATA</string>
+                              </property>
+                              <property name="wordWrap">
+                                <bool>true</bool>
+                              </property>
+                            </widget>
+                          </item>
+                        </layout>
+                      </widget>
+                    </item>
+                    <item>
+                      <widget class="QLabel" name="inicioImagenLabel">
+                        <property name="sizePolicy">
+                          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                            <horstretch>0</horstretch>
+                            <verstretch>0</verstretch>
+                          </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                          <size>
+                            <width>240</width>
+                            <height>240</height>
+                          </size>
+                        </property>
+                        <property name="text">
+                          <string></string>
+                        </property>
+                        <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                        </property>
+                      </widget>
+                    </item>
+                  </layout>
+                </widget>
+                <widget class="QWidget" name="catalogoPage">
+                    <layout class="QVBoxLayout" name="layoutPaginaCatalogo">
+                      <property name="spacing">
+                        <number>0</number>
+                      </property>
+                      <property name="leftMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                        <number>0</number>
+                      </property>
+                      <item>
+                        <layout class="QVBoxLayout" name="layoutCatalogoContenedor">
+                          <property name="spacing">
+                            <number>0</number>
+                          </property>
+                          <property name="leftMargin">
+                            <number>0</number>
+                          </property>
+                          <property name="topMargin">
+                            <number>0</number>
+                          </property>
+                          <property name="rightMargin">
+                            <number>0</number>
+                          </property>
+                          <property name="bottomMargin">
+                            <number>0</number>
+                          </property>
+                        </layout>
+                      </item>
+                    </layout>
+                  </widget>
+                  <widget class="QWidget" name="prestamoPage">
+                    <layout class="QVBoxLayout" name="layoutPaginaPrestamo">
+                      <property name="spacing">
+                        <number>0</number>
+                      </property>
+                      <property name="leftMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                        <number>0</number>
+                      </property>
+                    </layout>
+                  </widget>
+                  <widget class="QWidget" name="devolucionPage">
+                    <layout class="QVBoxLayout" name="layoutPaginaDevolucion">
+                      <property name="spacing">
+                        <number>0</number>
+                      </property>
+                      <property name="leftMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                        <number>0</number>
+                      </property>
+                    </layout>
+                  </widget>
+                  <widget class="QWidget" name="membresiaPage">
+                    <layout class="QVBoxLayout" name="layoutMembresia">
+                      <property name="spacing">
+                        <number>16</number>
+                      </property>
+                      <property name="leftMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                        <number>0</number>
+                      </property>
+                      <item>
+                        <widget class="QLabel" name="tituloMembresiaLabel">
+                          <property name="text">
+                            <string>Mi membresía</string>
+                          </property>
+                        </widget>
+                      </item>
+                      <item>
+                        <widget class="QLabel" name="subtituloMembresiaLabel">
+                          <property name="text">
+                            <string>Información de la cuenta con la que iniciaste sesión.</string>
+                          </property>
+                          <property name="wordWrap">
+                            <bool>true</bool>
+                          </property>
+                        </widget>
+                      </item>
+                      <item>
+                        <widget class="QFrame" name="membresiaFrame">
+                          <property name="card" stdset="0">
+                            <string>true</string>
+                          </property>
+                          <layout class="QGridLayout" name="layoutDatosMembresia">
+                            <property name="leftMargin">
+                              <number>24</number>
+                            </property>
+                            <property name="topMargin">
+                              <number>22</number>
+                            </property>
+                            <property name="rightMargin">
+                              <number>24</number>
+                            </property>
+                            <property name="bottomMargin">
+                              <number>22</number>
+                            </property>
+                            <property name="horizontalSpacing">
+                              <number>24</number>
+                            </property>
+                            <property name="verticalSpacing">
+                              <number>14</number>
+                            </property>
+                            <item row="0" column="0">
+                              <widget class="QLabel" name="nombreEtiquetaLabel">
+                                <property name="text">
+                                  <string>Nombre</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="0" column="1">
+                              <widget class="QLabel" name="nombreValorLabel">
+                                <property name="text">
+                                  <string>-</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="1" column="0">
+                              <widget class="QLabel" name="dniEtiquetaLabel">
+                                <property name="text">
+                                  <string>DNI</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="1" column="1">
+                              <widget class="QLabel" name="dniValorLabel">
+                                <property name="text">
+                                  <string>-</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="2" column="0">
+                              <widget class="QLabel" name="tipoEtiquetaLabel">
+                                <property name="text">
+                                  <string>Tipo de membresía</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="2" column="1">
+                              <widget class="QLabel" name="tipoValorLabel">
+                                <property name="text">
+                                  <string>-</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="3" column="0">
+                              <widget class="QLabel" name="vencimientoEtiquetaLabel">
+                                <property name="text">
+                                  <string>Vencimiento</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="3" column="1">
+                              <widget class="QLabel" name="vencimientoValorLabel">
+                                <property name="text">
+                                  <string>-</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="4" column="0">
+                              <widget class="QLabel" name="estadoEtiquetaLabel">
+                                <property name="text">
+                                  <string>Estado</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="4" column="1">
+                              <widget class="QLabel" name="estadoValorLabel">
+                                <property name="text">
+                                  <string>-</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="5" column="0">
+                              <widget class="QLabel" name="permisosEtiquetaLabel">
+                                <property name="text">
+                                  <string>Permisos</string>
+                                </property>
+                              </widget>
+                            </item>
+                            <item row="5" column="1">
+                              <widget class="QLabel" name="permisosValorLabel">
+                                <property name="text">
+                                  <string>-</string>
+                                </property>
+                              </widget>
+                            </item>
+                          </layout>
+                        </widget>
+                      </item>
+                      <item>
+                        <spacer name="espacioMembresia">
+                          <property name="orientation">
+                            <enum>Qt::Vertical</enum>
+                          </property>
+                          <property name="sizeHint" stdset="0">
+                            <size>
+                              <width>20</width>
+                              <height>40</height>
+                            </size>
+                          </property>
+                        </spacer>
+                      </item>
+                    </layout>
+                  </widget>
+                  <widget class="QWidget" name="libroPage">
+                    <layout class="QVBoxLayout" name="layoutPaginaLibro">
+                      <property name="spacing">
+                        <number>0</number>
+                      </property>
+                      <property name="leftMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                        <number>0</number>
+                      </property>
+                    </layout>
+                  </widget>
+                  <widget class="QWidget" name="usuariosPage">
+                    <layout class="QVBoxLayout" name="layoutUsuarios">
+                      <property name="spacing">
+                        <number>14</number>
+                      </property>
+                      <property name="leftMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="rightMargin">
+                        <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                        <number>0</number>
+                      </property>
+                      <item>
+                        <layout class="QHBoxLayout" name="layoutCabeceraUsuarios">
+                          <item>
+                            <widget class="QLabel" name="tituloUsuariosLabel">
+                              <property name="text">
+                                <string>Usuarios registrados</string>
+                              </property>
+                            </widget>
+                          </item>
+                          <item>
+                            <spacer name="espacioCabeceraUsuarios">
+                              <property name="orientation">
+                                <enum>Qt::Horizontal</enum>
+                              </property>
+                              <property name="sizeHint" stdset="0">
+                                <size>
+                                  <width>40</width>
+                                  <height>20</height>
+                                </size>
+                              </property>
+                            </spacer>
+                          </item>
+                          <item>
+                            <widget class="QLineEdit" name="buscarUsuarioLineEdit">
+                              <property name="placeholderText">
+                                <string>Buscar por DNI, nombre o tipo</string>
+                              </property>
+                              <property name="clearButtonEnabled">
+                                <bool>true</bool>
+                              </property>
+                            </widget>
+                          </item>
+                          <item>
+                            <widget class="QPushButton" name="buscarUsuarioButton">
+                              <property name="text">
+                                <string>Buscar</string>
+                              </property>
+                              <property name="rol" stdset="0">
+                                <string>primary</string>
+                              </property>
+                            </widget>
+                          </item>
+                          <item>
+                            <widget class="QPushButton" name="renovarMembresiaButton">
+                              <property name="toolTip">
+                                <string>Renueva la membresía del usuario seleccionado por 3 meses</string>
+                              </property>
+                              <property name="text">
+                                <string>Renovar membresía</string>
+                              </property>
+                              <property name="rol" stdset="0">
+                                <string>secondary</string>
+                              </property>
+                            </widget>
+                          </item>
+                        </layout>
+                      </item>
+                      <item>
+                        <widget class="QLabel" name="cantidadUsuariosLabel">
+                          <property name="text">
+                            <string>0 usuarios</string>
+                          </property>
+                        </widget>
+                      </item>
+                      <item>
+                        <widget class="QTableWidget" name="tablaUsuarios">
+                          <property name="editTriggers">
+                            <set>QAbstractItemView::NoEditTriggers</set>
+                          </property>
+                          <property name="alternatingRowColors">
+                            <bool>true</bool>
+                          </property>
+                          <property name="selectionMode">
+                            <enum>QAbstractItemView::SingleSelection</enum>
+                          </property>
+                          <property name="selectionBehavior">
+                            <enum>QAbstractItemView::SelectRows</enum>
+                          </property>
+                          <property name="sortingEnabled">
+                            <bool>true</bool>
+                          </property>
+                          <property name="rowCount">
+                            <number>0</number>
+                          </property>
+                          <property name="columnCount">
+                            <number>6</number>
+                          </property>
+                          <column>
+                            <property name="text">
+                              <string>DNI</string>
+                            </property>
+                          </column>
+                          <column>
+                            <property name="text">
+                              <string>Nombre</string>
+                            </property>
+                          </column>
+                          <column>
+                            <property name="text">
+                              <string>Tipo</string>
+                            </property>
+                          </column>
+                          <column>
+                            <property name="text">
+                              <string>Vencimiento</string>
+                            </property>
+                          </column>
+                          <column>
+                            <property name="text">
+                              <string>Estado</string>
+                            </property>
+                          </column>
+                          <column>
+                            <property name="text">
+                              <string>Administra</string>
+                            </property>
+                          </column>
+                        </widget>
+                      </item>
+                    </layout>
+                  </widget>
+                  <widget class="QWidget" name="reportesPage">
+                  <layout class="QVBoxLayout" name="layoutReportes">
+                    <property name="spacing">
+                      <number>10</number>
+                    </property>
+                    <property name="leftMargin">
+                      <number>16</number>
+                    </property>
+                    <property name="topMargin">
+                      <number>16</number>
+                    </property>
+                    <property name="rightMargin">
+                      <number>16</number>
+                    </property>
+                    <property name="bottomMargin">
+                      <number>16</number>
+                    </property>
+                    <item>
+                      <layout class="QHBoxLayout" name="layoutCabeceraReportes">
+                        <item>
+                          <widget class="QLabel" name="tituloReportesLabel">
+                            <property name="text">
+                              <string>Reportes</string>
+                            </property>
+                          </widget>
+                        </item>
+                        <item>
+                          <spacer name="espacioCabeceraReportes">
+                            <property name="orientation">
+                              <enum>Qt::Horizontal</enum>
+                            </property>
+                            <property name="sizeHint" stdset="0">
+                              <size>
+                                <width>40</width>
+                                <height>20</height>
+                              </size>
+                            </property>
+                          </spacer>
+                        </item>
+                        <item>
+                          <widget class="QPushButton" name="exportarReporteButton">
+                            <property name="text">
+                              <string>Exportar reporte</string>
+                            </property>
+                            <property name="rol" stdset="0">
+                              <string>primary</string>
+                            </property>
+                          </widget>
+                        </item>
+                      </layout>
+                    </item>
+                    <item>
+                      <widget class="QLabel" name="reporteResumenLabel">
+                        <property name="wordWrap">
+                          <bool>true</bool>
+                        </property>
+                        <property name="text">
+                          <string>Resumen de la biblioteca</string>
+                        </property>
+                      </widget>
+                    </item>
+                    <item>
+                      <widget class="QLabel" name="tituloHistorialLabel">
+                        <property name="text">
+                          <string>1. Historial de préstamos</string>
+                        </property>
+                      </widget>
+                    </item>
+                    <item>
+                      <widget class="QTableWidget" name="tablaHistorialPrestamos">
+                        <property name="editTriggers">
+                          <set>QAbstractItemView::NoEditTriggers</set>
+                        </property>
+                        <property name="alternatingRowColors">
+                          <bool>true</bool>
+                        </property>
+                        <property name="selectionBehavior">
+                          <enum>QAbstractItemView::SelectRows</enum>
+                        </property>
+                        <property name="sortingEnabled">
+                          <bool>true</bool>
+                        </property>
+                        <property name="columnCount">
+                          <number>9</number>
+                        </property>
+                    <column>
+                      <property name="text">
+                        <string>ID</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>DNI</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Usuario</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>ISBN</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Libro</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Fecha préstamo</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Fecha límite</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Devolución</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Estado</string>
+                      </property>
+                    </column>
+                      </widget>
+                    </item>
+                    <item>
+                      <widget class="QFrame" name="separadorReportes">
+                        <property name="frameShape">
+                          <enum>QFrame::HLine</enum>
+                        </property>
+                        <property name="frameShadow">
+                          <enum>QFrame::Sunken</enum>
+                        </property>
+                      </widget>
+                    </item>
+                    <item>
+                      <widget class="QLabel" name="tituloInventarioLabel">
+                        <property name="text">
+                          <string>2. Inventario de libros</string>
+                        </property>
+                      </widget>
+                    </item>
+                    <item>
+                      <widget class="QTableWidget" name="tablaInventarioLibros">
+                        <property name="editTriggers">
+                          <set>QAbstractItemView::NoEditTriggers</set>
+                        </property>
+                        <property name="alternatingRowColors">
+                          <bool>true</bool>
+                        </property>
+                        <property name="selectionBehavior">
+                          <enum>QAbstractItemView::SelectRows</enum>
+                        </property>
+                        <property name="sortingEnabled">
+                          <bool>true</bool>
+                        </property>
+                        <property name="columnCount">
+                          <number>9</number>
+                        </property>
+                    <column>
+                      <property name="text">
+                        <string>ISBN</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Título</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Autor</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Categoría</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Sección</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Estante</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Ejemplares</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Prestados</string>
+                      </property>
+                    </column>
+                    <column>
+                      <property name="text">
+                        <string>Disponibles</string>
+                      </property>
+                    </column>
+                      </widget>
+                    </item>
+                  </layout>
+                </widget>
+
+                </widget>
               </item>
-              <item row="0" column="1">
-               <widget class="QLabel" name="nombreValorLabel">
-                <property name="text">
-                 <string>-</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="0">
-               <widget class="QLabel" name="dniEtiquetaLabel">
-                <property name="text">
-                 <string>DNI</string>
-                </property>
-               </widget>
-              </item>
-              <item row="1" column="1">
-               <widget class="QLabel" name="dniValorLabel">
-                <property name="text">
-                 <string>-</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="0">
-               <widget class="QLabel" name="tipoEtiquetaLabel">
-                <property name="text">
-                 <string>Tipo de membresía</string>
-                </property>
-               </widget>
-              </item>
-              <item row="2" column="1">
-               <widget class="QLabel" name="tipoValorLabel">
-                <property name="text">
-                 <string>-</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="0">
-               <widget class="QLabel" name="vencimientoEtiquetaLabel">
-                <property name="text">
-                 <string>Vencimiento</string>
-                </property>
-               </widget>
-              </item>
-              <item row="3" column="1">
-               <widget class="QLabel" name="vencimientoValorLabel">
-                <property name="text">
-                 <string>-</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="0">
-               <widget class="QLabel" name="estadoEtiquetaLabel">
-                <property name="text">
-                 <string>Estado</string>
-                </property>
-               </widget>
-              </item>
-              <item row="4" column="1">
-               <widget class="QLabel" name="estadoValorLabel">
-                <property name="text">
-                 <string>-</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="0">
-               <widget class="QLabel" name="permisosEtiquetaLabel">
-                <property name="text">
-                 <string>Permisos</string>
-                </property>
-               </widget>
-              </item>
-              <item row="5" column="1">
-               <widget class="QLabel" name="permisosValorLabel">
-                <property name="text">
-                 <string>-</string>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
-           <item>
-            <spacer name="espacioMembresia">
-             <property name="orientation">
-              <enum>Qt::Vertical</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>20</width>
-               <height>40</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="libroPage">
-          <layout class="QVBoxLayout" name="layoutPaginaLibro">
-           <property name="spacing">
-            <number>0</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="usuariosPage">
-          <layout class="QVBoxLayout" name="layoutUsuarios">
-           <property name="spacing">
-            <number>14</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <layout class="QHBoxLayout" name="layoutCabeceraUsuarios">
-             <item>
-              <widget class="QLabel" name="tituloUsuariosLabel">
-               <property name="text">
-                <string>Usuarios registrados</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="espacioCabeceraUsuarios">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QLineEdit" name="buscarUsuarioLineEdit">
-               <property name="placeholderText">
-                <string>Buscar por DNI, nombre o tipo</string>
-               </property>
-               <property name="clearButtonEnabled">
-                <bool>true</bool>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="buscarUsuarioButton">
-               <property name="text">
-                <string>Buscar</string>
-               </property>
-               <property name="rol" stdset="0">
-                <string>primary</string>
-               </property>
-              </widget>
-             </item>
             </layout>
-           </item>
-           <item>
-            <widget class="QLabel" name="cantidadUsuariosLabel">
-             <property name="text">
-              <string>0 usuarios</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QTableWidget" name="tablaUsuarios">
-             <property name="editTriggers">
-              <set>QAbstractItemView::NoEditTriggers</set>
-             </property>
-             <property name="alternatingRowColors">
-              <bool>true</bool>
-             </property>
-             <property name="selectionMode">
-              <enum>QAbstractItemView::SingleSelection</enum>
-             </property>
-             <property name="selectionBehavior">
-              <enum>QAbstractItemView::SelectRows</enum>
-             </property>
-             <property name="sortingEnabled">
-              <bool>true</bool>
-             </property>
-             <property name="rowCount">
-              <number>0</number>
-             </property>
-             <property name="columnCount">
-              <number>6</number>
-             </property>
-             <column>
-              <property name="text">
-               <string>DNI</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Nombre</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Tipo</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Vencimiento</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Estado</string>
-              </property>
-             </column>
-             <column>
-              <property name="text">
-               <string>Administra</string>
-              </property>
-             </column>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-         <widget class="QWidget" name="reportesPage">
-          <layout class="QVBoxLayout" name="layoutReportes">
-           <property name="spacing">
-            <number>14</number>
-           </property>
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <layout class="QHBoxLayout" name="layoutCabeceraReportes">
-             <item>
-              <widget class="QLabel" name="tituloReportesLabel">
-               <property name="text">
-                <string>Reportes</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <spacer name="espacioCabeceraReportes">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
-             <item>
-              <widget class="QPushButton" name="actualizarReporteButton">
-               <property name="text">
-                <string>Actualizar</string>
-               </property>
-               <property name="rol" stdset="0">
-                <string>secondary</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="exportarReporteButton">
-               <property name="text">
-                <string>Exportar reporte</string>
-               </property>
-               <property name="rol" stdset="0">
-                <string>primary</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
-            <widget class="QTextEdit" name="reporteTextEdit">
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="acceptRichText">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </widget>
-        </widget>
-       </item>
+          </widget>
+        </item>
       </layout>
-     </widget>
-    </item>
-   </layout>
+    </widget>
   </widget>
- </widget>
- <resources/>
- <connections/>
+  <resources/>
+  <connections/>
 </ui>

@@ -1,23 +1,23 @@
 [
   {
     "dni": "11111111",
-    "nombre": "P_ESTUDIANTE",
+    "nombre": "ESTUDIANTE",
     "tipo": "Estudiante",
     "vencimiento_membresia": "2027-12-31",
     "activo": true
   },
   {
     "dni": "22222222",
-    "nombre": "P_DOCENTE",
+    "nombre": "DOCENTE",
     "tipo": "Docente",
     "vencimiento_membresia": "2027-12-31",
     "activo": true
   },
   {
-    "dni": "33333333",
-    "nombre": "P_ADMINISTRADOR",
+    "dni": "99999999",
+    "nombre": "ADMINISTRADOR",
     "tipo": "Administrador",
-    "vencimiento_membresia": "2027-12-31",
+    "vencimiento_membresia": "2036-11-17",
     "activo": true
   },
   {
@@ -86,7 +86,7 @@
   {
     "dni": "78901234",
     "nombre": "Valeria Sanchez",
-    "tipo": "Administrador",
+    "tipo": "Docente",
     "vencimiento_membresia": "2026-03-15",
     "activo": true
   },
@@ -94,7 +94,7 @@
     "dni": "71828192",
     "nombre": "pajuelin",
     "tipo": "Estudiante",
-    "vencimiento_membresia": "2027-02-11",
+    "vencimiento_membresia": "2027-05-11",
     "activo": true
   }
 ]

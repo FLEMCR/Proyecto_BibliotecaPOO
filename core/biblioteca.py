@@ -61,6 +61,13 @@ class Biblioteca:
             )
         return self._usuarios[dni_buscado]
 
+    def renovar_membresia(self, dni, meses=None):
+        """Renueva la membresía de un usuario y guarda el cambio en el JSON."""
+        usuario = self.usuario(dni)
+        usuario.renovar_membresia(meses)
+        self.guardar_usuarios()
+        return usuario
+
     def datos_de_un_libro(self, isbn):
         """Retorna los datos detallados de un libro específico para su visualización."""
         return self.libro(isbn).datos_para_pantalla()
@@ -250,7 +257,15 @@ class Biblioteca:
         usuario = self.usuario(dni)
         if not usuario.esta_activo() or not usuario.tiene_membresia_vigente():
             raise errores.ErrorDeDatos("El usuario no puede recibir prestamos")
-        if self.prestamo_activo_de_usuario(usuario.dni()) is not None:
+        prestamos_usuario = self.prestamos_de_usuario(usuario.dni())
+        vencidos = [p for p in prestamos_usuario if p.esta_vencido()]
+        if vencidos:
+            raise errores.ErrorDeDatos(
+                "El usuario tiene un préstamo vencido; debe devolverlo "
+                "antes de pedir otro libro"
+            )
+        activos = [p for p in prestamos_usuario if p.esta_activo()]
+        if len(activos) >= configuracion.MAXIMO_PRESTAMOS_POR_USUARIO:
             raise errores.ErrorDeDatos(
                 "El usuario ya tiene un libro prestado; debe devolverlo primero"
             )

@@ -1,3 +1,22 @@
+/* ============================================================
+   app.qss — tema oscuro de la Biblioteca General POSTDATA
+
+   Índice para editar rápido:
+   1. Base global
+   2. Ventana principal, sidebar y tarjetas
+   3. Etiquetas de texto
+   4. Botones
+   5. Navegación lateral
+   6. Campos de entrada (línea, combo y spin)
+   7. Casillas y botones de radio
+   8. Tablas y cabeceras
+   9. Áreas de texto y splitter
+   10. Plazo y tooltips
+   ============================================================ */
+
+/* ------------------------------------------------------------
+   1. Base global
+   ------------------------------------------------------------ */
 QWidget {
   background-color: #1b1e20;
   color: #eceff1;
@@ -13,50 +32,9 @@ QLabel {
   color: #eceff1;
 }
 
-QLabel#marca1Label {
-  color: #ffffff;
-  font-weight: bold;
-}
-
-QLabel#marca2Label {
-  color: #aab2b8;
-  font-style: italic;
-}
-
-QLabel#bienvenidaLabel {
-  color: #ffffff;
-  font-weight: bold;
-}
-
-QLabel#tipoLabel,
-QLabel#subtituloInicioLabel,
-QLabel#subtituloMembresiaLabel {
-  color: #aab2b8;
-}
-
-QLabel#menuLabel {
-  color: #7f878c;
-  font-weight: bold;
-}
-
-QLabel#tituloInicioLabel,
-QLabel#tituloMembresiaLabel,
-QLabel#tituloUsuariosLabel,
-QLabel#tituloFormularioLabel,
-QLabel#detalleEncabezadoLabel {
-  color: #ffffff;
-  font-weight: bold;
-}
-
-QLabel#titulosValorLabel,
-QLabel#ejemplaresValorLabel,
-QLabel#disponiblesValorLabel,
-QLabel#prestadosValorLabel,
-QLabel#usuariosValorLabel {
-  color: #ff6b5a;
-  font-weight: bold;
-}
-
+/* ------------------------------------------------------------
+   2. Ventana principal, sidebar y tarjetas
+   ------------------------------------------------------------ */
 QFrame#sidebarFrame {
   background-color: #141618;
   border-right: 1px solid #2e3438;
@@ -72,6 +50,58 @@ QFrame[card='true'] {
   border-radius: 8px;
 }
 
+QFrame#separadorReportes {
+  color: #3d4449;
+  background-color: #3d4449;
+  border: none;
+}
+
+/* ------------------------------------------------------------
+   3. Etiquetas de texto
+   ------------------------------------------------------------ */
+QLabel#marca1Label {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+QLabel#marca2Label {
+  color: #aab2b8;
+  font-style: italic;
+}
+
+QLabel#bienvenidaLabel {
+  color: #ffffff;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+QLabel#tipoLabel,
+QLabel#subtituloMembresiaLabel,
+QLabel#reporteResumenLabel {
+  color: #aab2b8;
+}
+
+QLabel#menuLabel {
+  color: #7f878c;
+  font-weight: bold;
+}
+
+QLabel#tituloMembresiaLabel,
+QLabel#tituloUsuariosLabel,
+QLabel#tituloReportesLabel,
+QLabel#tituloHistorialLabel,
+QLabel#tituloInventarioLabel,
+QLabel#tituloFormularioLabel,
+QLabel#detalleEncabezadoLabel {
+  color: #ffffff;
+  font-weight: bold;
+}
+
+/* ------------------------------------------------------------
+   4. Botones
+   Uso: rol='primary' para la acción principal y 'secondary'/'ghost'
+   para acciones alternativas. El valor se pone en Qt Designer.
+   ------------------------------------------------------------ */
 QPushButton {
   background-color: #b03a2e;
   color: #ffffff;
@@ -124,6 +154,10 @@ QPushButton[rol='ghost']:hover {
   border-color: #c0392b;
 }
 
+/* ------------------------------------------------------------
+   5. Navegación lateral
+   Las filas se compactaron en principal.ui para no usar scroll.
+   ------------------------------------------------------------ */
 QListWidget#navegacionListWidget {
   background-color: transparent;
   border: none;
@@ -132,9 +166,8 @@ QListWidget#navegacionListWidget {
 
 QListWidget#navegacionListWidget::item {
   color: #d7dde1;
-  padding: 9px 10px;
+  padding: 7px 10px;
   border-radius: 6px;
-  margin: 2px 0;
 }
 
 QListWidget#navegacionListWidget::item:hover {
@@ -146,10 +179,12 @@ QListWidget#navegacionListWidget::item:selected {
   color: #ffffff;
 }
 
+/* ------------------------------------------------------------
+   6. Campos de entrada
+   ------------------------------------------------------------ */
 QLineEdit,
 QComboBox,
-QSpinBox,
-QDateEdit {
+QSpinBox {
   background-color: #202427;
   color: #eceff1;
   border: 1px solid #3d4449;
@@ -161,8 +196,7 @@ QDateEdit {
 
 QLineEdit:focus,
 QComboBox:focus,
-QSpinBox:focus,
-QDateEdit:focus {
+QSpinBox:focus {
   border-color: #c0392b;
 }
 
@@ -179,13 +213,38 @@ QComboBox QAbstractItemView {
   selection-color: #ffffff;
 }
 
+/* ------------------------------------------------------------
+   7. Casillas y botones de radio
+   Los radio buttons eligen la dimensión del reporte.
+   ------------------------------------------------------------ */
 QCheckBox {
   color: #d7dde1;
   spacing: 8px;
 }
 
-QTableWidget,
-QTableView {
+QRadioButton {
+  color: #d7dde1;
+  spacing: 6px;
+  padding: 3px 2px;
+}
+
+QRadioButton::indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 7px;
+  border: 1px solid #4a5156;
+  background-color: #202427;
+}
+
+QRadioButton::indicator:checked {
+  background-color: #b03a2e;
+  border: 2px solid #d64a3a;
+}
+
+/* ------------------------------------------------------------
+   8. Tablas y cabeceras
+   ------------------------------------------------------------ */
+QTableWidget {
   background-color: #202427;
   alternate-background-color: #24282b;
   color: #eceff1;
@@ -196,8 +255,7 @@ QTableView {
   selection-color: #ffffff;
 }
 
-QTableWidget::item,
-QTableView::item {
+QTableWidget::item {
   padding: 5px;
 }
 
@@ -216,6 +274,9 @@ QTableCornerButton::section {
   border: none;
 }
 
+/* ------------------------------------------------------------
+   9. Áreas de texto y splitter
+   ------------------------------------------------------------ */
 QTextEdit {
   background-color: transparent;
   color: #eceff1;
@@ -228,61 +289,12 @@ QSplitter::handle {
   background-color: #2e3438;
 }
 
-QGroupBox {
-  border: 1px solid #333a3f;
-  border-radius: 8px;
-  margin-top: 12px;
-  padding-top: 8px;
-}
-
-QGroupBox::title {
-  subcontrol-origin: margin;
-  left: 10px;
-  padding: 0 4px;
-  color: #eceff1;
-}
-
-QScrollArea {
-  border: none;
-  background-color: transparent;
-}
-
-QScrollBar:vertical {
-  background-color: #1b1e20;
-  width: 12px;
-  margin: 0;
-}
-
-QScrollBar::handle:vertical {
-  background-color: #41474c;
-  min-height: 24px;
-  border-radius: 6px;
-}
-
-QScrollBar::handle:vertical:hover {
-  background-color: #596167;
-}
-
-QScrollBar:horizontal {
-  background-color: #1b1e20;
-  height: 12px;
-  margin: 0;
-}
-
-QScrollBar::handle:horizontal {
-  background-color: #41474c;
-  min-width: 24px;
-  border-radius: 6px;
-}
-
-QScrollBar::handle:horizontal:hover {
-  background-color: #596167;
-}
-
-QScrollBar::add-line,
-QScrollBar::sub-line {
-  width: 0;
-  height: 0;
+/* ------------------------------------------------------------
+   10. Plazo y tooltips
+   El plazo se muestra como texto; la fecha se calcula sola a 15 días.
+   ------------------------------------------------------------ */
+QLabel#plazoFechaLimiteLabel {
+  color: #aab2b8;
 }
 
 QToolTip {

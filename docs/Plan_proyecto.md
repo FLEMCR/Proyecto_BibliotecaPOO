@@ -3,11 +3,31 @@
 > **Proyecto:** Biblioteca General POSTDATA  
 > **Curso:** Programación Orientada a Objetos  
 > **Documento:** `docs/Plan_proyecto.md`  
-> **Última actualización:** 2026-11-10  
-> **Entrada del sistema:** `main.py` (interfaz gráfica), única entrada.  
-> **Datos:** `data/libros.json`, `data/usuarios.json` y `data/prestamos.json`
+> **Última actualización:** 2026-11-17
+> **Entrada del sistema:** `main.py` (interfaz gráfica), única entrada.
+> **Datos:** `data/libros.json`, `data/usuarios.json`, `data/prestamos.json` y `data/reporte.txt` (exportación)
 
 Este documento reemplaza al plan anterior. Su objetivo es servir como guía de trabajo para terminar el sistema, conectar las interfaces con la lógica existente y agregar lo que falta sin duplicar código.
+
+---
+
+## Estado final del proyecto (cierre)
+
+- **Interfaz:** inicio con solo el texto superior (`Hola, nombre`, tipo y lema) y un espacio vacío para colocar después una imagen o iconos SVG; menú lateral sin scroll; las 8 opciones navegan y cargan datos. La ventana principal quedó en 1240×720 (20 px menos en cada lado que 1280×760) y el resto de ventanas también se achicó 20 px por lado; las tablas siguen entrando bien. El catálogo tiene el botón **Registrar préstamo** que emite `prestamo_solicitado(str)` y copia el ISBN al formulario con `cargar_isbn()`; para administradores también muestra **Nuevo libro**, **Editar libro** y **Eliminar libro**, que emiten señales a `principal.py` y completan el CRUD de libros.
+- **Componentes:** se usan `QLabel`, `QLineEdit`, `QTextEdit`, `QPushButton`, `QComboBox`, `QCheckBox`, `QSpinBox`, `QListWidget`, `QTableWidget`, `QStackedWidget` y `QSplitter`. No se usa calendario ni selector de fecha: el plazo y la fecha límite se muestran como texto calculado a 15 días.
+- **Préstamos:** la fecha límite es `fecha_prestamo + 15 días` (`DIAS_DE_PRESTAMO`); `Prestamo` valida el plazo y `Biblioteca.prestar()` bloquea al usuario con un préstamo vencido hasta que lo devuelva. No hay multas.
+- **Membresías:** el administrador puede renovar el vencimiento de cualquier usuario desde “Usuarios” (suma 3 meses desde la fecha vigente, sin acortarla). El administrador principal queda con vencimiento a 10 años en `data/usuarios.json`.
+- **Reportes:** el resumen general pasó de Inicio a la página de Reportes. La vista muestra dos tablas separadas: historial de préstamos (quién pidió qué libro, fechas y estado) e inventario de libros (ejemplares, prestados y disponibles). `core/reportes.py` conserva las matrices filas × estantes, `sumar_fila()` recursiva, `filas_del_reporte()` como generador y el `lambda` como cierre; todo se exporta a `data/reporte.txt`.
+- **Lema:** “Un libro es un viaje de ida y vuelta: llévalo contigo y devuélvelo cuando el viaje haya terminado.”
+- **Firebase:** módulo opcional en `integracion/firebase_sync.py`, explicado en `docs/Firebase.md`; `main.py` no lo importa.
+- **Estilos:** `assets/styles/app.qss` está dividido en 10 bloques con comentarios e índice; los `.ui` ya no contienen atributos `stretch` problemáticos.
+- **Código muerto:** se quitó `CARPETA_INTERFACES` y el atributo `_libro_seleccionado`.
+- **Verificación:** compilación correcta, carga de los 7 `.ui` con `uic.loadUi` y 20 pruebas en `QT_QPA_PLATFORM=offscreen`.
+
+### Material de exposición
+
+- `docs/Contenido_Presentacion_Canva.md` — 13 diapositivas (texto, imagen sugerida y palabras clave).
+- `docs/Guion_Exposicion.md` — 4 bloques de 3 minutos y banco de preguntas técnicas.
 
 ---
 
@@ -80,7 +100,7 @@ La lógica vive una sola vez en `core/` y la interfaz gráfica es la única que 
 
 Estas reglas ya están decididas y deben respetarse en el código y en la interfaz:
 
-1. **No se cobran multas.** El sistema no calcula dinero ni bloquea por deuda. Si un préstamo pasa de la fecha límite, solo se muestra como vencido en los reportes; no genera multa.
+1. **No se cobran multas.** El sistema no calcula dinero. Si un préstamo pasa de la fecha límite, se muestra como vencido y se bloquean nuevos préstamos hasta devolverlo; no genera multa.
 2. **Un solo préstamo activo por usuario.** Mientras el usuario no devuelva el libro que tiene, no puede pedir otro. El límite es 1, no 3.
 3. **No se implementan beneficios de membresía por ahora.** La página “Mi membresía” solo muestra nombre, DNI, tipo, vencimiento y estado. Los beneficios quedan descartados para esta etapa.
 4. **La devolución libera al usuario.** Cuando se registra la devolución, el stock sube y el usuario queda habilitado para pedir otro libro.
@@ -106,7 +126,7 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 | Matrices                            | Reportes de estantes, devoluciones, historial y préstamos por sección.                       |
 | Archivos JSON                       | Lectura y escritura de libros, usuarios y préstamos.                                         |
 | Archivo de texto                    | Bitácora de movimientos y exportación de reportes.                                           |
-| PyQt5 / QtDesigner                  | Ventanas, formularios, tablas, combos, listas, spin boxes y calendario si se usa.            |
+| PyQt5 / QtDesigner                  | Ventanas, formularios, tablas, combos, listas, spin boxes y fecha límite como texto.         |
 | Expresiones regulares               | Validación de DNI, ISBN y fechas si se implementa como mejora.                               |
 
 ---
@@ -128,7 +148,7 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 - **Categorías:** `Ciencias básicas` y `Tecnología` son categorías independientes, sin subcategorías; los 22 libros de `data/libros.json` ya están reclasificados.
 - **Préstamos:** `Prestamo`, `Biblioteca.prestar()`, `prestamo_activo_de_usuario()` y stock actualizado; solo se pide el ISBN porque el DNI sale de la sesión.
 - **Devoluciones:** `Biblioteca.devolver()`, selección del préstamo activo, stock repuesto y liberación del usuario.
-- **Registro de libros:** alta y edición desde la página interna, con categoría, sección y stock.
+- **Registro de libros:** alta, edición y baja desde la página interna y desde los botones de administración del catálogo, con categoría, sección y stock.
 - **Registro de usuarios:** autorregistro desde el acceso con membresía de 3 meses calculada con `sumar_meses()`.
 - **Persistencia:** escritura de `libros.json`, `usuarios.json` y `prestamos.json`.
 
@@ -138,7 +158,7 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 | ----------------- | --------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
 | `ui/principal.py` | Incrusta catálogo, préstamo, devolución y libro; navega y refresca datos.               | Accesos rápidos de la página de inicio y cierre controlado con la X.            |
 | `ui/principal.ui` | Tiene las 8 páginas, el nombre en la barra lateral y la bienvenida al pie de Inicio.    | La página de usuarios y reportes aún es de solo lectura.                        |
-| `ui/catalogo.ui`  | Filtros, tabla y ficha completos, con filtro por categoría y más espacio para la tabla. | Botones de administración para nuevo/editar/eliminar libro dentro del catálogo. |
+| `ui/catalogo.ui`  | Filtros, tabla, ficha y botones de administración para nuevo/editar/eliminar libro.    | Nada pendiente en el catálogo.                                                  |
 | `main.py`         | Abre, cierra sesión y vuelve al acceso.                                                 | Decidir si cerrar la ventana principal con la X debe salir o volver al acceso.  |
 | `ui/acceso.py`    | Valida y muestra errores con `QMessageBox`.                                             | Validator de DNI, mensaje inline y foco inicial opcionales.                     |
 
@@ -539,30 +559,26 @@ Reglas:
 
 | Índice | Página           | Contenido                                 | Acceso              |
 | ------ | ---------------- | ----------------------------------------- | ------------------- |
-| 0      | `inicioPage`     | Tarjetas de resumen y accesos rápidos.    | Todos.              |
+| 0      | `inicioPage`     | Solo texto superior y espacio para imagen. | Todos.             |
 | 1      | `catalogoPage`   | `catalogo.ui` incrustado.                 | Todos.              |
 | 2      | `prestamoPage`   | `prestamo.ui` incrustado; solo pide ISBN. | Todos.              |
 | 3      | `devolucionPage` | `devolucion.ui` incrustado.               | Todos.              |
 | 4      | `membresiaPage`  | Datos de la membresía.                    | Todos.              |
 | 5      | `libroPage`      | `libro_form.ui` incrustado.               | Solo administrador. |
 | 6      | `usuariosPage`   | Tabla y búsqueda de usuarios.             | Solo administrador. |
-| 7      | `reportesPage`   | Reporte y exportación.                    | Solo administrador. |
+| 7      | `reportesPage`   | Resumen, historial e inventario en tablas. | Solo administrador. |
 
 Las filas 5, 6 y 7 se ocultan para estudiantes y docentes. Las páginas 2 y 3 se centran horizontalmente con un ancho máximo de 640 px; la página 1 ocupa todo el espacio disponible.
 
 #### Widgets de la página de inicio
 
-| `objectName`            | Uso                                                     |
-| ----------------------- | ------------------------------------------------------- |
-| `titulosValorLabel`     | Cantidad de títulos.                                    |
-| `ejemplaresValorLabel`  | Cantidad de ejemplares.                                 |
-| `disponiblesValorLabel` | Ejemplares disponibles.                                 |
-| `prestadosValorLabel`   | Ejemplares prestados.                                   |
-| `usuariosValorLabel`    | Cantidad de usuarios.                                   |
-| `inicioFooterFrame`     | Pie de la página de inicio con la bienvenida y el lema. |
-| `bienvenidaLabel`       | “Hola, {nombre}” en el pie de Inicio.                   |
-| `tipoLabel`             | Tipo y estado del usuario en el pie.                    |
-| `marca2Label`           | Lema de la biblioteca en el pie de Inicio.              |
+| `objectName`        | Uso                                                       |
+| ------------------- | --------------------------------------------------------- |
+| `inicioFooterFrame` | Texto superior: bienvenida, tipo y lema.                  |
+| `bienvenidaLabel`   | “Hola, {nombre}”.                                         |
+| `tipoLabel`         | Tipo y estado del usuario.                                |
+| `marca2Label`       | Lema de la biblioteca.                                    |
+| `inicioImagenLabel` | Espacio vacío listo para colocar una imagen o icono SVG.  |
 
 #### Widgets de membresía
 
@@ -581,16 +597,21 @@ Las filas 5, 6 y 7 se ocultan para estudiantes y docentes. Las páginas 2 y 3 se
 | ----------------------- | ------------------------------ |
 | `buscarUsuarioLineEdit` | Filtro por DNI, nombre o tipo. |
 | `buscarUsuarioButton`   | Aplica el filtro.              |
+| `renovarMembresiaButton` | Renueva 3 meses la membresía del usuario elegido (solo admin). |
 | `cantidadUsuariosLabel` | Cantidad de resultados.        |
 | `tablaUsuarios`         | Tabla de usuarios.             |
 
 #### Widgets de reportes
 
-| `objectName`              | Uso                              |
-| ------------------------- | -------------------------------- |
-| `actualizarReporteButton` | Recalcula las matrices.          |
-| `exportarReporteButton`   | Guarda el reporte en un archivo. |
-| `reporteTextEdit`         | Muestra el reporte en HTML.      |
+| `objectName`               | Uso                                                        |
+| -------------------------- | ---------------------------------------------------------- |
+| `reporteResumenLabel`      | Resumen general (antes estaba en Inicio).                  |
+| `tituloHistorialLabel`     | Encabezado de la primera tabla.                            |
+| `tablaHistorialPrestamos`  | Historial: quién prestó qué libro, fechas y estado.         |
+| `separadorReportes`        | Línea que separa las dos tablas.                           |
+| `tituloInventarioLabel`    | Encabezado de la segunda tabla.                            |
+| `tablaInventarioLibros`    | Libros con ejemplares, prestados y disponibles.             |
+| `exportarReporteButton`    | Guarda el reporte completo en `data/reporte.txt`.           |
 
 #### Lógica que debe implementar `principal.py`
 
@@ -766,14 +787,13 @@ Solo para administradores. Se llena recorriendo `biblioteca.todos_los_usuarios()
 
 ### 6.8 Página de reportes 🟡
 
-Se llena con las funciones de `core/reportes.py` y se muestra en `reporteTextEdit`.
+Se llena con las funciones de `core/reportes.py`: `resumen_visible()`, `historial_de_prestamos()` e `inventario_de_libros()`.
 
-| Botón                     | Acción                                                                     |
-| ------------------------- | -------------------------------------------------------------------------- |
-| `actualizarReporteButton` | Recalcula las matrices y el resumen.                                       |
-| `exportarReporteButton`   | Guarda el contenido en `data/reportes/` o en la ruta que elija el usuario. |
+| Botón                   | Acción                                                     |
+| ----------------------- | ---------------------------------------------------------- |
+| `exportarReporteButton` | Guarda matrices, historial e inventario en `data/reporte.txt`. |
 
-**Criterio de aceptación:** los totales del reporte coinciden con el resumen, las matrices se ven como tablas y la exportación genera un archivo legible.
+**Criterio de aceptación:** el resumen coincide con los datos reales, el historial permite ver quién prestó cada libro, el inventario muestra ejemplares/prestados/disponibles, ambas tablas están separadas y la exportación genera un archivo legible.
 
 ### 6.9 `libro_form.ui` — `VentanaLibro` (QWidget) ✅
 
@@ -954,7 +974,7 @@ if not self.usuario.puede_administrar():
 | `QComboBox`       | Campo de búsqueda, categoría y orden.                        | Ahorra espacio y limita las opciones a valores válidos.                               | `QListWidget` ocuparía mucho espacio; varios `QRadioButton` serían incómodos si hay muchas categorías. |
 | `QCheckBox`       | “Solo disponibles”.                                          | Representa una decisión booleana simple.                                              | Dos `QRadioButton` para sí/no son más verbosos.                                                        |
 | `QSpinBox`        | Estante, ejemplares y disponibles en el formulario de libro. | Solo permite números dentro de un rango y evita validar texto a mano.                 | `QLineEdit` obliga a convertir y validar; `QSlider` no muestra el número exacto.                       |
-| `QCalendarWidget` | Renovación de membresía o fecha de devolución.               | Evita escribir fechas a mano y reduce errores de formato.                             | `QLineEdit` con fecha es más liviano, pero exige validación y es más fácil equivocarse.                |
+| `QLabel`          | Plazo y fecha límite del préstamo.                           | Muestra el texto calculado sin controles que permitan cambiarlo.                      | `QCalendarWidget` o `QDateEdit` permitirían elegir otra fecha; el plazo es fijo de 15 días.            |
 
 **Ejemplo de combo:**
 
@@ -1030,7 +1050,7 @@ respuesta = QMessageBox.question(
 | Elegir entre opciones fijas                     | `QComboBox`       |
 | Activar o desactivar una opción                 | `QCheckBox`       |
 | Un número dentro de un rango                    | `QSpinBox`        |
-| Una fecha                                       | `QCalendarWidget` |
+| Una fecha calculada y fija                      | `QLabel`          |
 | Confirmar o avisar algo importante              | `QMessageBox`     |
 | Elegir dónde guardar un archivo                 | `QFileDialog`     |
 
@@ -1172,23 +1192,20 @@ QWidget VentanaDevolucion
 
 #### `catalogo.ui` (modificar)
 
-La cabecera actual (`layoutCabeceraCatalogo`) tiene el título y la cantidad. Debajo se agrega una fila de acciones para administradores:
+En la ficha del libro (`detalleFrame`), debajo de `detalleTextEdit`, se agrega una fila de acciones para administradores:
 
 ```text
-QVBoxLayout layoutCatalogo
-├── QHBoxLayout layoutCabeceraCatalogo   (ya existe)
-├── QHBoxLayout layoutAccionesCatalogo   ← nuevo
+QVBoxLayout detalleFrame
+├── QLabel detalleEncabezadoLabel     (ya existe)
+├── QTextEdit detalleTextEdit         (ya existe)
+├── QHBoxLayout layoutAccionesAdmin   ← nuevo
 │   ├── QPushButton nuevoLibroButton
 │   ├── QPushButton editarLibroButton
-│   ├── QPushButton eliminarLibroButton
-│   ├── (stretch)
-│   ├── QPushButton prestarLibroButton
-│   └── QPushButton devolverLibroButton
-├── QFrame filtrosFrame                  (ya existe)
-└── QSplitter splitterCatalogo           (ya existe)
+│   └── QPushButton eliminarLibroButton
+└── QPushButton prestarDesdeCatalogoButton (ya existe, visible para todos)
 ```
 
-Los tres primeros botones solo se muestran si `usuario.puede_administrar()`. `prestarLibroButton` y `devolverLibroButton` pueden estar visibles para todos, porque un usuario común también puede pedir y devolver.
+Los tres botones nuevos solo se muestran si `usuario.puede_administrar()`. `prestarDesdeCatalogoButton` queda visible para todos, porque un usuario común también puede pedir un libro.
 
 #### `principal.ui` (modificar)
 
@@ -1228,7 +1245,9 @@ El nombre de la biblioteca queda solo en la barra lateral (`marca1Label`).
 | `registrarBtn`           | `self.registrarBtn`           | `clicked.connect(self.abrir_registro)`     |
 | `registrarButton`        | `self.registrarButton`        | `clicked.connect(self.registrar)`          |
 | `cancelarButton`         | `self.cancelarButton`         | `clicked.connect(self.reject)`             |
-| `nuevoLibroButton`       | `self.nuevoLibroButton`       | `clicked.connect(self._nuevo_libro)`       |
+| `nuevoLibroButton`       | `self.nuevoLibroButton`       | `clicked.connect(self._solicitar_nuevo_libro)` → señal `libro_nuevo_solicitado` |
+| `editarLibroButton`      | `self.editarLibroButton`      | `clicked.connect(self._solicitar_edicion)` → señal `edicion_solicitada(isbn)` |
+| `eliminarLibroButton`    | `self.eliminarLibroButton`    | `clicked.connect(self._solicitar_eliminacion)` → señal `eliminacion_solicitada(isbn)` |
 | `prestarButton`          | `self.prestarButton`          | `clicked.connect(self.prestar)`            |
 | `devolverButton`         | `self.devolverButton`         | `clicked.connect(self.devolver)`           |
 | `nuevoUsuarioButton`     | `self.nuevoUsuarioButton`     | `clicked.connect(self._nuevo_usuario)`     |
@@ -1300,10 +1319,10 @@ No se debe volver a escribir esta lógica en las ventanas. Si una ventana necesi
 
 | Elemento                           | Tipo    | Responsabilidad                                                                      |
 | ---------------------------------- | ------- | ------------------------------------------------------------------------------------ |
-| `Prestamo`                         | Clase   | Guardar ISBN, DNI, fecha de préstamo, fecha límite, fecha de devolución y estado.    |
+| `Prestamo`                         | Clase   | Guardar ISBN, DNI, fecha de préstamo, fecha límite, fecha de devolución y estado; valida que el plazo no supere 15 días. |
 | `prestamo.a_diccionario()`         | Método  | Convertir el préstamo a un diccionario para JSON.                                    |
 | `prestamo.esta_activo()`           | Método  | Indicar si todavía no se devolvió.                                                   |
-| `prestamo.esta_vencido(fecha_hoy)` | Método  | Comparar la fecha límite con la fecha actual; solo sirve para mostrarlo en reportes. |
+| `prestamo.esta_vencido(fecha_hoy)` | Método  | Comparar la fecha límite con la fecha actual; sirve para mostrarlo y bloquear nuevos préstamos. |
 | `prestamo.marcar_devuelto(fecha)`  | Método  | Guardar la fecha de devolución y cambiar el estado a “devuelto”.                     |
 | `crear_prestamo(datos)`            | Función | Construir un `Prestamo` desde un diccionario del JSON.                               |
 
@@ -1344,7 +1363,7 @@ No se debe volver a escribir esta lógica en las ventanas. Si una ventana necesi
 | Elemento nuevo                    | Valor sugerido                                                              | Uso                                                        |
 | --------------------------------- | --------------------------------------------------------------------------- | ---------------------------------------------------------- |
 | `MAXIMO_PRESTAMOS_POR_USUARIO`    | `1`                                                                         | Un solo préstamo activo por usuario.                       |
-| `DIAS_DE_PRESTAMO`                | `15`                                                                        | Plazo de devolución; si vence, solo se marca como vencido. |
+| `DIAS_DE_PRESTAMO`                | `15`                                                                        | Plazo fijo de devolución; si vence, bloquea nuevos préstamos. |
 | `MESES_DE_MEMBRESIA`              | `3`                                                                         | Duración de la membresía al registrarse o renovarse.       |
 | `CATEGORIAS`                      | `Literatura`, `Ciencias sociales`, `Ciencias básicas`, `Tecnología`, `Arte` | Categorías principales válidas, sin subcategorías.         |
 | `ESTADOS_DE_PRESTAMO`             | `["activo", "devuelto"]`                                                    | Valores válidos del campo `estado`.                        |
@@ -1381,7 +1400,7 @@ Cada libro guarda una sola categoría: `Literatura`, `Ciencias sociales`, `Cienc
 ```json
 {
   "dni": "11111111",
-  "nombre": "P_ESTUDIANTE",
+  "nombre": "ESTUDIANTE",
   "tipo": "Estudiante",
   "vencimiento_membresia": "2027-12-31",
   "activo": true
@@ -1431,7 +1450,7 @@ Una línea por movimiento:
 | Último ejemplar  | Regla actual: se reserva el último (`disponibles > 1`).                             | `Libro.se_puede_prestar()`.                                          |
 | Devolución       | Debe existir un préstamo activo para ese libro y usuario.                           | `Biblioteca.devolver()`.                                             |
 | Nuevo préstamo   | Solo se permite después de registrar la devolución.                                 | `Biblioteca.prestar()`.                                              |
-| Plazo            | `DIAS_DE_PRESTAMO = 15`; si vence, se marca “Vencido”, pero **no genera multa**.    | `Prestamo.esta_vencido()`.                                           |
+| Plazo            | `DIAS_DE_PRESTAMO = 15`; si vence, se marca “Vencido”, bloquea nuevos préstamos y **no genera multa**. | `Prestamo.esta_vencido()`.                     |
 | Multas           | **No se usan.** No hay cálculo, cobro ni bloqueo por deuda.                         | Ninguna parte del sistema.                                           |
 | Beneficios       | **No se implementan por ahora.** La membresía solo muestra datos y estado.          | `membresiaPage`.                                                     |
 | Baja             | Un usuario de baja no puede ingresar ni recibir préstamos.                          | `Usuario.esta_activo()`.                                             |
@@ -1511,9 +1530,9 @@ def mapa_de_estantes(libros):
 
 ### 8.4 Dónde se muestran
 
-- `reportesPage` muestra las matrices como tablas HTML dentro de `reporteTextEdit`.
-- El reporte exportado las incluye en texto o CSV.
-- La página de inicio puede usar `resumen()` para las tarjetas; no necesita matrices.
+- `reportesPage` muestra el resumen y dos tablas: historial de préstamos e inventario de libros.
+- Las matrices siguen vivas en `core/reportes.py` y se incluyen en el texto exportado junto a esas dos tablas.
+- Inicio ya no muestra resumen; solo el texto superior y el espacio para una imagen.
 
 ---
 
@@ -1532,7 +1551,7 @@ Esta sección explica cómo arrancar cada avance para que todo el equipo trabaje
 | Préstamos            | `core/prestamos.py` y `Biblioteca.prestar()`                                                     | `prestamo.ui`, `prestamo.py`                            | 9.7         |
 | Devoluciones         | `Biblioteca.devolver()`                                                                          | `devolucion.ui`, `devolucion.py`                        | 9.8         |
 | Gestión de usuarios  | `renovar_membresia()`, `dar_de_baja()`, `reactivar()`                                            | botones de `usuariosPage`                               | 9.9         |
-| Reportes             | `core/reportes.py` y `Biblioteca.reporte_general()`                                              | `reporteTextEdit` y exportación                         | 9.10        |
+| Reportes             | `core/reportes.py`: resumen, historial e inventario                                               | dos `QTableWidget` y exportación                        | 9.10        |
 | Persistencia         | `configuracion.escribir_archivo()` y `guardar_*()`                                               | se usa desde todas las operaciones                      | Fases 0 y 3 |
 | Estilos e íconos     | —                                                                                                | `assets/styles/app.qss` y `assets/images/`              | Fase 7      |
 
@@ -1577,20 +1596,20 @@ Reglas de oro:
 | `registro.py`      | `registrarButton.clicked`                | `registrar()`                    | `registrar_usuario()`                                     | `usuarios.json`                  |
 | `principal.py`     | `navegacionListWidget.currentRowChanged` | `_cambiar_pagina(fila)`          | —                                                         | —                                |
 | `principal.py`     | `cerrarSesionButton.clicked`             | `cerrar_sesion()`                | —                                                         | —                                |
-| `principal.py`     | abrir Inicio                             | `_cargar_resumen()`              | `resumen()`                                               | —                                |
+| `principal.py`     | abrir Reportes                           | `_cargar_reporte()`              | `resumen_visible()`, `historial_de_prestamos()`, `inventario_de_libros()` | —       |
 | `principal.py`     | abrir Mi membresía                       | `_cargar_membresia()`            | `usuario.datos_de_membresia()`                            | —                                |
 | `catalogo.py`      | `buscarButton.clicked`                   | `buscar()`                       | `buscar_avanzado()`                                       | —                                |
-| `catalogo.py`      | `nuevoLibroButton.clicked`               | `_nuevo_libro()`                 | `registrar_libro()`                                       | `libros.json`                    |
-| `catalogo.py`      | `editarLibroButton.clicked`              | `_editar_libro()`                | `actualizar_libro()`                                      | `libros.json`                    |
-| `catalogo.py`      | `eliminarLibroButton.clicked`            | `_eliminar_libro()`              | `eliminar_libro()`                                        | `libros.json`                    |
+| `catalogo.py`      | `nuevoLibroButton.clicked`               | `_solicitar_nuevo_libro()` → `libro_nuevo_solicitado` → `principal._nuevo_libro()` | `pagina_libro.limpiar()`                  | —                                |
+| `catalogo.py`      | `editarLibroButton.clicked`              | `_solicitar_edicion(isbn)` → `edicion_solicitada` → `principal._editar_libro(isbn)` | `pagina_libro.cargar_libro()` → `actualizar_libro()` | `libros.json`         |
+| `catalogo.py`      | `eliminarLibroButton.clicked`            | `_solicitar_eliminacion(isbn)` → `eliminacion_solicitada` → `principal._eliminar_libro(isbn)` | `eliminar_libro()`             | `libros.json`                    |
 | `prestamo.py`      | `prestarButton.clicked`                  | `prestar()`                      | `prestar()`                                               | `libros.json` y `prestamos.json` |
 | `devolucion.py`    | `devolverButton.clicked`                 | `devolver()`                     | `devolver()`                                              | `libros.json` y `prestamos.json` |
 | `principal.py`     | `nuevoUsuarioButton.clicked`             | `_nuevo_usuario()`               | `registrar_usuario(..., permitir_administrador=True)`     | `usuarios.json`                  |
 | `principal.py`     | `renovarMembresiaButton.clicked`         | `_renovar_membresia()`           | `renovar_membresia()`                                     | `usuarios.json`                  |
 | `principal.py`     | `darDeBajaButton.clicked`                | `_dar_de_baja()`                 | `dar_de_baja()`                                           | `usuarios.json`                  |
 | `principal.py`     | `reactivarButton.clicked`                | `_reactivar()`                   | `reactivar()`                                             | `usuarios.json`                  |
-| `principal.py`     | `actualizarReporteButton.clicked`        | `_cargar_reporte()`              | `reporte_general()`                                       | —                                |
-| `principal.py`     | `exportarReporteButton.clicked`          | `_exportar_reporte()`            | texto del reporte                                         | `data/reportes/`                 |
+| `principal.py`     | abrir Reportes                           | `_cargar_reporte()`              | `resumen_visible()`, `historial_de_prestamos()`, `inventario_de_libros()` | — |
+| `principal.py`     | `exportarReporteButton.clicked`          | `_exportar_reporte()`            | `reportes.exportar()`                                      | `data/reporte.txt`               |
 
 ### 9.2 Checklist para arrancar cualquier avance
 
@@ -1837,7 +1856,7 @@ self.registrarBtn.clicked.connect(self.abrir_registro)
 1. Cargar los textos fijos de la barra lateral: `marca1Label`, `marca2Label`, `bienvenidaLabel`, `tipoLabel`.
 2. Conectar `navegacionListWidget.currentRowChanged` con `_cambiar_pagina(fila)`.
 3. Ocultar las filas 5, 6 y 7 cuando `usuario.puede_administrar()` sea `False`.
-4. Cargar las tarjetas de Inicio con `biblioteca.resumen()`.
+4. Dejar Inicio solo con el texto superior; cargar el resumen en Reportes con `biblioteca.resumen()`.
 5. Cargar `membresiaPage` con `usuario.datos_de_membresia()`.
 6. Conectar `cerrarSesionButton` y `closeEvent`.
 7. Incrustar el catálogo (sección 9.5) y las páginas de préstamo, devolución y libro (secciones 9.7 a 9.9).
@@ -1853,14 +1872,19 @@ self.registrarBtn.clicked.connect(self.abrir_registro)
 **Código base:**
 
 ```python
-def _cargar_resumen(self):
-    """Muestra los totales de la biblioteca en las tarjetas de inicio."""
-    datos = self.biblioteca.resumen()
-    self.titulosValorLabel.setText(str(datos["titulos"]))
-    self.ejemplaresValorLabel.setText(str(datos["ejemplares"]))
-    self.disponiblesValorLabel.setText(str(datos["disponibles"]))
-    self.prestadosValorLabel.setText(str(datos["prestados"]))
-    self.usuariosValorLabel.setText(str(datos["usuarios"]))
+def _cargar_reporte(self):
+    """Muestra el resumen, el historial y el inventario en dos tablas."""
+    self.reporteResumenLabel.setText(reportes.resumen_visible(self.biblioteca))
+    self._llenar_tabla(
+        self.tablaHistorialPrestamos,
+        reportes.CABECERAS_HISTORIAL,
+        reportes.historial_de_prestamos(self.biblioteca),
+    )
+    self._llenar_tabla(
+        self.tablaInventarioLibros,
+        reportes.CABECERAS_INVENTARIO,
+        reportes.inventario_de_libros(self.biblioteca),
+    )
 
 def _cargar_membresia(self):
     """Muestra los datos de la membresía del usuario conectado."""
@@ -1964,11 +1988,11 @@ class VentanaLibro(QWidget):
 
 **Conexiones del catálogo:**
 
-| Botón                 | Método              | Núcleo                          |
-| --------------------- | ------------------- | ------------------------------- |
-| `nuevoLibroButton`    | `_nuevo_libro()`    | `registrar_libro(datos)`        |
-| `editarLibroButton`   | `_editar_libro()`   | `actualizar_libro(isbn, datos)` |
-| `eliminarLibroButton` | `_eliminar_libro()` | `eliminar_libro(isbn)`          |
+| Botón                 | Método en `catalogo.py`       | Método en `principal.py` | Núcleo                          |
+| --------------------- | ----------------------------- | ------------------------ | ------------------------------- |
+| `nuevoLibroButton`    | `_solicitar_nuevo_libro()`    | `_nuevo_libro()`         | `registrar_libro(datos)`        |
+| `editarLibroButton`   | `_solicitar_edicion(isbn)`    | `_editar_libro(isbn)`    | `actualizar_libro(isbn, datos)` |
+| `eliminarLibroButton` | `_solicitar_eliminacion(isbn)` | `_eliminar_libro(isbn)` | `eliminar_libro(isbn)`          |
 
 **Reglas:** no se elimina un libro con préstamos activos; no se acepta ISBN repetido al crear; `disponibles` no puede ser mayor que `ejemplares`.
 
@@ -2074,19 +2098,18 @@ def renovar_membresia(self, dni, meses=None):
 
 **Orden para empezar:**
 
-1. Implementar las funciones de matrices y recursivas en `core/reportes.py`.
-2. Probarlas con los datos actuales y comprobar que los totales coincidan con `resumen()`.
-3. Implementar `Biblioteca.reporte_general()`.
-4. Mostrar el resultado en `reporteTextEdit` como HTML.
-5. Conectar `actualizarReporteButton` y `exportarReporteButton`.
-6. Exportar con `QFileDialog` y `open(..., "w", encoding="utf-8")`.
+1. Conservar las funciones de matrices y recursivas en `core/reportes.py`.
+2. Agregar `resumen_visible()`, `historial_de_prestamos()` e `inventario_de_libros()`.
+3. Cargar `tablaHistorialPrestamos` y `tablaInventarioLibros` desde `ui/principal.py`.
+4. Conectar `exportarReporteButton` con `reportes.exportar()`.
+5. Verificar que el `.txt` exportado incluya matrices, historial e inventario.
 
 **Conexiones:**
 
 | Señal                             | Método                | Núcleo                         |
 | --------------------------------- | --------------------- | ------------------------------ |
-| `actualizarReporteButton.clicked` | `_cargar_reporte()`   | `Biblioteca.reporte_general()` |
-| `exportarReporteButton.clicked`   | `_exportar_reporte()` | Texto ya generado              |
+| abrir Reportes                    | `_cargar_reporte()`   | `reportes.resumen_visible()`, `historial_de_prestamos()` e `inventario_de_libros()` |
+| `exportarReporteButton.clicked`   | `_exportar_reporte()` | `reportes.exportar()`          |
 
 **Cuidado:** el reporte se calcula al abrir la página; no se guarda en JSON para que no quede desactualizado.
 
@@ -2123,11 +2146,11 @@ def renovar_membresia(self, dni, meses=None):
 - [x] Implementar `_configurar_usuario()` con nombre, tipo y estado.
 - [x] Implementar `_configurar_navegacion()` y `_cambiar_pagina()`.
 - [x] Ocultar las filas 5, 6 y 7 a los usuarios que no administran.
-- [x] Cargar las cinco tarjetas de resumen con `biblioteca.resumen()`.
+- [x] Mover el resumen de Inicio a Reportes y mostrarlo en `reporteResumenLabel`.
 - [x] Cargar la página de membresía con `usuario.datos_de_membresia()`.
 - [x] Corregir el controlador para eliminar el panel al volver al acceso.
 - [ ] Implementar `closeEvent` y el cierre de sesión con confirmación.
-- [x] Mover la bienvenida y el lema al pie de `inicioPage`; dejar solo el nombre en la barra lateral.
+- [x] Dejar en `inicioPage` solo la bienvenida, el tipo y el lema arriba; `inicioImagenLabel` queda libre para una imagen SVG.
 
 **Hecho cuando:** una persona nueva se registra con membresía de 3 meses, puede ingresar, el estudiante y el administrador ven opciones distintas, las páginas cambian y el cierre de sesión vuelve al acceso sin dejar ventanas ocultas.
 
@@ -2155,7 +2178,7 @@ def renovar_membresia(self, dni, meses=None):
 - [x] Crear `ui/libro_form.ui` con layouts, spacers y categoría.
 - [x] Implementar `ui/libro_form.py` y conectarlo con el núcleo.
 - [x] Incrustar el formulario en `libroPage` y ocultar la fila a quien no administra.
-- [ ] Agregar botones de “Nuevo”, “Editar” y “Eliminar” dentro del catálogo.
+- [x] Agregar botones de “Nuevo”, “Editar” y “Eliminar” dentro del catálogo.
 - [x] Validar ISBN duplicado, campos vacíos, sección, estante y ejemplares.
 - [x] Guardar después de cada operación.
 
@@ -2199,15 +2222,13 @@ def renovar_membresia(self, dni, meses=None):
 
 **Objetivo:** cumplir la parte de reportes y demostrar matrices y recursividad con nombres del dominio.
 
-- [ ] Crear `core/reportes.py`.
-- [ ] Implementar `mapa_de_estantes`, `agenda_de_devoluciones`, `historial_por_usuario` y `prestamos_por_seccion`.
-- [ ] Implementar las funciones recursivas de la sección 8.
-- [ ] Implementar `Biblioteca.reporte_general()`.
-- [ ] Mostrar las matrices en `reporteTextEdit`.
-- [ ] Implementar la exportación del reporte.
-- [ ] Verificar que los totales coincidan con `resumen()`.
+- [x] Crear `core/reportes.py`.
+- [x] Mantener la matriz de estantes y las funciones recursivas de la sección 8.
+- [x] Mostrar el resumen y las dos tablas (historial e inventario) en `reportesPage`.
+- [x] Implementar la exportación del reporte con matrices, historial e inventario.
+- [x] Verificar que los totales coincidan con `resumen()`.
 
-**Hecho cuando:** el reporte muestra las cuatro matrices, los totales son correctos y la exportación genera un archivo legible.
+**Hecho cuando:** Reportes muestra quién prestó qué libro y el inventario completo, separados por una línea, y la exportación genera un archivo legible.
 
 ### Fase 7 — Presentación y limpieza
 
@@ -2233,10 +2254,10 @@ def renovar_membresia(self, dni, meses=None):
 | --------------------------- | ---------- | ------------------------------------------------------------------------ |
 | Estudiante activo           | `11111111` | Abre el panel sin opciones de administración.                            |
 | Docente activo              | `22222222` | Abre el panel sin opciones de administración.                            |
-| Administrador               | `33333333` | Abre el panel con Usuarios y Reportes.                                   |
+| Administrador               | `99999999` | Abre el panel con Usuarios y Reportes.                                   |
 | Usuario de baja             | `70778899` | Mensaje de cuenta de baja; no entra.                                     |
 | Membresía vencida           | `76789012` | Mensaje de membresía vencida; no entra.                                  |
-| DNI inexistente             | `99999999` | Mensaje de usuario no encontrado.                                        |
+| DNI inexistente             | `55555555` | Mensaje de usuario no encontrado.                                        |
 | DNI vacío                   | —          | Mensaje para escribir el DNI.                                            |
 | DNI con letras              | `abc`      | El campo no permite letras o muestra error.                              |
 | Registro con DNI nuevo      | `88888888` | Se crea el usuario con vencimiento a 3 meses y queda en `usuarios.json`. |
@@ -2253,7 +2274,7 @@ def renovar_membresia(self, dni, meses=None):
 | Administrador     | Ve las 8 entradas del menú y puede abrir todas las páginas.                   |
 | Cambiar de página | El `StackedWidget` muestra la página correcta y refresca sus datos.           |
 | Páginas internas  | Préstamo, devolución y libro se abren dentro del panel, no como diálogos.     |
-| Inicio            | Las cinco tarjetas muestran los datos reales.                                 |
+| Inicio            | Solo muestra el texto superior y el espacio libre para una imagen.             |
 | Mi membresía      | Muestra nombre, DNI, tipo, vencimiento y estado del usuario conectado.        |
 | Cerrar sesión     | Vuelve al acceso y limpia el DNI.                                             |
 | Cerrar con la X   | Pregunta si se desea salir o vuelve al acceso, pero no deja la app invisible. |
@@ -2391,7 +2412,7 @@ Una funcionalidad está terminada cuando:
 | -------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
 | ¿Se presta el último ejemplar?                     | `disponibles > 0` o `disponibles > 1`.                          | Decidirlo antes de implementar préstamos y escribirlo en el README. La regla actual reserva el último.                         |
 | ¿Dónde se guardan los reportes?                    | `data/reportes/` o la carpeta que elija el usuario.             | `data/reportes/` por defecto, con opción de elegir otra ruta.                                                                  |
-| ¿Se usa `QCalendarWidget`?                         | Solo `QLineEdit` con fecha o un calendario.                     | Usar calendario solo si se permite una fecha personalizada; si la renovación siempre suma 3 meses, no hace falta.              |
+| ¿Cómo se muestra la fecha límite?                  | Texto, `QDateEdit` o calendario.                                | Usar texto calculado: la fecha se obtiene sola a 15 días y no hay controles que permitan cambiarla.                           |
 | ¿Se agregan estilos ahora?                         | QSS desde el inicio o al final.                                 | Al final, para no mezclar presentación con conexión.                                                                           |
 | ¿Se usa `id` en los préstamos?                     | Sí o buscar por ISBN + DNI.                                     | Usar `id` si se quiere conservar un historial claro; con un solo préstamo activo, buscar por ISBN + DNI también es suficiente. |
 | ¿Qué pasa con `data/prestamos.json` vacío?         | Dejarlo vacío o inicializarlo con `[]`.                         | `leer_archivo()` ya devuelve `[]` si está vacío; al guardar por primera vez quedará con contenido.                             |

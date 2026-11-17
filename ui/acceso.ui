@@ -6,14 +6,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>500</width>
-    <height>600</height>
+    <width>460</width>
+    <height>560</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>460</width>
-    <height>580</height>
+    <width>420</width>
+    <height>540</height>
    </size>
   </property>
   <property name="windowTitle">
@@ -137,7 +137,7 @@
       <item>
        <widget class="QLabel" name="ayudaLabel">
         <property name="text">
-         <string>Prueba con 11111111 (estudiante) o 33333333 (administrador).</string>
+         <string>Prueba con 11111111 (estudiante) o 99999999 (administrador).</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>

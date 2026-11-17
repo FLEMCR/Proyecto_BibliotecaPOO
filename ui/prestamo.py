@@ -1,6 +1,7 @@
+from datetime import date, timedelta
 from pathlib import Path
 
-from core import errores
+from core import configuracion, errores
 from PyQt5 import uic
 from PyQt5.QtCore import QRegExp, pyqtSignal
 from PyQt5.QtGui import QRegExpValidator
@@ -19,7 +20,6 @@ class VentanaPrestamo(QWidget):
         uic.loadUi(str(ruta_ui), self)
         self.biblioteca = biblioteca
         self.usuario = usuario
-        self._libro_seleccionado = None
 
         self.isbnLineEdit.setValidator(
             QRegExpValidator(QRegExp(r"\d{0,13}"), self)
@@ -39,20 +39,36 @@ class VentanaPrestamo(QWidget):
         if prestamo is None:
             self._habilitar_formulario(True)
             self.prestamoActivoLabel.setText("No tienes préstamos activos.")
-            self.fechaLimiteLabel.setText(
-                "Fecha límite de devolución: se calcula al confirmar."
-            )
+            self._mostrar_fecha_limite()
             return
 
         self._habilitar_formulario(False)
         titulo = self._titulo_del_prestamo(prestamo)
-        self.prestamoActivoLabel.setText(
-            f"Ya tienes un préstamo activo: {titulo}. "
+        vencido = prestamo.esta_vencido()
+        mensaje = (
+            f"Préstamo vencido desde {prestamo.fecha_limite()}. "
+            "Devuélvelo antes de pedir otro libro."
+            if vencido
+            else f"Ya tienes un préstamo activo: {titulo}. "
             "Devuélvelo antes de pedir otro libro."
         )
-        self.fechaLimiteLabel.setText(
-            f"Fecha límite de devolución: {prestamo.fecha_limite()}"
-        )
+        self.prestamoActivoLabel.setText(mensaje)
+        self._mostrar_fecha_limite(prestamo)
+
+    def cargar_isbn(self, isbn):
+        """Carga un ISBN desde el catálogo y consulta el libro automáticamente."""
+        self.isbnLineEdit.setText(str(isbn))
+        self.buscar_libro()
+        self.isbnLineEdit.setFocus()
+
+    def _mostrar_fecha_limite(self, prestamo=None):
+        """Muestra la fecha límite como texto: 15 días desde el inicio."""
+        if prestamo is None:
+            fecha = date.today() + timedelta(days=configuracion.DIAS_DE_PRESTAMO)
+            texto = f"Fecha límite: {fecha} ({configuracion.DIAS_DE_PRESTAMO} días)"
+        else:
+            texto = f"Fecha límite: {prestamo.fecha_limite()}"
+        self.fechaLimiteLabel.setText(texto)
 
     def _habilitar_formulario(self, habilitado):
         """Habilita o bloquea el ISBN y el botón de préstamo."""
@@ -85,7 +101,6 @@ class VentanaPrestamo(QWidget):
             self._mensaje(str(error), error=True)
             return
 
-        self._libro_seleccionado = libro
         self.tituloLibroLabel.setText(f"{libro.titulo()} · {libro.autor()}")
         self.disponiblesLabel.setText(
             f"Disponibles para préstamo: {libro.disponibles()} "
@@ -132,7 +147,6 @@ class VentanaPrestamo(QWidget):
     def limpiar(self):
         """Limpia el formulario para consultar otro ISBN."""
         self.isbnLineEdit.clear()
-        self._libro_seleccionado = None
         self._limpiar_detalle()
         self._mensaje("Escribe el ISBN del libro para consultar su disponibilidad.")
         self.actualizar()

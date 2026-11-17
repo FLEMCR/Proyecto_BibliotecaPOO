@@ -3,7 +3,7 @@ from pathlib import Path
 
 from core import errores
 from PyQt5 import uic
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QTableWidgetItem, QWidget
 
 ruta_ui = Path(__file__).resolve().parent / "catalogo.ui"
@@ -12,11 +12,24 @@ ruta_ui = Path(__file__).resolve().parent / "catalogo.ui"
 class VentanaCatalogo(QWidget):
     """Página del catálogo con búsqueda, filtros, tabla y ficha del libro."""
 
+    prestamo_solicitado = pyqtSignal(str)
+    libro_nuevo_solicitado = pyqtSignal()
+    edicion_solicitada = pyqtSignal(str)
+    eliminacion_solicitada = pyqtSignal(str)
+
     def __init__(self, biblioteca, usuario=None, parent=None):
         super().__init__(parent)
         uic.loadUi(str(ruta_ui), self)
         self.biblioteca = biblioteca
         self.usuario = usuario
+
+        es_admin = self.usuario is not None and self.usuario.puede_administrar()
+        for boton in (
+            self.nuevoLibroButton,
+            self.editarLibroButton,
+            self.eliminarLibroButton,
+        ):
+            boton.setVisible(es_admin)
 
         self.campoComboBox.addItems(
             ["Todo", "ISBN", "Título", "Autor", "Categoría"]
@@ -37,6 +50,10 @@ class VentanaCatalogo(QWidget):
         self.ordenarComboBox.currentIndexChanged.connect(self.buscar)
         self.soloDisponiblesCheckBox.toggled.connect(self.buscar)
         self.tablaLibros.itemSelectionChanged.connect(self._mostrar_detalle)
+        self.prestarDesdeCatalogoButton.clicked.connect(self._solicitar_prestamo)
+        self.nuevoLibroButton.clicked.connect(self._solicitar_nuevo_libro)
+        self.editarLibroButton.clicked.connect(self._solicitar_edicion)
+        self.eliminarLibroButton.clicked.connect(self._solicitar_eliminacion)
 
     def _cargar_categorias(self):
         """Llena el filtro de categorías con las categorías del catálogo."""
@@ -69,7 +86,6 @@ class VentanaCatalogo(QWidget):
                 libro["autor"],
                 libro["categoria"],
                 str(libro["disponibles"]),
-                self._texto_de_estado(libro),
             ]
             for columna, valor in enumerate(valores):
                 item = QTableWidgetItem(valor)
@@ -85,24 +101,21 @@ class VentanaCatalogo(QWidget):
                 "<p>No hay libros que coincidan con los filtros.</p>"
             )
 
-    def _texto_de_estado(self, libro):
-        """Devuelve un estado legible según los ejemplares disponibles."""
-        if libro["disponibles"] <= 0:
-            return "Sin ejemplares"
-        if libro["disponibles"] == 1:
-            return "Último ejemplar"
-        return "Disponible"
+    def _isbn_seleccionado(self):
+        """Devuelve el ISBN del libro seleccionado, o una cadena vacía."""
+        fila = self.tablaLibros.currentRow()
+        if fila < 0:
+            return ""
+        item = self.tablaLibros.item(fila, 0)
+        if item is None:
+            return ""
+        return str(item.data(Qt.UserRole) or "")
 
     def _mostrar_detalle(self):
         """Muestra la ficha del libro seleccionado en la tabla."""
-        fila = self.tablaLibros.currentRow()
-        if fila < 0:
+        isbn = self._isbn_seleccionado()
+        if not isbn:
             return
-        item = self.tablaLibros.item(fila, 0)
-        if item is None:
-            return
-
-        isbn = item.data(Qt.UserRole)
         try:
             libro = self.biblioteca.datos_de_un_libro(isbn)
         except errores.ErrorBiblioteca:
@@ -119,8 +132,29 @@ class VentanaCatalogo(QWidget):
             f"<p><b>Ejemplares:</b> {libro['ejemplares']} · "
             f"<b>Prestados:</b> {libro['prestados']}</p>"
             f"<p><b>Disponibles para préstamo:</b> {libro['disponibles']}</p>"
-            f"<p><b>Estado:</b> {html.escape(self._texto_de_estado(libro))}</p>"
         )
+
+    def _solicitar_prestamo(self):
+        """Envía el ISBN del libro visible en la ficha a la página de préstamos."""
+        isbn = self._isbn_seleccionado()
+        if isbn:
+            self.prestamo_solicitado.emit(isbn)
+
+    def _solicitar_nuevo_libro(self):
+        """Pide a la ventana principal que abra el formulario de alta."""
+        self.libro_nuevo_solicitado.emit()
+
+    def _solicitar_edicion(self):
+        """Pide editar el libro seleccionado."""
+        isbn = self._isbn_seleccionado()
+        if isbn:
+            self.edicion_solicitada.emit(isbn)
+
+    def _solicitar_eliminacion(self):
+        """Pide eliminar el libro seleccionado."""
+        isbn = self._isbn_seleccionado()
+        if isbn:
+            self.eliminacion_solicitada.emit(isbn)
 
     def limpiar(self):
         """Restablece todos los filtros y vuelve a mostrar el catálogo completo."""
