@@ -84,3 +84,9 @@ M I  P O L L A   E N   U N   C A S T I L L O LOLOLOLOLOLOLO¯\_(ツ)_/¯¯\_(ツ
 
 
 OWO OWO OWO OWO OWO
+
+# Apuntes para la exposición
+
+--- duracion 15 min
+--- diapositivas alrededor de 10 (max)
+--- preguntas tecnicas, (cualquiera sobre como encontrar partes del codigo, modificarlas o usarlas y para que sirven) [mencionar que no usamos matriz] 
