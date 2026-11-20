@@ -1,5 +1,5 @@
 /* ============================================================
-   app.qss — tema oscuro de la Biblioteca General POSTDATA
+   app.qss — tema azul y amarillo claro de la Biblioteca General POSTDATA
 
    Índice para editar rápido:
    1. Base global
@@ -18,41 +18,41 @@
    1. Base global
    ------------------------------------------------------------ */
 QWidget {
-  background-color: #1b1e20;
-  color: #eceff1;
+  background-color: #f7fafe;
+  color: #1d3350;
 }
 
 QMainWindow,
 QDialog {
-  background-color: #1b1e20;
+  background-color: #f7fafe;
 }
 
 QLabel {
   background-color: transparent;
-  color: #eceff1;
+  color: #1d3350;
 }
 
 /* ------------------------------------------------------------
    2. Ventana principal, sidebar y tarjetas
    ------------------------------------------------------------ */
 QFrame#sidebarFrame {
-  background-color: #141618;
-  border-right: 1px solid #2e3438;
+  background-color: #eaf1fb;
+  border-right: 1px solid #becfe6;
 }
 
 QFrame#contenidoFrame {
-  background-color: #1b1e20;
+  background-color: #f7fafe;
 }
 
 QFrame[card='true'] {
-  background-color: #24282b;
-  border: 1px solid #333a3f;
+  background-color: #ffffff;
+  border: 1px solid #cfdcee;
   border-radius: 8px;
 }
 
 QFrame#separadorReportes {
-  color: #3d4449;
-  background-color: #3d4449;
+  color: #becfe6;
+  background-color: #becfe6;
   border: none;
 }
 
@@ -60,17 +60,17 @@ QFrame#separadorReportes {
    3. Etiquetas de texto
    ------------------------------------------------------------ */
 QLabel#marca1Label {
-  color: #ffffff;
+  color: #13253b;
   font-weight: bold;
 }
 
 QLabel#marca2Label {
-  color: #aab2b8;
+  color: #5b7796;
   font-style: italic;
 }
 
 QLabel#bienvenidaLabel {
-  color: #ffffff;
+  color: #13253b;
   font-weight: bold;
   font-size: 18px;
 }
@@ -78,11 +78,11 @@ QLabel#bienvenidaLabel {
 QLabel#tipoLabel,
 QLabel#subtituloMembresiaLabel,
 QLabel#reporteResumenLabel {
-  color: #aab2b8;
+  color: #5b7796;
 }
 
 QLabel#menuLabel {
-  color: #7f878c;
+  color: #7791ad;
   font-weight: bold;
 }
 
@@ -93,65 +93,93 @@ QLabel#tituloHistorialLabel,
 QLabel#tituloInventarioLabel,
 QLabel#tituloFormularioLabel,
 QLabel#detalleEncabezadoLabel {
-  color: #ffffff;
+  color: #13253b;
   font-weight: bold;
 }
 
 /* ------------------------------------------------------------
    4. Botones
-   Uso: rol='primary' para la acción principal y 'secondary'/'ghost'
-   para acciones alternativas. El valor se pone en Qt Designer.
+   Uso: rol='primary' para la acción principal, 'secondary' para
+   acciones alternativas, 'danger' para borrar y 'ghost' para salir.
+   El valor se pone en Qt Designer.
    ------------------------------------------------------------ */
 QPushButton {
-  background-color: #b03a2e;
+  background-color: #1e5aa8;
   color: #ffffff;
-  border: 1px solid #8c2d23;
+  border: 1px solid #174786;
   border-radius: 6px;
   padding: 7px 16px;
 }
 
 QPushButton:hover {
-  background-color: #c74738;
+  background-color: #2e6fbe;
 }
 
 QPushButton:pressed {
-  background-color: #8c2d23;
+  background-color: #174786;
 }
 
 QPushButton:disabled {
-  background-color: #34393d;
-  color: #7f878c;
-  border-color: #2e3438;
+  background-color: #e6ebf2;
+  color: #8a97a8;
+  border-color: #cfd8e3;
 }
 
 QPushButton[rol='primary'] {
-  background-color: #c0392b;
-  border-color: #9f2d22;
+  background-color: #2465b4;
+  border-color: #1c5499;
 }
 
 QPushButton[rol='primary']:hover {
-  background-color: #d64a3a;
+  background-color: #3a7cc7;
 }
 
 QPushButton[rol='secondary'] {
-  background-color: #34393d;
-  border-color: #4a5156;
+  background-color: #f0b400;
+  color: #2e2608;
+  border-color: #c99400;
 }
 
 QPushButton[rol='secondary']:hover {
-  background-color: #41474c;
+  background-color: #ffc933;
+}
+
+QPushButton[rol='secondary']:pressed {
+  background-color: #c99400;
+}
+
+QPushButton[rol='danger'] {
+  background-color: #b3261e;
+  color: #ffffff;
+  border-color: #8c1c17;
+}
+
+QPushButton[rol='danger']:hover {
+  background-color: #ce3a30;
+}
+
+QPushButton[rol='danger']:pressed {
+  background-color: #8c1c17;
+}
+
+QPushButton[rol='primary']:disabled,
+QPushButton[rol='secondary']:disabled,
+QPushButton[rol='danger']:disabled {
+  background-color: #e6ebf2;
+  color: #8a97a8;
+  border-color: #cfd8e3;
 }
 
 QPushButton[rol='ghost'] {
   background-color: transparent;
-  color: #d9dee2;
-  border-color: #4a5156;
+  color: #3d5f82;
+  border-color: #bdd0e8;
 }
 
 QPushButton[rol='ghost']:hover {
-  background-color: #24282b;
-  color: #ffffff;
-  border-color: #c0392b;
+  background-color: #ffffff;
+  color: #13253b;
+  border-color: #2465b4;
 }
 
 /* ------------------------------------------------------------
@@ -165,17 +193,17 @@ QListWidget#navegacionListWidget {
 }
 
 QListWidget#navegacionListWidget::item {
-  color: #d7dde1;
+  color: #2b4b6e;
   padding: 7px 10px;
   border-radius: 6px;
 }
 
 QListWidget#navegacionListWidget::item:hover {
-  background-color: #24282b;
+  background-color: #ffffff;
 }
 
 QListWidget#navegacionListWidget::item:selected {
-  background-color: #b03a2e;
+  background-color: #1e5aa8;
   color: #ffffff;
 }
 
@@ -185,19 +213,19 @@ QListWidget#navegacionListWidget::item:selected {
 QLineEdit,
 QComboBox,
 QSpinBox {
-  background-color: #202427;
-  color: #eceff1;
-  border: 1px solid #3d4449;
+  background-color: #ffffff;
+  color: #1d3350;
+  border: 1px solid #becfe6;
   border-radius: 6px;
   padding: 5px 8px;
-  selection-background-color: #b03a2e;
+  selection-background-color: #1e5aa8;
   selection-color: #ffffff;
 }
 
 QLineEdit:focus,
 QComboBox:focus,
 QSpinBox:focus {
-  border-color: #c0392b;
+  border-color: #2e6fbe;
 }
 
 QComboBox::drop-down {
@@ -206,52 +234,32 @@ QComboBox::drop-down {
 }
 
 QComboBox QAbstractItemView {
-  background-color: #24282b;
-  color: #eceff1;
-  border: 1px solid #3d4449;
-  selection-background-color: #b03a2e;
+  background-color: #ffffff;
+  color: #1d3350;
+  border: 1px solid #becfe6;
+  selection-background-color: #1e5aa8;
   selection-color: #ffffff;
 }
 
 /* ------------------------------------------------------------
-   7. Casillas y botones de radio
-   Los radio buttons eligen la dimensión del reporte.
+   7. Casillas de verificación
    ------------------------------------------------------------ */
 QCheckBox {
-  color: #d7dde1;
+  color: #2b4b6e;
   spacing: 8px;
-}
-
-QRadioButton {
-  color: #d7dde1;
-  spacing: 6px;
-  padding: 3px 2px;
-}
-
-QRadioButton::indicator {
-  width: 14px;
-  height: 14px;
-  border-radius: 7px;
-  border: 1px solid #4a5156;
-  background-color: #202427;
-}
-
-QRadioButton::indicator:checked {
-  background-color: #b03a2e;
-  border: 2px solid #d64a3a;
 }
 
 /* ------------------------------------------------------------
    8. Tablas y cabeceras
    ------------------------------------------------------------ */
 QTableWidget {
-  background-color: #202427;
-  alternate-background-color: #24282b;
-  color: #eceff1;
-  gridline-color: #333a3f;
-  border: 1px solid #333a3f;
+  background-color: #ffffff;
+  alternate-background-color: #ffffff;
+  color: #1d3350;
+  gridline-color: #cfdcee;
+  border: 1px solid #cfdcee;
   border-radius: 6px;
-  selection-background-color: #8c2d23;
+  selection-background-color: #194d91;
   selection-color: #ffffff;
 }
 
@@ -260,17 +268,17 @@ QTableWidget::item {
 }
 
 QHeaderView::section {
-  background-color: #2b3033;
-  color: #eceff1;
+  background-color: #dce8f7;
+  color: #1d3350;
   border: none;
-  border-right: 1px solid #3d4449;
-  border-bottom: 1px solid #3d4449;
+  border-right: 1px solid #becfe6;
+  border-bottom: 1px solid #becfe6;
   padding: 6px;
   font-weight: bold;
 }
 
 QTableCornerButton::section {
-  background-color: #2b3033;
+  background-color: #dce8f7;
   border: none;
 }
 
@@ -279,14 +287,14 @@ QTableCornerButton::section {
    ------------------------------------------------------------ */
 QTextEdit {
   background-color: transparent;
-  color: #eceff1;
+  color: #1d3350;
   border: none;
-  selection-background-color: #b03a2e;
+  selection-background-color: #1e5aa8;
   selection-color: #ffffff;
 }
 
 QSplitter::handle {
-  background-color: #2e3438;
+  background-color: #becfe6;
 }
 
 /* ------------------------------------------------------------
@@ -294,12 +302,12 @@ QSplitter::handle {
    El plazo se muestra como texto; la fecha se calcula sola a 15 días.
    ------------------------------------------------------------ */
 QLabel#plazoFechaLimiteLabel {
-  color: #aab2b8;
+  color: #5b7796;
 }
 
 QToolTip {
-  background-color: #2b3033;
-  color: #eceff1;
-  border: 1px solid #4a5156;
+  background-color: #dce8f7;
+  color: #1d3350;
+  border: 1px solid #bdd0e8;
   padding: 4px;
 }

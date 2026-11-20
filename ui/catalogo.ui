@@ -264,19 +264,6 @@
        <item>
         <layout class="QHBoxLayout" name="layoutAccionesAdmin">
          <item>
-          <widget class="QPushButton" name="nuevoLibroButton">
-           <property name="toolTip">
-            <string>Registrar un libro nuevo</string>
-           </property>
-           <property name="text">
-            <string>Nuevo libro</string>
-           </property>
-           <property name="rol" stdset="0">
-            <string>secondary</string>
-           </property>
-          </widget>
-         </item>
-         <item>
           <widget class="QPushButton" name="editarLibroButton">
            <property name="toolTip">
             <string>Editar el libro seleccionado</string>
@@ -298,7 +285,7 @@
             <string>Eliminar libro</string>
            </property>
            <property name="rol" stdset="0">
-            <string>ghost</string>
+            <string>danger</string>
            </property>
           </widget>
          </item>

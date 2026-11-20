@@ -20,14 +20,6 @@ LEMA = (
     "cuando el viaje haya terminado."
 )
 
-CATEGORIAS = [
-    "Literatura",
-    "Ciencias sociales",
-    "Ciencias básicas",
-    "Tecnología",
-    "Arte",
-]
-
 SECCIONES = {
     "A": "Literatura",
     "B": "Ciencias sociales",
@@ -35,6 +27,23 @@ SECCIONES = {
     "D": "Tecnología",
     "E": "Arte",
 }
+
+# La lista de categorías se deriva de las secciones para que no puedan
+# quedar desactualizadas la una respecto de la otra.
+CATEGORIAS = list(SECCIONES.values())
+
+
+def seccion_de(categoria):
+    """Devuelve la letra de sección que corresponde a una categoría."""
+    for letra, nombre in SECCIONES.items():
+        if nombre == categoria:
+            return letra
+    return ""
+
+
+def categoria_de(seccion):
+    """Devuelve la categoría que corresponde a una letra de sección."""
+    return SECCIONES.get(str(seccion).strip().upper(), "")
 
 ESTADOS_DE_PRESTAMO = ["activo", "devuelto"]
 

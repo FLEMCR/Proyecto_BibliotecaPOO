@@ -1,0 +1,41 @@
+Disponibilidad por sección
+Fecha: 2026-11-20
+
+Filas                         E1      E2      E3   Total
+A                              4       4       2      10
+B                              4       4       2      10
+C                              4       4       0       8
+D                              1       2       4       7
+E                              2       2       2       6
+
+Préstamos activos: 0
+Préstamos vencidos: 0
+
+HISTORIAL DE PRÉSTAMOS
+ID      DNI       Usuario   ISBN           Libro          Fecha préstamo  Fecha límite  Devolución  Estado
+P-0001  71828192  pajuelin  9786123179380  Matemáticas 1  2026-11-11      2026-11-26    2026-11-11  Devuelto
+
+INVENTARIO DE LIBROS
+ISBN           Título                                                                                             Autor                                                                                                                 Categoría          Sección  Estante  Ejemplares  Prestados  Disponibles
+9788437604947  Cien años de soledad                                                                               Gabriel Garcia Marquez                                                                                                Literatura         A        1        3           1          2
+9788445073728  El Señor de los Anillos: La Comunidad del Anillo                                                   J. R. R. Tolkien                                                                                                      Literatura         A        1        2           0          2
+9789876122672  Maze Runner: Correr o morir                                                                        James Dashner                                                                                                         Literatura         A        2        2           0          2
+9788420412146  Don Quijote de la Mancha                                                                           Miguel de Cervantes                                                                                                   Literatura         A        3        2           0          2
+9788491050292  La ciudad y los perros                                                                             Mario Vargas Llosa                                                                                                    Literatura         A        2        2           0          2
+9786123351373  El sistema jurídico: Introducción al derecho                                                       Marcial Antonio Rubio Correa                                                                                          Ciencias sociales  B        1        2           0          2
+9786123164102  Tradiciones peruanas                                                                               Ricardo Palma                                                                                                         Ciencias sociales  B        2        5           1          4
+9786071641557  El capital: Crítica de la economía política (Tomo I)                                               Karl Marx                                                                                                             Ciencias sociales  B        1        2           0          2
+9788420633139  Historia de la conquista del Perú                                                                  William H. Prescott                                                                                                   Ciencias sociales  B        3        2           0          2
+9786123179380  Matemáticas 1                                                                                      Miguel Angel Gonzaga Ramirez, Josué Aguirre Enciso, Richard Santiago Quispe Rivas                                     Ciencias básicas   C        1        2           0          2
+9786123350628  Cálculo Diferencial                                                                                Nancy Edith Saravia Molina, Cecilia Gaita Iparraguirre, Diana Bances Vento, Jack Arce Flores, Wilson Edwar Díaz Cajo  Ciencias básicas   C        1        2           0          2
+9786071511546  Física para ciencias e ingeniería (Vol. 1)                                                         Raymond A. Serway y John W. Jewett                                                                                    Ciencias básicas   C        2        3           1          2
+9786124396083  Mecánica de fluidos para ingenieros de procesos                                                    Julia Salinas de Santillana, Jaime Santillana Soto                                                                    Tecnología         D        3        2           0          2
+9788420686732  El gen egoísta                                                                                     Richard Dawkins                                                                                                       Ciencias básicas   C        2        2           0          2
+9780131103627  Eloquent JavaScript                                                                                Marijn Haverbeke                                                                                                      Tecnología         D        1        2           1          1
+9786123351496  Inteligencia artificial y derecho                                                                  Verónica Violeta Rojas Montes                                                                                         Tecnología         D        2        2           0          2
+9788420677300  Aplicaciones de Inteligencia Artificial en la Educación Superior Universitaria                     Gloria Teresita Huamaní Huamaní, Paul Miller Tocto Inga                                                               Tecnología         D        3        1           0          1
+9789843760494  Gestión de cadena de suministro e industria 4.0                                                    No especificado                                                                                                       Tecnología         D        3        1           0          1
+9789972424626  Franquicias imaginarias: las opciones estéticas en las artes plásticas en el Perú de fin de siglo  Max Hernández Calvo, Jorge Villacorta Chávez                                                                          Arte               E        1        2           0          2
+9789972429835  Imaginación visual y cultura en el Perú                                                            Gisela Cánepa (Editora)                                                                                               Arte               E        2        2           0          2
+9789972433353  Deus absconditus: retrospectiva de Manuel Moncloa 1980-2011                                        Gustavo Buntinx                                                                                                       Arte               E        3        1           0          1
+9786124567890  Patrimonio, Kukuli Velarde                                                                         Varios autores                                                                                                        Arte               E        3        1           0          1

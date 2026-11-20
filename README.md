@@ -16,7 +16,7 @@ python3 main.py
 ```
 proyecto_final/
 ├── main.py                    Entrada única (PyQt5)
-├── assets/styles/app.qss      Tema oscuro, organizado por secciones
+├── assets/styles/app.qss      Tema azul y amarillo claro, organizado por secciones
 ├── core/
 │   ├── configuracion.py       Rutas (pathlib), constantes y lectura/escritura JSON
 │   ├── errores.py             Excepciones propias
@@ -36,10 +36,10 @@ proyecto_final/
 
 - **Inicio:** solo el saludo `Hola, nombre`, el tipo de usuario y el lema arriba; el resto del espacio queda libre para colocar una imagen o iconos SVG después.
 - **Acceso:** DNI, alta de usuarios, validación de membresía y cuenta activa.
-- **Catálogo:** búsqueda, filtros, orden, ficha del libro y botón **Registrar préstamo** que copia el ISBN a la pantalla de préstamos. Para administradores aparecen además **Nuevo libro**, **Editar libro** y **Eliminar libro** (este último solo si el libro no tiene préstamos activos).
-- **Préstamos:** ISBN validado con regex, fecha límite automática de 15 días desde el inicio (sin calendario) y registro a nombre del usuario conectado; un préstamo vencido bloquea nuevos préstamos hasta devolverlo.
+- **Catálogo:** búsqueda, filtros, orden, ficha del libro y botón **Registrar préstamo** que copia el ISBN a la pantalla de préstamos. Para administradores aparecen además **Editar libro** y **Eliminar libro** (este último solo si el libro no tiene préstamos activos). El alta de libros se hace desde la página **Libro** del menú lateral.
+- **Préstamos:** ISBN validado con regex, fecha límite automática de 15 días desde el inicio (sin calendario) y registro a nombre del usuario conectado; se puede prestar mientras quede al menos 1 ejemplar disponible (los demás permanecen en estante) y un préstamo vencido bloquea nuevos préstamos hasta devolverlo.
 - **Devoluciones:** selección del préstamo activo y actualización del stock.
-- **Administración:** alta, edición y baja de libros desde el catálogo, listado de usuarios con filtro, renovación de membresías y reportes.
+- **Administración:** alta de libros desde la página **Libro**; edición y baja desde el catálogo; listado de usuarios con filtro, renovación de membresías y reportes. Solo se elige la categoría: la sección se obtiene internamente de ella y no aparece en el formulario.
 - **Reportes:** resumen general arriba y dos tablas separadas: **historial de préstamos** (quién pidió qué libro, fechas y estado) e **inventario de libros** (ejemplares, prestados y disponibles). El resumen de Inicio se movió acá. Se puede exportar todo a `data/reporte.txt`.
 - **Lema:** `Un libro es un viaje de ida y vuelta: llévalo contigo y devuélvelo cuando el viaje haya terminado.`
 

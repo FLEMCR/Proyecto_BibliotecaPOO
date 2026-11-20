@@ -21,8 +21,6 @@ class VentanaLibro(QWidget):
         self._isbn_original = None
 
         self.categoriaComboBox.addItems(configuracion.CATEGORIAS)
-        for letra, nombre in configuracion.SECCIONES.items():
-            self.seccionComboBox.addItem(f"{letra} · {nombre}", letra)
 
         self.guardarButton.clicked.connect(self.guardar)
         self.cancelarButton.clicked.connect(self.limpiar)
@@ -35,7 +33,9 @@ class VentanaLibro(QWidget):
             "titulo": self.tituloLineEdit.text(),
             "autor": self.autorLineEdit.text(),
             "categoria": self.categoriaComboBox.currentText(),
-            "seccion": self.seccionComboBox.currentData(),
+            "seccion": configuracion.seccion_de(
+                self.categoriaComboBox.currentText()
+            ),
             "estante": self.estanteSpinBox.value(),
             "ejemplares": self.ejemplaresSpinBox.value(),
             "disponibles": self.disponiblesSpinBox.value(),
@@ -49,7 +49,7 @@ class VentanaLibro(QWidget):
                     self._isbn_original, datos
                 )
         except errores.ErrorBiblioteca as error:
-            self._mensaje(str(error), error=True)
+            self._mensaje(str(error))
             return
 
         self.limpiar()
@@ -61,7 +61,7 @@ class VentanaLibro(QWidget):
         try:
             libro = self.biblioteca.libro(isbn)
         except errores.ErrorBiblioteca as error:
-            self._mensaje(str(error), error=True)
+            self._mensaje(str(error))
             return
 
         self._isbn_original = libro.isbn()
@@ -70,8 +70,6 @@ class VentanaLibro(QWidget):
         self.tituloLineEdit.setText(libro.titulo())
         self.autorLineEdit.setText(libro.autor())
         self.categoriaComboBox.setCurrentText(libro.categoria())
-        indice_seccion = self.seccionComboBox.findData(libro.seccion())
-        self.seccionComboBox.setCurrentIndex(max(indice_seccion, 0))
         self.estanteSpinBox.setValue(libro.estante())
         self.ejemplaresSpinBox.setValue(libro.ejemplares())
         self.disponiblesSpinBox.setValue(libro.disponibles())
@@ -86,7 +84,6 @@ class VentanaLibro(QWidget):
         self.tituloLineEdit.clear()
         self.autorLineEdit.clear()
         self.categoriaComboBox.setCurrentIndex(0)
-        self.seccionComboBox.setCurrentIndex(0)
         self.estanteSpinBox.setValue(1)
         self.ejemplaresSpinBox.setValue(1)
         self.disponiblesSpinBox.setValue(1)
@@ -94,7 +91,7 @@ class VentanaLibro(QWidget):
         self._mensaje("El ISBN debe tener 13 dígitos y no puede repetirse.")
         self.isbnLineEdit.setFocus()
 
-    def _mensaje(self, texto, error=False):
+    def _mensaje(self, texto):
         """Muestra una ayuda en la etiqueta de estado del formulario."""
         self.ayudaLibroLabel.setText(texto)
 

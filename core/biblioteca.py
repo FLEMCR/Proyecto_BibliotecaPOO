@@ -29,8 +29,6 @@ class Biblioteca:
             prestamo = prestamos.crear_prestamo(registro)
             self._prestamos.append(prestamo)
 
-        return self.resumen()
-
     def todos_los_libros(self):
         """Retorna una lista con todos los objetos Libro registrados en la biblioteca."""
         return list(self._catalogo.values())

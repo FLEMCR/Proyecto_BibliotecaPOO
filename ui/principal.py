@@ -3,7 +3,7 @@ from pathlib import Path
 from core import configuracion, errores, reportes, utilidades
 from PyQt5 import uic
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QMainWindow, QMessageBox, QTableWidgetItem
+from PyQt5.QtWidgets import QHeaderView, QMainWindow, QMessageBox, QTableWidgetItem
 from ui.catalogo import VentanaCatalogo
 from ui.devolucion import VentanaDevolucion
 from ui.libro_form import VentanaLibro
@@ -79,7 +79,6 @@ class VentanaPrincipal(QMainWindow):
     def _conectar_acciones(self):
         """Conecta los accesos entre páginas y las acciones de administración."""
         self.catalogo.prestamo_solicitado.connect(self._abrir_prestamo_con_isbn)
-        self.catalogo.libro_nuevo_solicitado.connect(self._nuevo_libro)
         self.catalogo.edicion_solicitada.connect(self._editar_libro)
         self.catalogo.eliminacion_solicitada.connect(self._eliminar_libro)
         self.buscarUsuarioButton.clicked.connect(self._cargar_usuarios)
@@ -100,13 +99,6 @@ class VentanaPrincipal(QMainWindow):
         """Va a la página de préstamos con el ISBN del libro elegido en el catálogo."""
         self.navegacionListWidget.setCurrentRow(FILA_PRESTAMO)
         self.pagina_prestamo.cargar_isbn(isbn)
-
-    def _nuevo_libro(self):
-        """Abre el formulario de libros en blanco para registrar uno nuevo."""
-        if not self.usuario.puede_administrar() or self.pagina_libro is None:
-            return
-        self.pagina_libro.limpiar()
-        self.navegacionListWidget.setCurrentRow(FILA_LIBRO)
 
     def _editar_libro(self, isbn):
         """Abre el formulario de libros con los datos del libro elegido."""
@@ -142,6 +134,9 @@ class VentanaPrincipal(QMainWindow):
 
         self.tablaUsuarios.setSortingEnabled(False)
         self.tablaUsuarios.setRowCount(0)
+        encabezado = self.tablaUsuarios.horizontalHeader()
+        encabezado.setSectionResizeMode(QHeaderView.Stretch)
+        encabezado.setDefaultAlignment(Qt.AlignCenter)
         for fila, (usuario, datos) in enumerate(usuarios):
             valores = [
                 datos["dni"],
@@ -153,7 +148,9 @@ class VentanaPrincipal(QMainWindow):
             ]
             self.tablaUsuarios.insertRow(fila)
             for columna, valor in enumerate(valores):
-                self.tablaUsuarios.setItem(fila, columna, QTableWidgetItem(valor))
+                item = QTableWidgetItem(valor)
+                item.setTextAlignment(Qt.AlignCenter)
+                self.tablaUsuarios.setItem(fila, columna, item)
         self.tablaUsuarios.setSortingEnabled(True)
         self.cantidadUsuariosLabel.setText(f"{len(usuarios)} usuarios")
 

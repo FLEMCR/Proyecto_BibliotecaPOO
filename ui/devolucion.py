@@ -94,13 +94,13 @@ class VentanaDevolucion(QWidget):
         """Registra la devolución del préstamo elegido."""
         prestamo = self._prestamo_seleccionado()
         if prestamo is None:
-            self._mensaje("No hay un préstamo activo seleccionado.", error=True)
+            self._mensaje("No hay un préstamo activo seleccionado.")
             return
 
         try:
             self.biblioteca.devolver(prestamo.isbn(), self.usuario.dni())
         except errores.ErrorBiblioteca as error:
-            self._mensaje(str(error), error=True)
+            self._mensaje(str(error))
             return
 
         self.actualizar()
@@ -113,7 +113,7 @@ class VentanaDevolucion(QWidget):
         self.fechaDevolucionLabel.setText(f"Fecha de devolución: {date.today()}")
         self.estadoPrestamoLabel.setText("Estado: —")
 
-    def _mensaje(self, texto, error=False):
+    def _mensaje(self, texto):
         """Muestra una ayuda en la etiqueta de estado del formulario."""
         self.ayudaDevolucionLabel.setText(texto)
 

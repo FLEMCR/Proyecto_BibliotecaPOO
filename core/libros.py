@@ -62,8 +62,8 @@ class Libro:
         return self._ejemplares - self._disponibles
 
     def se_puede_prestar(self):
-        """Indica si el libro cuenta con suficientes ejemplares para poder ser prestado."""
-        return self._disponibles > 1
+        """Indica si queda al menos un ejemplar disponible para prestar."""
+        return self._disponibles > 0
 
     def prestar_ejemplar(self):
         """Descuenta un ejemplar disponible luego de validar que se puede prestar."""
@@ -93,6 +93,11 @@ class Libro:
             raise errores.ErrorDeDatos(f"La categoria {self._categoria} no existe.")
         elif self._seccion not in configuracion.SECCIONES:
             raise errores.ErrorDeDatos(f"La seccion {self._seccion} no existe.")
+        elif configuracion.categoria_de(self._seccion) != self._categoria:
+            raise errores.ErrorDeDatos(
+                f"La categoria {self._categoria} no pertenece a la seccion "
+                f"{self._seccion}."
+            )
         elif self._estante < 1 or self._estante > configuracion.CANTIDAD_DE_ESTANTES:
             raise errores.ErrorDeDatos(
                 f"El estante debe estar entre 1 y {configuracion.CANTIDAD_DE_ESTANTES}"
@@ -105,7 +110,6 @@ class Libro:
             )
         elif self._disponibles > self._ejemplares:
             raise errores.ErrorDeDatos("No se puede prestar más de lo que se tiene")
-        return True
 
     def a_diccionario(self):
         """Convierte los atributos del libro en un diccionario para su almacenamiento en JSON."""

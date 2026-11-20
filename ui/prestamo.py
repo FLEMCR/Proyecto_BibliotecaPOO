@@ -98,7 +98,7 @@ class VentanaPrestamo(QWidget):
             libro = self.biblioteca.libro(isbn)
         except errores.ErrorBiblioteca as error:
             self._limpiar_detalle()
-            self._mensaje(str(error), error=True)
+            self._mensaje(str(error))
             return
 
         self.tituloLibroLabel.setText(f"{libro.titulo()} · {libro.autor()}")
@@ -112,16 +112,7 @@ class VentanaPrestamo(QWidget):
             self.prestarButton.setEnabled(True)
         else:
             self.prestarButton.setEnabled(False)
-            if libro.disponibles() == 1:
-                self._mensaje(
-                    "Solo queda un ejemplar y se reserva para consulta.",
-                    error=True,
-                )
-            else:
-                self._mensaje(
-                    "Este libro no tiene ejemplares disponibles para préstamo.",
-                    error=True,
-                )
+            self._mensaje("Este libro no tiene ejemplares disponibles para préstamo.")
 
     def prestar(self):
         """Registra el préstamo del ISBN escrito usando el DNI de la sesión."""
@@ -133,7 +124,7 @@ class VentanaPrestamo(QWidget):
         try:
             prestamo = self.biblioteca.prestar(isbn, self.usuario.dni())
         except errores.ErrorBiblioteca as error:
-            self._mensaje(str(error), error=True)
+            self._mensaje(str(error))
             return
 
         self._mensaje(
@@ -157,7 +148,7 @@ class VentanaPrestamo(QWidget):
         self.tituloLibroLabel.setText("Libro: sin seleccionar")
         self.disponiblesLabel.setText("Disponibles para préstamo: —")
 
-    def _mensaje(self, texto, error=False):
+    def _mensaje(self, texto):
         """Muestra una ayuda en la etiqueta de estado del formulario."""
         self.ayudaPrestamoLabel.setText(texto)
 

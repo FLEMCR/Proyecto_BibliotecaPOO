@@ -160,23 +160,13 @@
        <widget class="QComboBox" name="categoriaComboBox"/>
       </item>
       <item row="4" column="0">
-       <widget class="QLabel" name="seccionLabel">
-        <property name="text">
-         <string>Sección</string>
-        </property>
-       </widget>
-      </item>
-      <item row="4" column="1">
-       <widget class="QComboBox" name="seccionComboBox"/>
-      </item>
-      <item row="5" column="0">
        <widget class="QLabel" name="estanteLabel">
         <property name="text">
          <string>Estante</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
+      <item row="4" column="1">
        <widget class="QSpinBox" name="estanteSpinBox">
         <property name="minimum">
          <number>1</number>
@@ -186,14 +176,14 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="0">
+      <item row="5" column="0">
        <widget class="QLabel" name="ejemplaresLabel">
         <property name="text">
          <string>Ejemplares</string>
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
+      <item row="5" column="1">
        <widget class="QSpinBox" name="ejemplaresSpinBox">
         <property name="minimum">
          <number>1</number>
@@ -206,7 +196,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="0">
+      <item row="6" column="0">
        <widget class="QLabel" name="disponiblesLabel">
         <property name="text">
          <string>Disponibles para préstamo</string>
@@ -216,7 +206,7 @@
         </property>
        </widget>
       </item>
-      <item row="7" column="1">
+      <item row="6" column="1">
        <widget class="QSpinBox" name="disponiblesSpinBox">
         <property name="maximum">
          <number>999</number>

@@ -13,13 +13,12 @@ Este documento reemplaza al plan anterior. Su objetivo es servir como guía de t
 
 ## Estado final del proyecto (cierre)
 
-- **Interfaz:** inicio con solo el texto superior (`Hola, nombre`, tipo y lema) y un espacio vacío para colocar después una imagen o iconos SVG; menú lateral sin scroll; las 8 opciones navegan y cargan datos. La ventana principal quedó en 1240×720 (20 px menos en cada lado que 1280×760) y el resto de ventanas también se achicó 20 px por lado; las tablas siguen entrando bien. El catálogo tiene el botón **Registrar préstamo** que emite `prestamo_solicitado(str)` y copia el ISBN al formulario con `cargar_isbn()`; para administradores también muestra **Nuevo libro**, **Editar libro** y **Eliminar libro**, que emiten señales a `principal.py` y completan el CRUD de libros.
+- **Interfaz:** inicio con solo el texto superior (`Hola, nombre`, tipo y lema) y un espacio vacío para colocar después una imagen o iconos SVG; menú lateral sin scroll; las 8 opciones navegan y cargan datos. La ventana principal quedó en 1240×720 (20 px menos en cada lado que 1280×760) y el resto de ventanas también se achicó 20 px por lado; las tablas siguen entrando bien. El catálogo tiene el botón **Registrar préstamo** que emite `prestamo_solicitado(str)` y copia el ISBN al formulario con `cargar_isbn()`; para administradores también muestra **Editar libro** y **Eliminar libro**, que emiten señales a `principal.py`. El alta de libros se realiza en la página **Libro** del menú lateral, con lo que quedan disponibles las acciones de registrar, editar y eliminar.
 - **Componentes:** se usan `QLabel`, `QLineEdit`, `QTextEdit`, `QPushButton`, `QComboBox`, `QCheckBox`, `QSpinBox`, `QListWidget`, `QTableWidget`, `QStackedWidget` y `QSplitter`. No se usa calendario ni selector de fecha: el plazo y la fecha límite se muestran como texto calculado a 15 días.
 - **Préstamos:** la fecha límite es `fecha_prestamo + 15 días` (`DIAS_DE_PRESTAMO`); `Prestamo` valida el plazo y `Biblioteca.prestar()` bloquea al usuario con un préstamo vencido hasta que lo devuelva. No hay multas.
 - **Membresías:** el administrador puede renovar el vencimiento de cualquier usuario desde “Usuarios” (suma 3 meses desde la fecha vigente, sin acortarla). El administrador principal queda con vencimiento a 10 años en `data/usuarios.json`.
 - **Reportes:** el resumen general pasó de Inicio a la página de Reportes. La vista muestra dos tablas separadas: historial de préstamos (quién pidió qué libro, fechas y estado) e inventario de libros (ejemplares, prestados y disponibles). `core/reportes.py` conserva las matrices filas × estantes, `sumar_fila()` recursiva, `filas_del_reporte()` como generador y el `lambda` como cierre; todo se exporta a `data/reporte.txt`.
 - **Lema:** “Un libro es un viaje de ida y vuelta: llévalo contigo y devuélvelo cuando el viaje haya terminado.”
-- **Firebase:** módulo opcional en `integracion/firebase_sync.py`, explicado en `integracion/Firebase.md`; `main.py` no lo importa.
 - **Entrega y presentación:** la presentación se entrega en video, mostrando las diapositivas y el uso real del código. Se entregan además el enlace de Canva, el video y el repositorio de GitHub para que el profesor revise el sistema y `docs/`. El 11 de diciembre se responden las preguntas.
 - **Estilos:** `assets/styles/app.qss` está dividido en 10 bloques con comentarios e índice; los `.ui` ya no contienen atributos `stretch` problemáticos.
 - **Código muerto:** se quitó `CARPETA_INTERFACES` y el atributo `_libro_seleccionado`.
@@ -142,7 +141,7 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 - **Categorías:** `Ciencias básicas` y `Tecnología` son categorías independientes, sin subcategorías; los 22 libros de `data/libros.json` ya están reclasificados.
 - **Préstamos:** `Prestamo`, `Biblioteca.prestar()`, `prestamo_activo_de_usuario()` y stock actualizado; solo se pide el ISBN porque el DNI sale de la sesión.
 - **Devoluciones:** `Biblioteca.devolver()`, selección del préstamo activo, stock repuesto y liberación del usuario.
-- **Registro de libros:** alta, edición y baja desde la página interna y desde los botones de administración del catálogo, con categoría, sección y stock.
+- **Registro de libros:** alta desde la página **Libro**; edición y baja desde los botones de administración del catálogo, con categoría, sección y stock. Solo se elige la categoría: la sección se obtiene internamente de ella y no aparece en el formulario; el núcleo rechaza combinaciones incoherentes.
 - **Registro de usuarios:** autorregistro desde el acceso con membresía de 3 meses calculada con `sumar_meses()`.
 - **Persistencia:** escritura de `libros.json`, `usuarios.json` y `prestamos.json`.
 
@@ -178,7 +177,7 @@ Estas decisiones simplifican la lógica, evitan cálculos que no se piden y mant
 | Media     | `VentanaPrincipal` no implementa `closeEvent`.                                          | Al cerrar con la X, la ventana desaparece pero la aplicación puede quedar sin ventanas visibles. | Implementar `closeEvent` y decidir si cierra la app o vuelve al acceso.                             |
 | Media     | `cerrar_sesion()` solo emite la señal; no cierra la ventana.                            | El panel puede quedar visible hasta que el controlador lo elimine.                               | Cerrar la ventana después de emitir la señal o hacer que el controlador la oculte.                  |
 | Media     | `principal.ui` tiene el nombre y el lema escritos a mano.                               | Se duplican textos que ya están en `configuracion.py`.                                           | Cargarlos desde `configuracion.NOMBRE_BIBLIOTECA` y `configuracion.LEMA`.                           |
-| Media     | `Libro.se_puede_prestar()` devuelve `True` solo si `disponibles > 1`.                   | El último ejemplar nunca se presta.                                                              | Decidir la regla y documentarla. Si se permite prestar el último, cambiar a `> 0`.                  |
+| Media     | `Libro.se_puede_prestar()` exigía `disponibles > 1`.                   | El último ejemplar no se podía prestar aunque figure como disponible.                                                              | Resuelto: se cambió a `> 0`; `disponibles` es la única regla de stock.                  |
 | Media     | `VentanaAcceso` no tiene validator ni Enter.                                            | Se pueden escribir letras y hay que usar el botón.                                               | Agregar `QIntValidator`, `maxLength` y `returnPressed`.                                             |
 | Baja      | Variables con tildes o nombres poco claros (`año`).                                     | Dificulta la lectura y puede causar errores de codificación.                                     | Renombrar a `anio`, `mes`, `dia`.                                                                   |
 
@@ -801,7 +800,6 @@ Formulario para registrar o editar un libro. Se muestra en `libroPage` y la fila
 | `tituloLineEdit`     | `QLineEdit`   | Título.                                |
 | `autorLineEdit`      | `QLineEdit`   | Autor.                                 |
 | `categoriaComboBox`  | `QComboBox`   | Categoría principal del libro.         |
-| `seccionComboBox`    | `QComboBox`   | Sección A–E, con su nombre.            |
 | `estanteSpinBox`     | `QSpinBox`    | Estante 1–3.                           |
 | `ejemplaresSpinBox`  | `QSpinBox`    | Total de ejemplares.                   |
 | `disponiblesSpinBox` | `QSpinBox`    | Ejemplares disponibles para préstamo.  |
@@ -811,14 +809,14 @@ Formulario para registrar o editar un libro. Se muestra en `libroPage` y la fila
 
 **Comportamiento:**
 
-- `categoriaComboBox` se llena desde `configuracion.CATEGORIAS`.
+- `categoriaComboBox` se llena desde `configuracion.CATEGORIAS`. La sección no se muestra: al guardar se obtiene con `configuracion.seccion_de()` (A = Literatura, B = Ciencias sociales, C = Ciencias básicas, D = Tecnología, E = Arte).
 - Al editar un libro existente, `isbnLineEdit` se deshabilita y el título cambia a “Editar libro”.
 - Al guardar emite `datos_actualizados`, que `VentanaPrincipal` usa para refrescar el catálogo y el resumen.
 - El ancho máximo de la página es 640 px y se centra horizontalmente.
 
 **Métodos del núcleo:** `Biblioteca.registrar_libro(datos)` y `Biblioteca.actualizar_libro(isbn, datos)`.
 
-**Criterio de aceptación:** el libro nuevo aparece en el catálogo y sigue ahí después de cerrar y abrir el programa; un ISBN repetido muestra un error; la categoría y la sección elegidas se guardan correctamente.
+**Criterio de aceptación:** el libro nuevo aparece en el catálogo y sigue ahí después de cerrar y abrir el programa; un ISBN repetido muestra un error; la categoría y la sección elegidas se guardan correctamente y siempre corresponden (A = Literatura, B = Ciencias sociales, C = Ciencias básicas, D = Tecnología, E = Arte).
 
 ### 6.10 `prestamo.ui` — `VentanaPrestamo` (QWidget) ✅
 
@@ -1120,7 +1118,7 @@ QWidget VentanaLibro
     │       ├── Título        → QLineEdit tituloLineEdit
     │       ├── Autor         → QLineEdit autorLineEdit
     │       ├── Categoría     → QComboBox categoriaComboBox
-    │       ├── Sección       → QComboBox seccionComboBox
+
     │       ├── Estante       → QSpinBox estanteSpinBox
     │       ├── Ejemplares    → QSpinBox ejemplaresSpinBox
     │       └── Disponibles para préstamo → QSpinBox disponiblesSpinBox
@@ -1193,13 +1191,12 @@ QVBoxLayout detalleFrame
 ├── QLabel detalleEncabezadoLabel     (ya existe)
 ├── QTextEdit detalleTextEdit         (ya existe)
 ├── QHBoxLayout layoutAccionesAdmin   ← nuevo
-│   ├── QPushButton nuevoLibroButton
 │   ├── QPushButton editarLibroButton
 │   └── QPushButton eliminarLibroButton
 └── QPushButton prestarDesdeCatalogoButton (ya existe, visible para todos)
 ```
 
-Los tres botones nuevos solo se muestran si `usuario.puede_administrar()`. `prestarDesdeCatalogoButton` queda visible para todos, porque un usuario común también puede pedir un libro.
+Los dos botones nuevos solo se muestran si `usuario.puede_administrar()`. `prestarDesdeCatalogoButton` queda visible para todos, porque un usuario común también puede pedir un libro.
 
 #### `principal.ui` (modificar)
 
@@ -1239,7 +1236,6 @@ El nombre de la biblioteca queda solo en la barra lateral (`marca1Label`).
 | `registrarBtn`           | `self.registrarBtn`           | `clicked.connect(self.abrir_registro)`     |
 | `registrarButton`        | `self.registrarButton`        | `clicked.connect(self.registrar)`          |
 | `cancelarButton`         | `self.cancelarButton`         | `clicked.connect(self.reject)`             |
-| `nuevoLibroButton`       | `self.nuevoLibroButton`       | `clicked.connect(self._solicitar_nuevo_libro)` → señal `libro_nuevo_solicitado` |
 | `editarLibroButton`      | `self.editarLibroButton`      | `clicked.connect(self._solicitar_edicion)` → señal `edicion_solicitada(isbn)` |
 | `eliminarLibroButton`    | `self.eliminarLibroButton`    | `clicked.connect(self._solicitar_eliminacion)` → señal `eliminacion_solicitada(isbn)` |
 | `prestarButton`          | `self.prestarButton`          | `clicked.connect(self.prestar)`            |
@@ -1441,7 +1437,7 @@ Una línea por movimiento:
 | Préstamo         | Usuario activo, membresía vigente, stock disponible y **sin otro préstamo activo**. | `Biblioteca.prestar()`.                                              |
 | Un solo préstamo | `MAXIMO_PRESTAMOS_POR_USUARIO = 1`; si ya tiene uno, se bloquea el segundo.         | `Biblioteca.prestamo_activo_de_usuario()`.                           |
 | Stock            | No se presta si `disponibles` es 0.                                                 | `Biblioteca.prestar()` + `Libro.prestar_ejemplar()`.                 |
-| Último ejemplar  | Regla actual: se reserva el último (`disponibles > 1`).                             | `Libro.se_puede_prestar()`.                                          |
+| Último ejemplar  | Se presta si `disponibles > 0`; no se reserva ningún ejemplar.                             | `Libro.se_puede_prestar()`.                                          |
 | Devolución       | Debe existir un préstamo activo para ese libro y usuario.                           | `Biblioteca.devolver()`.                                             |
 | Nuevo préstamo   | Solo se permite después de registrar la devolución.                                 | `Biblioteca.prestar()`.                                              |
 | Plazo            | `DIAS_DE_PRESTAMO = 15`; si vence, se marca “Vencido”, bloquea nuevos préstamos y **no genera multa**. | `Prestamo.esta_vencido()`.                     |
@@ -1593,7 +1589,6 @@ Reglas de oro:
 | `principal.py`     | abrir Reportes                           | `_cargar_reporte()`              | `resumen_visible()`, `historial_de_prestamos()`, `inventario_de_libros()` | —       |
 | `principal.py`     | abrir Mi membresía                       | `_cargar_membresia()`            | `usuario.datos_de_membresia()`                            | —                                |
 | `catalogo.py`      | `buscarButton.clicked`                   | `buscar()`                       | `buscar_avanzado()`                                       | —                                |
-| `catalogo.py`      | `nuevoLibroButton.clicked`               | `_solicitar_nuevo_libro()` → `libro_nuevo_solicitado` → `principal._nuevo_libro()` | `pagina_libro.limpiar()`                  | —                                |
 | `catalogo.py`      | `editarLibroButton.clicked`              | `_solicitar_edicion(isbn)` → `edicion_solicitada` → `principal._editar_libro(isbn)` | `pagina_libro.cargar_libro()` → `actualizar_libro()` | `libros.json`         |
 | `catalogo.py`      | `eliminarLibroButton.clicked`            | `_solicitar_eliminacion(isbn)` → `eliminacion_solicitada` → `principal._eliminar_libro(isbn)` | `eliminar_libro()`             | `libros.json`                    |
 | `prestamo.py`      | `prestarButton.clicked`                  | `prestar()`                      | `prestar()`                                               | `libros.json` y `prestamos.json` |
@@ -1984,7 +1979,6 @@ class VentanaLibro(QWidget):
 
 | Botón                 | Método en `catalogo.py`       | Método en `principal.py` | Núcleo                          |
 | --------------------- | ----------------------------- | ------------------------ | ------------------------------- |
-| `nuevoLibroButton`    | `_solicitar_nuevo_libro()`    | `_nuevo_libro()`         | `registrar_libro(datos)`        |
 | `editarLibroButton`   | `_solicitar_edicion(isbn)`    | `_editar_libro(isbn)`    | `actualizar_libro(isbn, datos)` |
 | `eliminarLibroButton` | `_solicitar_eliminacion(isbn)` | `_eliminar_libro(isbn)` | `eliminar_libro(isbn)`          |
 
@@ -2404,7 +2398,7 @@ Una funcionalidad está terminada cuando:
 
 | Decisión                                           | Opciones                                                        | Recomendación                                                                                                                  |
 | -------------------------------------------------- | --------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| ¿Se presta el último ejemplar?                     | `disponibles > 0` o `disponibles > 1`.                          | Decidirlo antes de implementar préstamos y escribirlo en el README. La regla actual reserva el último.                         |
+| ¿Se presta el último ejemplar?                     | `disponibles > 0` o `disponibles > 1`.                          | Decidido: `disponibles > 0` (se presta el último ejemplar). Ya está documentado en el README.                         |
 | ¿Dónde se guardan los reportes?                    | `data/reportes/` o la carpeta que elija el usuario.             | `data/reportes/` por defecto, con opción de elegir otra ruta.                                                                  |
 | ¿Cómo se muestra la fecha límite?                  | Texto, `QDateEdit` o calendario.                                | Usar texto calculado: la fecha se obtiene sola a 15 días y no hay controles que permitan cambiarla.                           |
 | ¿Se agregan estilos ahora?                         | QSS desde el inicio o al final.                                 | Al final, para no mezclar presentación con conexión.                                                                           |
