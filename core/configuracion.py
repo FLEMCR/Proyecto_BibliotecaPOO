@@ -4,8 +4,7 @@ from pathlib import Path
 CARPETA_DEL_PROYECTO = Path(__file__).resolve().parent.parent
 CARPETA_DATOS = CARPETA_DEL_PROYECTO / "data"
 CARPETA_ASSETS = CARPETA_DEL_PROYECTO / "assets"
-CARPETA_ESTILOS = CARPETA_ASSETS / "styles"
-ARCHIVO_ESTILOS = CARPETA_ESTILOS / "app.qss"
+ARCHIVO_ESTILOS = CARPETA_ASSETS / "styles" / "app.qss"
 
 ARCHIVO_LIBROS = "libros.json"
 ARCHIVO_USUARIOS = "usuarios.json"

@@ -14,7 +14,7 @@ python3 main.py
 ## Estructura
 
 ```
-proyecto_parcial/
+proyecto_final/
 ├── main.py                    Entrada única (PyQt5)
 ├── assets/styles/app.qss      Tema oscuro, organizado por secciones
 ├── core/
@@ -27,7 +27,7 @@ proyecto_parcial/
 │   ├── biblioteca.py          Controlador del sistema
 │   └── reportes.py            Matrices, recursividad, generador y exportación
 ├── data/                      libros.json, usuarios.json, prestamos.json
-├── docs/                      Plan, guías y material de exposición
+├── docs/                      Plan, guías.
 ├── tests/                     Pruebas unitarias (no versionadas)
 └── ui/                        Cada ventana tiene .ui (Qt Designer) + .py (lógica)
 ```
@@ -56,3 +56,9 @@ POO (clases, encapsulación, herencia, polimorfismo, abstracción), PyQt5 y Qt D
 | `99999999` | `ADMINISTRADOR` | Administrador |
 
 El administrador principal tiene la membresía vigente hasta `2036-11-17` en `data/usuarios.json`. Desde **Usuarios** puede renovar el vencimiento de cualquier usuario (suma 3 meses).
+
+## Presentación y entrega
+
+- La presentación se entrega en **video**: muestra las diapositivas y el uso real del código ejecutando `python3 main.py`.
+- Se entregan junto con el video el **enlace de Canva**, el propio **video** y el **repositorio de GitHub**, para que el profesor pueda revisar el sistema y la documentación de `docs/`.
+- El **11 de diciembre** responderemos las preguntas sobre el proyecto.

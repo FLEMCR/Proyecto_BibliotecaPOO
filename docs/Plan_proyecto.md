@@ -1,8 +1,8 @@
 # Plan del proyecto — Sistema de Biblioteca
 
-> **Proyecto:** Biblioteca General POSTDATA  
-> **Curso:** Programación Orientada a Objetos  
-> **Documento:** `docs/Plan_proyecto.md`  
+> **Proyecto:** Biblioteca General POSTDATA
+> **Curso:** Programación Orientada a Objetos
+> **Documento:** `docs/Plan_proyecto.md`
 > **Última actualización:** 2026-11-17
 > **Entrada del sistema:** `main.py` (interfaz gráfica), única entrada.
 > **Datos:** `data/libros.json`, `data/usuarios.json`, `data/prestamos.json` y `data/reporte.txt` (exportación)
@@ -19,17 +19,11 @@ Este documento reemplaza al plan anterior. Su objetivo es servir como guía de t
 - **Membresías:** el administrador puede renovar el vencimiento de cualquier usuario desde “Usuarios” (suma 3 meses desde la fecha vigente, sin acortarla). El administrador principal queda con vencimiento a 10 años en `data/usuarios.json`.
 - **Reportes:** el resumen general pasó de Inicio a la página de Reportes. La vista muestra dos tablas separadas: historial de préstamos (quién pidió qué libro, fechas y estado) e inventario de libros (ejemplares, prestados y disponibles). `core/reportes.py` conserva las matrices filas × estantes, `sumar_fila()` recursiva, `filas_del_reporte()` como generador y el `lambda` como cierre; todo se exporta a `data/reporte.txt`.
 - **Lema:** “Un libro es un viaje de ida y vuelta: llévalo contigo y devuélvelo cuando el viaje haya terminado.”
-- **Firebase:** módulo opcional en `integracion/firebase_sync.py`, explicado en `docs/Firebase.md`; `main.py` no lo importa.
+- **Firebase:** módulo opcional en `integracion/firebase_sync.py`, explicado en `integracion/Firebase.md`; `main.py` no lo importa.
+- **Entrega y presentación:** la presentación se entrega en video, mostrando las diapositivas y el uso real del código. Se entregan además el enlace de Canva, el video y el repositorio de GitHub para que el profesor revise el sistema y `docs/`. El 11 de diciembre se responden las preguntas.
 - **Estilos:** `assets/styles/app.qss` está dividido en 10 bloques con comentarios e índice; los `.ui` ya no contienen atributos `stretch` problemáticos.
 - **Código muerto:** se quitó `CARPETA_INTERFACES` y el atributo `_libro_seleccionado`.
 - **Verificación:** compilación correcta, carga de los 7 `.ui` con `uic.loadUi` y 20 pruebas en `QT_QPA_PLATFORM=offscreen`.
-
-### Material de exposición
-
-- `docs/Contenido_Presentacion_Canva.md` — 13 diapositivas (texto, imagen sugerida y palabras clave).
-- `docs/Guion_Exposicion.md` — 4 bloques de 3 minutos y banco de preguntas técnicas.
-
----
 
 ## Contenido
 

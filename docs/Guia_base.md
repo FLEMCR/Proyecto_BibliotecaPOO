@@ -320,8 +320,8 @@ decida cómo se escribe un booleano, se llama a esta función y siempre sale igu
 
 `convertir_fecha()` tiene dos rechazos distintos, y vale la pena ver la diferencia:
 
-- si el texto no tiene tres partes separadas por guiones, el mensaje es sobre el
-  formato;
+- si el texto no tiene tres partes separadas por el carácter `-`, el mensaje es sobre
+  el formato;
 - si tiene la forma correcta pero la fecha no existe (`2026-02-30`), el `ValueError`
   de `date()` se atrapa y se vuelve a lanzar como `ErrorDeDatos`.
 
@@ -367,7 +367,7 @@ Si / No
 ## 8. La clase `Libro`
 
 El constructor recibe los ocho datos y los guarda en atributos **privados**, con el
-guion bajo adelante:
+carácter `_` al inicio:
 
 ```python
 self._isbn = utilidades.validar_isbn(isbn)
@@ -377,8 +377,9 @@ self.revisar_datos()
 ```
 
 Nadie de afuera toca `self._titulo` directamente. Para leerlo hay un método con el
-mismo nombre sin guion: `libro.titulo()`. Y en esta versión no hay ningún método que
-lo cambie, porque la base es de solo lectura: los datos se cambian editando el JSON.
+mismo nombre sin el carácter `_`: `libro.titulo()`. Y en esta versión no hay ningún
+método que lo cambie, porque la base es de solo lectura: los datos se cambian
+editando el JSON.
 Eso es la encapsulación, los atributos quedan adentro y la única puerta son los
 métodos.
 
